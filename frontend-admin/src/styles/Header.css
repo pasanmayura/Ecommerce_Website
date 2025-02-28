@@ -1,0 +1,36 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background-color: #f8f8f8;
+  flex-wrap: nowrap;
+  position: fixed; 
+  top: 0;
+  left: 0;
+  width: 100%; 
+  z-index: 1000; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+}
+
+  .logo-smart-kade {
+    display: flex;
+    height: 50px;
+    align-items: flex-start;
+    object-fit: contain;
+    justify-content: flex-start;
+  }
+
+  .nav {
+    display: flex;
+    flex: 1;
+    justify-content: space-evenly;
+    margin-left: 50%
+  }
+  
+  .nav-link {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    font-size: medium;
+  }
