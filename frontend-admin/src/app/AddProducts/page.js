@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { Header } from "@/components/Header"; 
 import { Sidebar } from "@/components/Sidebar";
 import { Button, TextField, MenuItem } from "@mui/material";
@@ -145,7 +146,7 @@ const AddProducts = () => {
                                 onChange={handleFileChange}
                             />
                             <label htmlFor="fileElem">
-                                <img src={uploadimg} alt="Upload Icon" className='uploadimg'/>    
+                                <Image src={uploadimg} alt="Upload Icon" className='uploadimg'/>    
                             </label>
                             <span>Upload Images (max 3)</span>
                             <div className="image-previews">
