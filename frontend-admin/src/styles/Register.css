@@ -25,9 +25,11 @@ body {
   .logo-smart-kade {
     display: flex;
     height: 50px;
+    width: 500px;
     align-items: flex-start;
     object-fit: contain;
     justify-content: flex-start;
+    
   }
 
   .nav {
