@@ -2,6 +2,7 @@ import {Header} from "@/components/Header";
 import {Sidebar} from "@/components/Sidebar";
 import "@/styles/Register.css"; 
 import "@/styles/MostSold.css";
+import "@/styles/Structure.css";
 
 const MostSold = () => {
   return (
