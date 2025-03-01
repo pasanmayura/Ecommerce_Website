@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation"; // Import useRouter and usePathname
 import { FiGrid, FiBox, FiUsers, FiShoppingCart } from "react-icons/fi";
-import { FiClipboard, FiChevronDown, FiChevronUp, FiMenu, FiX } from "react-icons/fi";
+import { FiClipboard, FiChevronDown, FiChevronUp, FiMenu, FiX, FiLogOut } from "react-icons/fi";
 import { FaSyncAlt } from "react-icons/fa";
 import "@/styles/Sidebar.css";
 
@@ -98,6 +98,12 @@ export const Sidebar = () => {
     router.push(link); // Navigate to the subitem page
   };
 
+  const handleLogout = () => {
+    console.log("Logging out...");
+    sessionStorage.clear();
+    router.push("/LoginAdmin");
+  };
+
   return (
     <div className="sidebar-container">
       <button onClick={toggleSidebar} className="toggle-btn">
@@ -136,6 +142,10 @@ export const Sidebar = () => {
             </ul>
           </nav>
         </div>
+        <a className="button" onClick={handleLogout}>
+          <FiLogOut className="logout-icon" />
+          <div className="logout">LOGOUT</div>
+        </a>
       </aside>
     </div>
   );
