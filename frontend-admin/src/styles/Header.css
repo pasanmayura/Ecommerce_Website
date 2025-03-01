@@ -19,13 +19,13 @@
     align-items: flex-start;
     object-fit: contain;
     justify-content: flex-start;
+    margin-left: -3%;
   }
 
   .nav {
     display: flex;
     flex: 1;
     justify-content: space-evenly;
-    margin-left: 50%
   }
   
   .nav-link {
@@ -33,4 +33,5 @@
     color: #333;
     font-weight: bold;
     font-size: medium;
+    margin-left: -5%;
   }
