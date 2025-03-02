@@ -46,9 +46,9 @@ const LoginAdmin = () => {
 
   return (
     <div className="register">
-      <header className="header">
+      <header className="headerLoginAdmin">
         <Image
-          className="logo-smart-kade"
+          className="headerLoginAdmin-logo-smart-kade"
           alt="Smart Kade Logo"
           src={logoSmartKadeRemovebg1}
           width={150}
@@ -65,7 +65,7 @@ const LoginAdmin = () => {
 
       <main className="main-content">
         <div className="image-section">
-          <Image className="login-img" alt="Login Illustration" src={loginImg1} width={400} height={300} />
+          <Image className="login-img" alt="Login Illustration" src={loginImg1} height={600} width={500} />
         </div>
         <div className="login-form-section">
           <h1 className="form-title">Login</h1>
