@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Header } from "@/components/Header"; 
 import { Sidebar } from "@/components/Sidebar";
 import { MdEdit, MdDelete } from "react-icons/md";
-import { getCategories } from '@/Services/categoryService';
+import { getCategories, deleteCategory } from '@/Services/categoryService';
 import {
   MaterialReactTable,
   type MRT_ColumnDef,
@@ -35,9 +35,15 @@ const CategoryList = () => {
     console.log('Edit product:', product);
   };
 
-  const handleDelete = (product: Category) => {
+  const handleDelete = async (category: Category) => {
     // Implement your delete logic here
-    console.log('Delete product:', product);
+    console.log('Delete category:', category);
+    const result = await deleteCategory(category.CategoryID);
+    if (result.message === 'Category deleted successfully') {
+      setCategories(categories.filter(c => c.CategoryID !== category.CategoryID));
+    } else {
+      alert(result.message);
+    }
   };
 
   const columns = useMemo<MRT_ColumnDef<Category>[]>(

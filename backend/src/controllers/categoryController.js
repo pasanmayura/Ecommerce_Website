@@ -54,3 +54,37 @@ exports.getCategories = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+// Delete category
+exports.deleteCategory = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Check if there are any products in the category
+    const checkProductsQuery = 'SELECT COUNT(*) AS productCount FROM product WHERE CategoryID = ?';
+    pool.query(checkProductsQuery, [id], (err, result) => {
+      if (err) {
+        console.error('Error querying database:', err);
+        return res.status(500).json({ message: 'Database query error' });
+      }
+
+      const productCount = result[0].productCount;
+      if (productCount > 0) {
+        return res.status(400).json({ message: 'Cannot delete category with products' });
+      }
+
+      // Delete the category
+      const deleteCategoryQuery = 'DELETE FROM category WHERE CategoryID = ?';
+      pool.query(deleteCategoryQuery, [id], (err, result) => {
+        if (err) {
+          console.error('Error deleting from database:', err);
+          return res.status(500).json({ message: 'Database delete error' });
+        }
+        res.status(200).json({ message: 'Category deleted successfully' });
+      });
+    });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};

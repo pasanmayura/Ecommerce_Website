@@ -43,3 +43,26 @@ export const getCategories = async () => {
     return [];
   }
 };
+
+export const deleteCategory = async (CategoryID) => {
+  try {
+    const response = await fetch(`http://localhost:5000/category/deleteCategory/${CategoryID}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${sessionStorage.getItem('jwtToken')}`
+      },
+    });
+
+    if (!response.ok) {
+      const responseText = await response.text();
+      console.log('Response text:', responseText);
+      throw new Error(responseText);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error:', error);
+    return { message: 'Category Can not be deleted with Products. Delete products first.' };
+  }
+};
