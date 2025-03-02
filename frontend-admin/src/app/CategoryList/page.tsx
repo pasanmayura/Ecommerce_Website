@@ -3,6 +3,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Header } from "@/components/Header"; 
 import { Sidebar } from "@/components/Sidebar";
+import { MdEdit, MdDelete } from "react-icons/md";
 import { getCategories } from '@/Services/categoryService';
 import {
   MaterialReactTable,
@@ -29,6 +30,16 @@ const CategoryList = () => {
     fetchCategories();
   }, []);
 
+  const handleEdit = (product: Category) => {
+    // Implement your edit logic here
+    console.log('Edit product:', product);
+  };
+
+  const handleDelete = (product: Category) => {
+    // Implement your delete logic here
+    console.log('Delete product:', product);
+  };
+
   const columns = useMemo<MRT_ColumnDef<Category>[]>(
     () => [
       {
@@ -45,6 +56,17 @@ const CategoryList = () => {
         accessorKey: 'AdminID',
         header: 'Admin ID',
         size: 100,
+      },
+      {
+        accessorKey: 'update',
+        header: 'Update',
+        size: 25,
+        Cell: ({ row }) => (
+          <div>
+            <button onClick={() => handleEdit(row.original)} className="edit-button"><MdEdit /></button>  
+            <button onClick={() => handleDelete(row.original)} className="delete-button"><MdDelete /></button>
+          </div>
+        ),
       },
     ],
     [],
