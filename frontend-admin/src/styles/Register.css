@@ -13,7 +13,7 @@ body {
   }
 
   /* Header Styles */
-  .header {
+  .headerLoginAdmin {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -22,14 +22,13 @@ body {
     flex-wrap: nowrap;
   }
 
-  .logo-smart-kade {
+  .headerLoginAdmin-logo-smart-kade {
     display: flex;
     height: 50px;
-    width: 500px;
+    width: 400px;
     align-items: flex-start;
     object-fit: contain;
     justify-content: flex-start;
-    
   }
 
   .nav {
