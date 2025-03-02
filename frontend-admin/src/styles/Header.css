@@ -16,10 +16,11 @@
   .logo-smart-kade {
     display: flex;
     height: 50px;
+    width: 250px;
     align-items: flex-start;
     object-fit: contain;
     justify-content: flex-start;
-    margin-left: -3%;
+    margin-left: 3%;
   }
 
   .nav {
