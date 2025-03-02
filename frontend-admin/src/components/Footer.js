@@ -1,13 +1,14 @@
 import React from "react";
 import iconCopyright from "../images/icon-copyright.svg";
 import logoSmartKadeRemovebg1 from "../images/logo-smart-kade-removebg-1.png";
+import Image from "next/image";
 import "../styles/Footer.css";
 
 export const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer-content">
-        <img
+        <Image
           className="footer-logo"
           alt="Smart Kade Logo"
           src={logoSmartKadeRemovebg1}
@@ -70,7 +71,7 @@ export const Footer = () => {
         </div>
       </div>
       <div className="footer-bottom">
-        <img
+        <Image
           className="icon-copyright"
           alt="Copyright Icon"
           src={iconCopyright}
