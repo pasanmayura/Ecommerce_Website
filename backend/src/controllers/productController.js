@@ -86,7 +86,7 @@ exports.addProducts= async (req, res) => {
 // Fetch Products
   exports.getProducts = async (req, res) => {
     try {
-      const sql = `SELECT p.ProductID, p.Product_Name, p.Description, p.Threshold, b.Buying_Price, b.Selling_Price, b.Stock_Quantity 
+      const sql = `SELECT p.ProductID, p.Product_Name, p.Description, p.Threshold, b.BatchID, b.Buying_Price, b.Selling_Price, b.Stock_Quantity 
                     FROM product p JOIN batch b ON p.ProductID = b.ProductID`;
       pool.query(sql, (err, result) => {
         if (err) {

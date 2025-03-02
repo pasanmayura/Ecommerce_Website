@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Header } from "@/components/Header"; 
 import { Sidebar } from "@/components/Sidebar";
 import { getProducts } from '@/Services/productService';
+import { MdEdit, MdDelete } from "react-icons/md";
 import {
   MaterialReactTable,
   type MRT_ColumnDef,
@@ -19,6 +20,7 @@ type Product = {
   Buying_Price: number;
   Selling_Price: number;
   Stock_Quantity: number;
+  BatchID: string;
 };
 
 const ProductList = () => {
@@ -33,6 +35,16 @@ const ProductList = () => {
     fetchProducts();
   }, []);
 
+  const handleEdit = (product: Product) => {
+    // Implement your edit logic here
+    console.log('Edit product:', product);
+  };
+
+  const handleDelete = (product: Product) => {
+    // Implement your delete logic here
+    console.log('Delete product:', product);
+  };
+
   const columns = useMemo<MRT_ColumnDef<Product>[]>(
     () => [
       {
@@ -43,7 +55,12 @@ const ProductList = () => {
       {
         accessorKey: 'Product_Name',
         header: 'Product Name',
-        size: 150,
+        size: 100,
+      },
+      {
+        accessorKey: 'BatchID',
+        header: 'Batch ID',
+        size: 100,
       },
       {
         accessorKey: 'Buying_Price',
@@ -58,7 +75,7 @@ const ProductList = () => {
       {
         accessorKey: 'Description',
         header: 'Description',
-        size: 200,
+        size: 100,
       },
       {
         accessorKey: 'Stock_Quantity',
@@ -69,6 +86,17 @@ const ProductList = () => {
         accessorKey: 'Threshold',
         header: 'Threshold',
         size: 100,
+      },
+      {
+        accessorKey: 'update',
+        header: 'Update',
+        size: 25,
+        Cell: ({ row }) => (
+          <div>
+            <button onClick={() => handleEdit(row.original)} className='edit-button'><MdEdit /></button>  
+            <button onClick={() => handleDelete(row.original)} className='delete-button'><MdDelete /></button>
+          </div>
+        ),
       },
     ],
     [],
@@ -82,8 +110,9 @@ const ProductList = () => {
           <Sidebar />
         </div>
         <div className="content">
-          <h1>Manage Products</h1>
+          
           <div className="table-content">
+            <h1>Manage Products</h1>
             <p>Product List</p>
             <MaterialReactTable columns={columns} data={products} />
           </div>
