@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation"; // Import useRouter and usePathname
 import { FiGrid, FiBox, FiUsers, FiShoppingCart } from "react-icons/fi";
 import { FiClipboard, FiChevronDown, FiChevronUp, FiMenu, FiX, FiLogOut } from "react-icons/fi";
-import { FaSyncAlt } from "react-icons/fa";
+import ConfirmationDialog from '@/components/ConfirmationDialog';
 import "@/styles/Sidebar.css";
 
 export const Sidebar = () => {
@@ -12,7 +12,8 @@ export const Sidebar = () => {
   const pathname = usePathname(); // Get the current pathname
   const [isOpen, setIsOpen] = useState(true);
   const [expandedMenus, setExpandedMenus] = useState([]);
-  const [activeSubItem, setActiveSubItem] = useState(null); // Add state for active submenu item
+  const [activeSubItem, setActiveSubItem] = useState(null); 
+  const [openDialog, setOpenDialog] = useState(false);
 
   const menuItems = [
     { 
@@ -95,6 +96,14 @@ export const Sidebar = () => {
     router.push("/LoginAdmin");
   };
 
+  const openConfirmationDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const closeConfirmationDialog = () => {
+    setOpenDialog(false);
+  };
+
   return (
     <div className="sidebar-container">
       <button onClick={toggleSidebar} className="toggle-btn">
@@ -133,11 +142,18 @@ export const Sidebar = () => {
             </ul>
           </nav>
         </div>
-        <a className="button" onClick={handleLogout}>
+        <a className="button" onClick={() => openConfirmationDialog()}>
           <FiLogOut className="logout-icon" />
           <div className="logout">LOGOUT</div>
         </a>
       </aside>
+      <ConfirmationDialog
+        open={openDialog}
+        onClose={closeConfirmationDialog}
+        onConfirm={handleLogout}
+        title="Confirm Logout"
+        message="Are you sure you want to Log out ?"
+      />
     </div>
   );
 };
