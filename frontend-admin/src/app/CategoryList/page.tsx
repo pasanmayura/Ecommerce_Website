@@ -9,6 +9,7 @@ import {
   MaterialReactTable,
   type MRT_ColumnDef,
 } from 'material-react-table';
+import ConfirmationDialog from '@/components/ConfirmationDialog';
 import "@/styles/Register.css"; 
 import "@/styles/CategoryList.css";
 
@@ -20,6 +21,8 @@ type Category = {
 
 const CategoryList = () => {
   const [categories, setCategories] = useState<Category[]>([]);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -30,20 +33,37 @@ const CategoryList = () => {
     fetchCategories();
   }, []);
 
-  const handleEdit = (product: Category) => {
-    // Implement your edit logic here
-    console.log('Edit product:', product);
+  const handleEdit = (category: Category) => {
+    
+    console.log('Edit category:', category);
   };
 
-  const handleDelete = async (category: Category) => {
-    // Implement your delete logic here
-    console.log('Delete category:', category);
-    const result = await deleteCategory(category.CategoryID);
-    if (result.message === 'Category deleted successfully') {
-      setCategories(categories.filter(c => c.CategoryID !== category.CategoryID));
-    } else {
-      alert(result.message);
+  const handleDelete = async () => {
+    if (selectedCategory) {
+      try {
+        const result = await deleteCategory(selectedCategory.CategoryID);
+        if (result.message === 'Category deleted successfully') {
+          setCategories(categories.filter(c => c.CategoryID !== selectedCategory.CategoryID));
+        } else {
+          alert(result.message);
+        }
+      } catch (error) {
+        alert(error.message);
+      } finally {
+        setOpenDialog(false);
+        setSelectedCategory(null);
+      }
     }
+  };
+
+  const openConfirmationDialog = (category: Category) => {
+    setSelectedCategory(category);
+    setOpenDialog(true);
+  };
+
+  const closeConfirmationDialog = () => {
+    setOpenDialog(false);
+    setSelectedCategory(null);
   };
 
   const columns = useMemo<MRT_ColumnDef<Category>[]>(
@@ -70,12 +90,12 @@ const CategoryList = () => {
         Cell: ({ row }) => (
           <div>
             <button onClick={() => handleEdit(row.original)} className="edit-button"><MdEdit /></button>  
-            <button onClick={() => handleDelete(row.original)} className="delete-button"><MdDelete /></button>
+            <button onClick={() => openConfirmationDialog(row.original)} className="delete-button"><MdDelete /></button>
           </div>
         ),
       },
     ],
-    [],
+    [categories],
   );
 
   return (
@@ -93,6 +113,13 @@ const CategoryList = () => {
           </div>
         </div>
       </main> 
+      <ConfirmationDialog
+        open={openDialog}
+        onClose={closeConfirmationDialog}
+        onConfirm={handleDelete}
+        title="Confirm Deletion"
+        message="Are you sure you want to delete this category? This action cannot be undone."
+      />
     </div>
   );
 };
