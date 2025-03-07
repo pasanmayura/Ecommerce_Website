@@ -37,15 +37,6 @@ export const Sidebar = () => {
       ] 
     },
     { 
-      id: "update-inventory", 
-      title: "Update Inventory", 
-      icon: <FaSyncAlt />, 
-      subItems: [
-        { title: "Update Stock", link: "/UpdateStock" },
-        { title: "Update Products", link: "/UpdateProducts" }
-      ] 
-    },
-    { 
       id: "orders", 
       title: "Orders", 
       icon: <FiShoppingCart />, 
