@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Header } from "@/components/Header"; 
 import { Sidebar } from "@/components/Sidebar";
 import { MdEdit, MdDelete } from "react-icons/md";
@@ -23,6 +24,7 @@ const CategoryList = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -34,7 +36,7 @@ const CategoryList = () => {
   }, []);
 
   const handleEdit = (category: Category) => {
-    
+    router.push(`/CategoryEdit?id=${category.CategoryID}`);
     console.log('Edit category:', category);
   };
 

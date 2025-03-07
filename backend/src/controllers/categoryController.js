@@ -88,3 +88,27 @@ exports.deleteCategory = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+// Update category
+exports.updateCategory = async (req, res) => {
+  const { id } = req.params;
+  const { Category_Name } = req.body;
+
+  if (!Category_Name) {
+    return res.status(400).json({ message: 'Category Name is required' });
+  }
+
+  try {
+    const updateCategoryQuery = 'UPDATE category SET Category_Name = ? WHERE CategoryID = ?';
+    pool.query(updateCategoryQuery, [Category_Name, id], (err, result) => {
+      if (err) {
+        console.error('Error updating database:', err);
+        return res.status(500).json({ message: 'Database update error' });
+      }
+      res.status(200).json({ message: 'Category updated successfully' });
+    });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
