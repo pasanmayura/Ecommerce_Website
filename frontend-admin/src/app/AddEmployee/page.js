@@ -148,6 +148,15 @@ const AddEmployee = () => {
                     </div>
                 </div>
             </main> 
+            {alert.message && (
+            <AlertComponent
+                severity={alert.severity}
+                title={alert.title}
+                message={alert.message}
+                onClose={closeAlert}
+                sx={{ width: '25%', position: 'fixed', top: '10%', left: '75%', zIndex: 9999 }}
+            />
+            )} 
         </div>
     );
 };
