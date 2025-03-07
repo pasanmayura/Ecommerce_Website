@@ -87,7 +87,7 @@ exports.addProducts= async (req, res) => {
   exports.getProducts = async (req, res) => {
     try {
       const sql = `SELECT p.ProductID, p.Product_Name, p.Description, p.Threshold, b.BatchID, b.Buying_Price, b.Selling_Price, b.Stock_Quantity 
-                    FROM product p JOIN batch b ON p.ProductID = b.ProductID`;
+                    FROM product p JOIN batch b ON p.ProductID = b.ProductID WHERE b.IsDeleted = b'0' `;
       pool.query(sql, (err, result) => {
         if (err) {
           console.error('Error querying database:', err);
@@ -99,4 +99,23 @@ exports.addProducts= async (req, res) => {
       console.error('Error:', error);
       res.status(500).json({ message: 'Server error' });
     }
-  };  
+  };
+  
+// Delete Product
+exports.deleteProduct = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const markAsDeletedQuery = "UPDATE batch SET isDeleted = b'1' WHERE BatchID = ?";
+    pool.query(markAsDeletedQuery, [id], (err, result) => {
+      if (err) {
+        console.error('Error updating database:', err);
+        return res.status(500).json({ message: 'Database update error' });
+      }
+      res.status(200).json({ message: 'Product deleted successfully' });
+    });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};

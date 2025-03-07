@@ -1,10 +1,12 @@
 'use client';
 
 import React, { useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Header } from "@/components/Header"; 
 import { Sidebar } from "@/components/Sidebar";
-import { getProducts } from '@/Services/productService';
+import { getProducts, deleteProduct } from '@/Services/productService';
 import { MdEdit, MdDelete } from "react-icons/md";
+import ConfirmationDialog from '@/components/ConfirmationDialog';
 import {
   MaterialReactTable,
   type MRT_ColumnDef,
@@ -25,6 +27,9 @@ type Product = {
 
 const ProductList = () => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -40,9 +45,33 @@ const ProductList = () => {
     console.log('Edit product:', product);
   };
 
-  const handleDelete = (product: Product) => {
-    // Implement your delete logic here
-    console.log('Delete product:', product);
+  const handleDelete = async () => {
+    if (selectedProduct) {
+      try {
+        const result = await deleteProduct(selectedProduct.BatchID);
+        if (result.message === 'Product deleted successfully') {
+          // Update the state directly to remove the deleted product
+          setProducts(products.filter(product => product.BatchID !== selectedProduct.BatchID));
+        } else {
+          alert(result.message);
+        }
+      } catch (error) {
+        alert(error.message);
+      } finally {
+        setOpenDialog(false);
+        setSelectedProduct(null);
+      }
+    }
+  };
+
+  const openConfirmationDialog = (product: Product) => {
+    setSelectedProduct(product);
+    setOpenDialog(true);
+  };
+
+  const closeConfirmationDialog = () => {
+    setOpenDialog(false);
+    setSelectedProduct(null);
   };
 
   const columns = useMemo<MRT_ColumnDef<Product>[]>(
@@ -94,12 +123,12 @@ const ProductList = () => {
         Cell: ({ row }) => (
           <div>
             <button onClick={() => handleEdit(row.original)} className='edit-button'><MdEdit /></button>  
-            <button onClick={() => handleDelete(row.original)} className='delete-button'><MdDelete /></button>
+            <button onClick={() => openConfirmationDialog(row.original)} className='delete-button'><MdDelete /></button>
           </div>
         ),
       },
     ],
-    [],
+    [products],
   );
 
   return (
@@ -110,14 +139,20 @@ const ProductList = () => {
           <Sidebar />
         </div>
         <div className="content">
-          
           <div className="table-content">
             <h1>Manage Products</h1>
             <p>Product List</p>
             <MaterialReactTable columns={columns} data={products} />
           </div>
         </div>
-      </main> 
+      </main>
+      <ConfirmationDialog
+        open={openDialog}
+        onClose={closeConfirmationDialog}
+        onConfirm={handleDelete}
+        title="Confirm Deletion"
+        message="Are you sure you want to delete this product? This action cannot be undone."
+      /> 
     </div>
   );
 };
