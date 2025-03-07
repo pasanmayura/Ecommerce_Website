@@ -13,10 +13,10 @@ export const Header = () => {
         src={logoSmartKade2}
       />
       <nav className="nav">
-        <Link href="/home" className="nav-link">Home</Link>
-        <Link href="/contact" className="nav-link">Contact</Link>
-        <Link href="/about" className="nav-link">About</Link>
-        <Link href="/profile" className="nav-link">Profile</Link>
+        <Link href="/Home" className="nav-link">Home</Link>
+        <Link href="/Contact" className="nav-link">Contact</Link>
+        <Link href="/About" className="nav-link">About</Link>
+        <Link href="/Profile" className="nav-link">Profile</Link>
       </nav>
     </header>
   );
