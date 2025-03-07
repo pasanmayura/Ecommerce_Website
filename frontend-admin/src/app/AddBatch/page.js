@@ -5,6 +5,7 @@ import { Header } from "@/components/Header";
 import { Sidebar } from "@/components/Sidebar";
 import { Button, TextField, MenuItem } from "@mui/material";
 import { getProductsID, addBatch } from '@/Services/batchService';
+import AlertComponent from '@/components/AlertComponent';
 
 const AddBatch = () => {  
     const [products, setProducts] = useState([]);  
@@ -12,6 +13,7 @@ const AddBatch = () => {
     const [stockQuantity, setStockQuantity] = useState('');
     const [buyingPrice, setBuyingPrice] = useState('');
     const [sellingPrice, setSellingPrice] = useState('');
+    const [alert, setAlert] = useState({ severity: '', title: '', message: '' });
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -33,16 +35,20 @@ const AddBatch = () => {
         };
         const result = await addBatch(batchData);
         if (result.message === 'Batch added successfully') {
-            alert('Batch added successfully');
+            setAlert({ severity: 'success', title: 'Success', message: 'Batch added successfully' });
             setSelectedProductID('');
             setStockQuantity('');
             setBuyingPrice('');
             setSellingPrice('');
         } else {
-            alert(result.message);
+            setAlert({ severity: 'error', title: 'Error', message: result.message });
         }
     };
-  
+
+    const closeAlert = () => {
+        setAlert({ severity: '', title: '', message: '' });
+    };
+
     return (
         <div className="common">
             <Header />
@@ -111,6 +117,15 @@ const AddBatch = () => {
                     </div>
                 </div>
             </main>  
+            {alert.message && (
+                <AlertComponent
+                    severity={alert.severity}
+                    title={alert.title}
+                    message={alert.message}
+                    onClose={closeAlert}
+                    sx={{ width: '25%', position: 'fixed', top: '10%', left: '75%', zIndex: 9999 }}
+                />
+            )}
         </div>
     );
 };

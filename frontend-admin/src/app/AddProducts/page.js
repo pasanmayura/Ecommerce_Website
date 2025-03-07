@@ -8,6 +8,7 @@ import { Button, TextField, MenuItem } from "@mui/material";
 import { getCategories } from "@/Services/categoryService";
 import { addProducts } from "@/Services/productService";
 import uploadimg from "@/images/upload-icon.png";
+import AlertComponent from '@/components/AlertComponent';
 import "@/styles/AddProducts.css";
 
 const AddProducts = () => {
@@ -18,6 +19,7 @@ const AddProducts = () => {
   const [threshold, setThreshold] = useState('');
   const [files, setFiles] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
+  const [alert, setAlert] = useState({ severity: '', title: '', message: '' });
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -57,7 +59,7 @@ const AddProducts = () => {
 
     const result = await addProducts(formData);
     if (result.message === 'Product added successfully') {
-      alert('Product added successfully');
+      setAlert({ severity: 'success', title: 'Success', message: 'Product added successfully' });
       setProductName('');
       setDescription('');
       setThreshold('');
@@ -65,8 +67,12 @@ const AddProducts = () => {
       setFiles([]);
       setImagePreviews([]);
     } else {
-      alert(result.message);
+      setAlert({ severity: 'error', title: 'Error', message: result.message });
     }
+  };
+
+  const closeAlert = () => {
+    setAlert({ severity: '', title: '', message: '' });
   };
 
   return (
@@ -164,6 +170,15 @@ const AddProducts = () => {
                 </div>
             </div>
         </main>      
+        {alert.message && (
+            <AlertComponent
+                severity={alert.severity}
+                title={alert.title}
+                message={alert.message}
+                onClose={closeAlert}
+                sx={{ width: '25%', position: 'fixed', top: '10%', left: '75%', zIndex: 9999 }}
+            />
+        )}
     </div>
   );
 };

@@ -6,12 +6,13 @@ import { Button, TextField } from "@mui/material";
 import { Header } from "@/components/Header"; 
 import { Sidebar } from "@/components/Sidebar";
 import { getCategories, updateCategory } from "@/Services/categoryService";
+import AlertComponent from '@/components/AlertComponent';
 import "@/styles/Structure.css"; 
 
 const CategoryEdit = () => {
   const [CategoryID, setCategoryID] = useState('');
   const [Category_Name, setCategory_Name] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [alert, setAlert] = useState({ severity: '', title: '', message: '' });
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -38,19 +39,23 @@ const CategoryEdit = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!Category_Name) {
-      setErrorMessage('Category Name is required');
-      alert('Category Name is required');
+      setAlert({ severity: 'error', title: 'Error', message: 'Category Name is required' });
     } else {
-      setErrorMessage('');
+      setAlert('');
       const result = await updateCategory(CategoryID, Category_Name);
       if (result.message === 'Category updated successfully') {
-        alert('Category Updated');
-        router.push('/CategoryList'); 
+        setAlert({ severity: 'success', title: 'Success', message: 'Category updated successfully' });
+        setTimeout(() => {
+          router.push('/CategoryList'); 
+        }, 2000);
       } else {
-        setErrorMessage(result.message);
-        alert(result.message);
+        setAlert({ severity: 'error', title: 'Error', message: result.message });
       }
     }
+  }
+
+  const closeAlert = () => {
+    setAlert({ severity: '', title: '', message: '' });
   }
   
   return (
@@ -87,7 +92,15 @@ const CategoryEdit = () => {
                   </div>                
                   <Button variant="contained" className="form-button" type="submit">Save Changes</Button>                            
               </form>
-              {errorMessage && <p className="error-message">{errorMessage}</p>} 
+              {alert.message && (
+                <AlertComponent
+                    severity={alert.severity}
+                    title={alert.title}
+                    message={alert.message}
+                    onClose={closeAlert}
+                    sx={{ width: '25%', position: 'fixed', top: '10%', left: '75%', zIndex: 9999 }}
+                />
+              )}
             </div>
           </div>
       </main> 
@@ -95,4 +108,4 @@ const CategoryEdit = () => {
   );
 };
 
-export default CategoryEdit; 
+export default CategoryEdit;

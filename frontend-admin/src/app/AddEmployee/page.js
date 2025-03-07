@@ -5,6 +5,7 @@ import { Button, TextField } from "@mui/material";
 import { Header } from "@/components/Header"; 
 import { Sidebar } from "@/components/Sidebar";
 import { registerEmp } from "@/Services/employeeService";
+import AlertComponent from '@/components/AlertComponent';
 
 const AddEmployee = () => {
     const [FirstName, setFirstName] = useState('');
@@ -13,7 +14,7 @@ const AddEmployee = () => {
     const [PhoneNumber, setPhoneNumber] = useState('');
     const [Password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
+    const [alert, setAlert] = useState({ severity: '', title: '', message: '' });
 
     const handleFirstNameChange = (e) => {
         setFirstName(e.target.value);
@@ -42,13 +43,12 @@ const AddEmployee = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (Password !== confirmPassword) {
-            setErrorMessage('Passwords do not match');
-            alert('Passwords do not match');
+            setAlert({ severity: 'error', title: 'Error', message: 'Passwords do not match' });
         } else {
-            setErrorMessage('');
+            setAlert('');
             const result = await registerEmp(FirstName, LastName, Email, PhoneNumber, Password);
             if (result.message === 'Employee registered successfully') {
-                alert('Employee added successfully');
+                setAlert({ severity: 'success', title: 'Success', message: 'Employee added successfully' });
                 // Clear the text fields
                 setFirstName('');
                 setLastName('');
@@ -57,9 +57,13 @@ const AddEmployee = () => {
                 setPassword('');
                 setConfirmPassword('');
             } else {
-                alert(result.message);
+                setAlert({ severity: 'error', title: 'Error', message: result.message });
             }
         }
+    }
+
+    const closeAlert = () => {
+        setAlert({ severity: '', title: '', message: '' });
     }
   
     return (
@@ -137,7 +141,7 @@ const AddEmployee = () => {
                                   value={confirmPassword} 
                                   onChange={handleConfirmPasswordChange} 
                                 />
-                                {errorMessage && (<span className="error-message">Passwords do not match</span>)}
+                                {alert.message && (<AlertComponent severity={alert.severity} title={alert.title} message={alert.message} onClose={closeAlert} />)}
                             </div>
                             <Button variant="contained" className="form-button" type="submit">Add Employee</Button>                            
                         </form>
