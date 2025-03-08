@@ -9,6 +9,7 @@ import Button from '@mui/material/Button';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { getProfile, updateProfile, deleteAccount } from '@/Services/profileService';
+import AlertComponent from '@/components/AlertComponent';
 import "@/styles/Register.css"; 
 import "@/styles/MostSold.css";
 import "@/styles/Structure.css";
@@ -22,6 +23,7 @@ const EditProfile = () => {
     Role: ''
   });
   const router = useRouter();
+  const [alert, setAlert] = useState({ severity: '', title: '', message: '' });
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -53,11 +55,13 @@ const EditProfile = () => {
     try {
       const token = sessionStorage.getItem('jwtToken');
       await updateProfile(token, user);
-      alert('Profile updated successfully');
-      router.push('/Profile');
+      setAlert({ severity: 'success', title: 'Success', message: 'Profile updated successfully' });
+      setTimeout(() => {
+        router.push('/Profile'); 
+      }, 3000);
     } catch (error) {
       console.error('Failed to update profile:', error);
-      alert('Failed to update profile');
+      setAlert({ severity: 'error', title: 'Error', message: 'Failed to update profile' });
     }
   };
 
@@ -65,12 +69,16 @@ const EditProfile = () => {
     try {
       const token = sessionStorage.getItem('jwtToken');
       await deleteAccount(token);
-      alert('Account deleted successfully');
+      setAlert({ severity: 'success', title: 'Success', message: 'Account deleted successfully' });
       router.push('/LoginAdmin');
     } catch (error) {
       console.error('Failed to delete account:', error);
-      alert('Failed to delete account');
+      setAlert({ severity: 'error', title: 'Error', message: 'Failed to delete account' });
     }
+  };
+
+  const closeAlert = () => {
+    setAlert({ severity: '', title: '', message: '' });
   };
 
   return (
@@ -144,6 +152,15 @@ const EditProfile = () => {
             </div>              
           </div>
         </div>
+        {alert.message && (
+          <AlertComponent
+              severity={alert.severity}
+              title={alert.title}
+              message={alert.message}
+              onClose={closeAlert}
+              sx={{ width: '25%', position: 'fixed', top: '10%', left: '75%', zIndex: 9999 }}
+          />
+        )}
       </main>  
     </div>
   );
