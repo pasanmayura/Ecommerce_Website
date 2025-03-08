@@ -56,3 +56,21 @@ export const getProfile = async (token) => {
     const data = await response.json();
     return data;
   };
+
+  export const changePassword = async (token, passwords) => {
+    const response = await fetch('http://localhost:5000/api/profile/changePassword', {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(passwords)
+    });
+  
+    if (!response.ok) {
+      throw new Error('Failed to change password');
+    }
+  
+    const data = await response.json();
+    return data;
+  };

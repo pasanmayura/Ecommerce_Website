@@ -38,11 +38,11 @@ exports.getProfile = async (req, res) => {
 // Update User Profile
 exports.updateProfile = async (req, res) => {
   const token = req.headers.authorization.split(' ')[1]; // Get the token from the Authorization header
-  const { FirstName, LastName, PhoneNumber, Role } = req.body;
+  const { FirstName, LastName, PhoneNumber } = req.body;
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET); // Verify and decode the token
-    const adminId = decoded.adminID; // Get the AdminID from the decoded token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET); 
+    const adminId = decoded.adminID; 
 
     if (!adminId) {
       return res.status(400).json({ message: 'Invalid token: AdminID not found' });
@@ -83,6 +83,54 @@ exports.deleteAccount = async (req, res) => {
       }
 
       res.status(200).json({ message: 'Account deleted successfully' });
+    });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// Change User Password
+exports.changePassword = async (req, res) => {
+  const token = req.headers.authorization.split(' ')[1]; // Get the token from the Authorization header
+  const { currentPassword, newPassword } = req.body;
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET); 
+    const adminId = decoded.adminID; 
+
+    if (!adminId) {
+      return res.status(400).json({ message: 'Invalid token: AdminID not found' });
+    }
+
+    const sql = 'SELECT Password FROM admin WHERE AdminID = ?';
+    pool.query(sql, [adminId], async (err, result) => {
+      if (err) {
+        console.error('Error querying database:', err);
+        return res.status(500).json({ message: 'Database query error' });
+      }
+
+      if (result.length === 0) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+
+      const user = result[0];
+      const isMatch = await bcrypt.compare(currentPassword, user.Password);
+
+      if (!isMatch) {
+        return res.status(400).json({ message: 'Invalid password' });
+      }
+
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      const updateSql = 'UPDATE admin SET Password = ? WHERE AdminID = ?';
+      pool.query(updateSql, [hashedPassword, adminId], (err, result) => {
+        if (err) {
+          console.error('Error updating database:', err);
+          return res.status(500).json({ message: 'Database update error' });
+        }
+
+        res.status(200).json({ message: 'Password changed successfully' });
+      });
     });
   } catch (error) {
     console.error('Error:', error);
