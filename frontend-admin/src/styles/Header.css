@@ -20,13 +20,13 @@
     align-items: flex-start;
     object-fit: contain;
     justify-content: flex-start;
-    margin-left: 3%;
+    
   }
 
-  .nav {
+  .header-nav {
+    margin-right: 10%;
     display: flex;
-    flex: 1;
-    justify-content: space-evenly;
+    justify-content: flex-end;
   }
   
   .nav-link {
@@ -35,4 +35,11 @@
     font-weight: bold;
     font-size: medium;
     margin-left: -5%;
+  }
+
+  /* Login header */
+  .nav {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
   }

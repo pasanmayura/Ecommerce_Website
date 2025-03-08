@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation"; // Import useRouter and usePathname
 import { FiGrid, FiBox, FiUsers, FiShoppingCart } from "react-icons/fi";
 import { FiClipboard, FiChevronDown, FiChevronUp, FiMenu, FiX, FiLogOut } from "react-icons/fi";
+import { BsPerson } from "react-icons/bs";
 import ConfirmationDialog from '@/components/ConfirmationDialog';
 import "@/styles/Sidebar.css";
 
@@ -61,6 +62,15 @@ export const Sidebar = () => {
       subItems: [
         { title: "Inventory Report", link: "/InventoryReport" },
         { title: "Low Stock Report", link: "/LowStockReport" }
+      ] 
+    },
+    { 
+      id: "profile",
+      title: "Profile",
+      icon: <BsPerson />,
+      subItems: [
+        { title: "View Profile", link: "/Profile" },
+        { title: "Edit Profile", link: "/EditProfile" }
       ] 
     }
   ];
