@@ -70,7 +70,8 @@ export const Sidebar = () => {
       icon: <BsPerson />,
       subItems: [
         { title: "View Profile", link: "/Profile" },
-        { title: "Edit Profile", link: "/EditProfile" }
+        { title: "Edit Profile", link: "/EditProfile" },
+        { title: "Change Password", link: "/ChangePassword" }
       ] 
     }
   ];
