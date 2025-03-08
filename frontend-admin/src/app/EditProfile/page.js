@@ -10,6 +10,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { getProfile, updateProfile, deleteAccount } from '@/Services/profileService';
 import AlertComponent from '@/components/AlertComponent';
+import ConfirmationDialog from '@/components/ConfirmationDialog';
 import "@/styles/Register.css"; 
 import "@/styles/MostSold.css";
 import "@/styles/Structure.css";
@@ -24,6 +25,7 @@ const EditProfile = () => {
   });
   const router = useRouter();
   const [alert, setAlert] = useState({ severity: '', title: '', message: '' });
+  const [openDialog, setOpenDialog] = useState(false);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -70,7 +72,9 @@ const EditProfile = () => {
       const token = sessionStorage.getItem('jwtToken');
       await deleteAccount(token);
       setAlert({ severity: 'success', title: 'Success', message: 'Account deleted successfully' });
-      router.push('/LoginAdmin');
+      setTimeout(() => {
+        router.push('/LoginAdmin'); 
+      }, 3000);
     } catch (error) {
       console.error('Failed to delete account:', error);
       setAlert({ severity: 'error', title: 'Error', message: 'Failed to delete account' });
@@ -79,6 +83,14 @@ const EditProfile = () => {
 
   const closeAlert = () => {
     setAlert({ severity: '', title: '', message: '' });
+  };
+
+  const openConfirmationDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const closeConfirmationDialog = () => {
+    setOpenDialog(false);
   };
 
   return (
@@ -146,7 +158,7 @@ const EditProfile = () => {
               <Button variant="contained" color="primary" onClick={handleSave} style={{ marginTop: '20px', backgroundColor: '#0A2F6E' }}>
                 Save Changes
               </Button>
-              <Button variant="contained" color="error" onClick={handleDelete} style={{ marginTop: '20px', marginLeft: '10px' }}>
+              <Button variant="contained" color="error" onClick={openConfirmationDialog} style={{ marginTop: '20px', marginLeft: '20px'}}>
                 Delete Account
               </Button>
             </div>              
@@ -161,6 +173,13 @@ const EditProfile = () => {
               sx={{ width: '25%', position: 'fixed', top: '10%', left: '75%', zIndex: 9999 }}
           />
         )}
+        <ConfirmationDialog
+          open={openDialog}
+          onClose={closeConfirmationDialog}
+          onConfirm={handleDelete}
+          title="Confirm Deletion"
+          message="Are you sure you want to delete this account?"
+        />
       </main>  
     </div>
   );
