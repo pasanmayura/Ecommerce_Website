@@ -8,6 +8,7 @@ import {
   MaterialReactTable,
   type MRT_ColumnDef,
 } from 'material-react-table';
+import "@/styles/CategoryList.css";
 
 type Employee = {
   AdminID: string;
