@@ -6,7 +6,7 @@ CREATE TABLE Admin (
     LastName VARCHAR(25),
     Email VARCHAR(50),
     PhoneNumber CHAR(10),
-    Role VARCHAR(10),
+    Role VARCHAR(10) DEFAULT 'Worker',
     Password VARCHAR(255)
 );
 
@@ -38,11 +38,46 @@ CREATE TABLE ProductsImages (
 );
 
 CREATE TABLE Batch (
-    BatchID VARCHAR(255) PRIMARY KEY,
+    BatchID INT AUTO_INCREMENT PRIMARY KEY,
     ProductID VARCHAR(255),
     Stock_Quantity INT NOT NULL,
     Buying_Price DECIMAL(10, 2) NOT NULL,
     Selling_Price DECIMAL(10, 2) NOT NULL,
-    Date DATE,
+    Date DATE DEFAULT (CURRENT_DATE),
+    IsDeleted BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (ProductID) REFERENCES Product(ProductID)
+);
+
+CREATE TABLE Customer (
+    CustomerID VARCHAR(255) PRIMARY KEY,
+    FirstName VARCHAR(255) NOT NULL,
+    LastName VARCHAR(255) NOT NULL,
+    Email VARCHAR(255) NOT NULL,
+    MobileNumber VARCHAR(20) NOT NULL,
+    Password VARCHAR(255) NOT NULL,  
+    Street_No VARCHAR(50),
+    Village VARCHAR(255),
+    City VARCHAR(255),
+    Postal_Code VARCHAR(20)
+);
+
+CREATE TABLE OrderTable (
+    OrderID VARCHAR(255) PRIMARY KEY,
+    Total_Amount DECIMAL(10, 2),
+    PaymentStatus ENUM('Paid', 'Pending'),
+    OrderDate DATE,
+    OrderStatus ENUM('Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'),
+    CustomerID VARCHAR(255),
+    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID)
+);
+
+CREATE TABLE ProductOrder (
+    OrderID VARCHAR(255),
+    ProductID VARCHAR(255),
+    BatchID INT, 
+    Quantity INT,
+    PRIMARY KEY (OrderID, ProductID, BatchID),  
+    FOREIGN KEY (OrderID) REFERENCES ordertable(OrderID),
+    FOREIGN KEY (ProductID) REFERENCES Product(ProductID),
+    FOREIGN KEY (BatchID) REFERENCES Batch(BatchID) 
 );
