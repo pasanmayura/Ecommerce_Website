@@ -235,9 +235,9 @@ const ViewOrder = () => {
               </div>
             ))}
           </div>
-          <Button variant="contained" onClick={handlebackToOrders} style={{ marginTop: '20px', backgroundColor: '#0A2F6E' }}> Back To Orders </Button>
-          <Button variant="contained" onClick={handleUpdateStatus} style={{ marginTop: '20px', backgroundColor: '#0A2F6E', marginLeft: '20px' }}> Update status </Button>
-          <Button variant="contained" onClick={handleSave} style={{ marginTop: '20px', backgroundColor: '#0A2F6E', marginLeft: '20px' }} disabled={!isEditing}> Save </Button>
+          <Button variant="contained" onClick={handlebackToOrders} style={{ marginTop: '20px', backgroundColor: '#0A2F6E', marginBottom: '20px' }}> Back To Orders </Button>
+          <Button variant="contained" onClick={handleUpdateStatus} style={{ marginTop: '20px', backgroundColor: '#0A2F6E', marginLeft: '20px', marginBottom: '20px' }}> Update status </Button>
+          <Button variant="contained" onClick={handleSave} style={{ marginTop: '20px', backgroundColor: '#0A2F6E', marginLeft: '20px', marginBottom: '20px' }} disabled={!isEditing}> Save </Button>
         </div>
       </main>
       {alert.message && (
