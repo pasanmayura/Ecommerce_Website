@@ -74,9 +74,9 @@ const CustomerOrders = () => {
         header: 'Actions',
         size: 20,
         Cell: ({ row }) => (
-          <div>
-            <button><AiOutlineFileSearch  color='blue' size={20}/></button>  
-          </div>
+          <button onClick={() => router.push(`/ViewOrder?orderId=${row.original.OrderID}`)}>
+            <AiOutlineFileSearch color='blue' size={20} />
+          </button>
         ),
       },
     ],
