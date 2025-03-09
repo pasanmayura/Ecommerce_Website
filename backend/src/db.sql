@@ -81,3 +81,14 @@ CREATE TABLE ProductOrder (
     FOREIGN KEY (ProductID) REFERENCES Product(ProductID),
     FOREIGN KEY (BatchID) REFERENCES Batch(BatchID) 
 );
+
+CREATE TABLE OrderReturns (
+    OrderReturnID VARCHAR(255) PRIMARY KEY,
+    Reason VARCHAR(255),  
+    CustomerID VARCHAR(255),
+    OrderID VARCHAR(255),  
+    OrderDate DATE DEFAULT (CURRENT_DATE),
+    ReturnStatus ENUM('Pending', 'Approved', 'Rejected', 'Completed'),
+    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID),
+    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID)  
+);
