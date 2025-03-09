@@ -41,3 +41,24 @@ export const viewOrderbyId = async (id) => {
         return { message: 'There was an error getting the order details. Please try again.' };
     }
 }
+
+export const updateOrderStatus = async (orderId, updatedOrderStatus, updatedPaymentStatus) => {
+    try {
+        const response = await fetch(`http://localhost:5000/api/order/updateOrderStatus/${orderId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${sessionStorage.getItem('jwtToken')}`
+            },
+            body: JSON.stringify({ OrderStatus: updatedOrderStatus, PaymentStatus: updatedPaymentStatus })
+        });
+        if (!response.ok) {
+            const responseText = await response.text();
+            console.log('Response text:', responseText);
+            throw new Error(responseText);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return { message: 'There was an error updating the order status. Please try again.' };
+    }
+}

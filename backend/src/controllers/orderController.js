@@ -45,3 +45,21 @@ exports.viewOrderbyId = async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 };
+
+exports.updateOrderStatus = async (req, res) => {
+    try {
+        const { orderId } = req.params;
+        const { OrderStatus, PaymentStatus } = req.body;
+        const sql = 'UPDATE orders SET OrderStatus = ?, PaymentStatus = ? WHERE OrderID = ?';
+        pool.query(sql, [OrderStatus, PaymentStatus, orderId], (err, result) => {
+            if (err) {
+                console.error('Error querying database:', err);
+                return res.status(500).json({ message: 'Database query error' });
+            }
+            res.status(200).json(result);
+        });
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
