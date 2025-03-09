@@ -20,8 +20,7 @@ exports.getProfile = async (req, res) => {
       if (err) {
         console.error('Error querying database:', err);
         return res.status(500).json({ message: 'Database query error' });
-      }
-      console.log("DB Query Result:", result); 
+      } 
       if (result.length === 0) {
         return res.status(404).json({ message: 'User not found' });
       }
