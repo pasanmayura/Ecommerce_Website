@@ -4,10 +4,11 @@ import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Header } from "@/components/Header"; 
 import { Sidebar } from "@/components/Sidebar";
-import { viewOrderbyId } from '@/Services/orderService';
+import { viewOrderbyId, updateOrderStatus } from '@/Services/orderService';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
+import AlertComponent from '@/components/AlertComponent';
 import "@/styles/Register.css"; 
 import "@/styles/MostSold.css";
 import "@/styles/Structure.css";
@@ -19,6 +20,7 @@ const ViewOrder = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [updatedOrderStatus, setUpdatedOrderStatus] = useState('');
   const [updatedPaymentStatus, setUpdatedPaymentStatus] = useState('');
+  const [alert, setAlert] = useState({ severity: '', title: '', message: '' });
   const searchParams = useSearchParams();
   const orderId = searchParams.get('orderId');
   const router = useRouter();
@@ -61,13 +63,19 @@ const ViewOrder = () => {
         PaymentStatus: updatedPaymentStatus
       }));
       setIsEditing(false);
+      setAlert({ severity: 'success', title: 'Success', message: 'Order status updated successfully' });
     } catch (error) {
       console.error('Error updating order status:', error);
+      setAlert({ severity: 'error', title: 'Error', message: 'Error updating order status' });
     }
   };
 
   const handlebackToOrders = () => {
     router.push('/CustomerOrders');
+  };
+
+  const closeAlert = () => {
+    setAlert({ severity: '', title: '', message: '' });
   };
 
   return (
@@ -231,7 +239,16 @@ const ViewOrder = () => {
           <Button variant="contained" onClick={handleUpdateStatus} style={{ marginTop: '20px', backgroundColor: '#0A2F6E', marginLeft: '20px' }}> Update status </Button>
           <Button variant="contained" onClick={handleSave} style={{ marginTop: '20px', backgroundColor: '#0A2F6E', marginLeft: '20px' }} disabled={!isEditing}> Save </Button>
         </div>
-      </main>  
+      </main>
+      {alert.message && (
+        <AlertComponent
+            severity={alert.severity}
+            title={alert.title}
+            message={alert.message}
+            onClose={closeAlert}
+            sx={{ width: '25%', position: 'fixed', top: '10%', left: '75%', zIndex: 9999 }}
+        />
+    )}  
     </div>
   );
 };
