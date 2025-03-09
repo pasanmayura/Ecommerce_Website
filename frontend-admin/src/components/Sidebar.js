@@ -23,7 +23,7 @@ export const Sidebar = () => {
       icon: <FiGrid />, 
       subItems: [
         { title: "Most Sold Items", link: "/MostSold" },
-        { title: "Customer Returns", link: "/CustomerReturns" }        
+        { title: "Order Returns", link: "/OrderReturns" }        
       ] 
     },
     { 
