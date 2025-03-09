@@ -65,7 +65,7 @@ CREATE TABLE OrderTable (
     OrderID VARCHAR(255) PRIMARY KEY,
     Total_Amount DECIMAL(10, 2),
     PaymentStatus ENUM('Paid', 'Pending'),
-    OrderDate DATE,
+    OrderDate DATE DEFAULT (CURRENT_DATE),
     OrderStatus ENUM('Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'),
     CustomerID VARCHAR(255),
     FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID)
