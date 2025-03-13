@@ -99,7 +99,7 @@ exports.loginAdmin = async (req, res) => {
           role: admin.Role
         },
         process.env.JWT_SECRET, // Use the secret from environment variables
-        { expiresIn: '1h' }
+        { expiresIn: '5h' }
       );
 
       res.status(200).json({ message: 'Login successful', token });
