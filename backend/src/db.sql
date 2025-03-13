@@ -101,3 +101,15 @@ CREATE TABLE Return_Items (
     FOREIGN KEY (OrderReturnID) REFERENCES Order_Returns(OrderReturnID) ON DELETE CASCADE,
     FOREIGN KEY (ProductID) REFERENCES Product(ProductID) ON DELETE CASCADE
 );
+
+-- Create a view to get low stock products
+CREATE VIEW LowStockProducts AS
+SELECT 
+    p.ProductID, 
+    p.Product_Name, 
+    p.Threshold, 
+    COALESCE(SUM(b.Stock_Quantity), 0) AS TotalStock
+FROM Product p
+LEFT JOIN Batch b ON p.ProductID = b.ProductID
+GROUP BY p.ProductID, p.Product_Name, p.Threshold
+HAVING TotalStock < p.Threshold;
