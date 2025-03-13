@@ -1,4 +1,4 @@
-CREATE DATABASE 'ecom_smart_kade';
+CREATE DATABASE ecom_smart_kade;
 
 CREATE TABLE Admin (
     AdminID VARCHAR(255) PRIMARY KEY,
@@ -61,7 +61,7 @@ CREATE TABLE Customer (
     Postal_Code VARCHAR(20)
 );
 
-CREATE TABLE OrderTable (
+CREATE TABLE Orders (
     OrderID VARCHAR(255) PRIMARY KEY,
     Total_Amount DECIMAL(10, 2),
     PaymentStatus ENUM('Paid', 'Pending'),
@@ -77,18 +77,27 @@ CREATE TABLE ProductOrder (
     BatchID INT, 
     Quantity INT,
     PRIMARY KEY (OrderID, ProductID, BatchID),  
-    FOREIGN KEY (OrderID) REFERENCES ordertable(OrderID),
+    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
     FOREIGN KEY (ProductID) REFERENCES Product(ProductID),
     FOREIGN KEY (BatchID) REFERENCES Batch(BatchID) 
 );
 
-CREATE TABLE OrderReturns (
+CREATE TABLE Order_Returns (
     OrderReturnID VARCHAR(255) PRIMARY KEY,
-    Reason VARCHAR(255),  
+    OrderID VARCHAR(255), 
     CustomerID VARCHAR(255),
-    OrderID VARCHAR(255),  
-    OrderReturnDate DATE DEFAULT (CURRENT_DATE),
-    ReturnStatus ENUM('Pending', 'Approved', 'Rejected', 'Completed'),
-    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID),
-    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID)  
+    ReturnStatus ENUM('Pending', 'Approved', 'Rejected', 'Completed') DEFAULT 'Pending',
+    OrderReturnDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID) ON DELETE CASCADE,
+    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID) ON DELETE CASCADE
+);
+
+CREATE TABLE Return_Items (
+    ReturnItemID INT AUTO_INCREMENT PRIMARY KEY,
+    OrderReturnID VARCHAR(255) NOT NULL,
+    ProductID VARCHAR(255) NOT NULL,
+    Quantity INT NOT NULL CHECK (quantity > 0),
+    Reason VARCHAR(255) NOT NULL,
+    FOREIGN KEY (OrderReturnID) REFERENCES Order_Returns(OrderReturnID) ON DELETE CASCADE,
+    FOREIGN KEY (ProductID) REFERENCES Product(ProductID) ON DELETE CASCADE
 );
