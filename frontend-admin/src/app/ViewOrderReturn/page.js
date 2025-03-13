@@ -1,0 +1,183 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Header } from "@/components/Header"; 
+import { Sidebar } from "@/components/Sidebar";
+import { viewOrderReturnById } from '@/Services/orderService';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import "@/styles/Register.css"; 
+import "@/styles/MostSold.css";
+import "@/styles/Structure.css";
+import "@/styles/ViewOrder.css";
+
+const ViewOrderReturn = () => {
+  const [orderReturn, setOrderReturn] = useState(null);
+  const [products, setProducts] = useState([]);
+  const searchParams = useSearchParams();
+  const orderReturnId = searchParams.get('orderReturnId');
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchOrderReturn = async () => {
+      if (orderReturnId) {
+        const data = await viewOrderReturnById(orderReturnId);
+        if (data.length > 0) {
+          const { OrderReturnID, OrderID, ReturnStatus, OrderReturnDate, Email, MobileNumber, Reason } = data[0];
+          setOrderReturn({ OrderReturnID, OrderID, ReturnStatus, OrderReturnDate, Email, MobileNumber, Reason });
+          setProducts(data.map(item => ({
+            ProductID: item.ProductID,
+            ProductName: item.Product_Name,
+            SellingPrice: item.Selling_Price,
+            Quantity: item.Quantity
+          })));
+        }
+      }
+    };
+
+    fetchOrderReturn();
+  }, [orderReturnId]);
+
+  if (!orderReturn) {
+    return <div>Loading...</div>;
+  }
+
+  const handleBackToOrderReturns = () => {
+    router.push('/OrderReturns');
+  };
+
+  return (
+    <div className="common">
+      <Header />
+      <main className="main-content">
+        <div className="sidebar-section">
+          <Sidebar />
+        </div>
+
+        <div className="content">
+          <h1>Order Return Details</h1>
+          <div className="order-details">
+            <div className="order-details-row">
+              <TextField
+                label="Order Return ID"
+                value={orderReturn.OrderReturnID}
+                fullWidth
+                margin="normal"
+                InputProps={{
+                  readOnly: true,
+                }}
+              />
+              <TextField
+                label="Order ID"
+                value={orderReturn.OrderID}
+                fullWidth
+                margin="normal"
+                InputProps={{
+                  readOnly: true,
+                }}
+              />
+            </div>
+            <div className="order-details-row">
+              <TextField
+                label="Return Status"
+                value={orderReturn.ReturnStatus}
+                fullWidth
+                margin="normal"
+                InputProps={{
+                  readOnly: true,
+                }}
+              />
+              <TextField
+                label="Order Return Date"
+                value={new Date(orderReturn.OrderReturnDate).toLocaleDateString()}
+                fullWidth
+                margin="normal"
+                InputProps={{
+                  readOnly: true,
+                }}
+              />
+            </div>
+            <div className="order-details-row">
+              <TextField
+                label="Email"
+                value={orderReturn.Email}
+                fullWidth
+                margin="normal"
+                InputProps={{
+                  readOnly: true,
+                }}
+              />
+              <TextField
+                label="Mobile Number"
+                value={orderReturn.MobileNumber}
+                fullWidth
+                margin="normal"
+                InputProps={{
+                  readOnly: true,
+                }}
+              />
+            </div>
+            <div className="order-details-row">
+              <TextField
+                label="Reason"
+                value={orderReturn.Reason}
+                fullWidth
+                margin="normal"
+                InputProps={{
+                  readOnly: true,
+                }}
+              />
+            </div>
+          </div>
+          <h2>Products</h2>
+          <div className="product-details">
+            {products.map((product, index) => (
+              <div key={index} className="product-item">
+                <TextField
+                  label="Product ID"
+                  value={product.ProductID}
+                  fullWidth
+                  margin="normal"
+                  InputProps={{
+                    readOnly: true,
+                  }}
+                />
+                <TextField
+                  label="Product Name"
+                  value={product.ProductName}
+                  fullWidth
+                  margin="normal"
+                  InputProps={{
+                    readOnly: true,
+                  }}
+                />
+                <TextField
+                  label="Selling Price"
+                  value={product.SellingPrice}
+                  fullWidth
+                  margin="normal"
+                  InputProps={{
+                    readOnly: true,
+                  }}
+                />
+                <TextField
+                  label="Quantity"
+                  value={product.Quantity}
+                  fullWidth
+                  margin="normal"
+                  InputProps={{
+                    readOnly: true,
+                  }}
+                />
+              </div>
+            ))}
+          </div>
+          <Button variant="contained" onClick={handleBackToOrderReturns} style={{ marginTop: '20px', backgroundColor: '#0A2F6E' }}> Back To Order Returns </Button>
+        </div>
+      </main>  
+    </div>
+  );
+};
+
+export default ViewOrderReturn;
