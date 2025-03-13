@@ -3,8 +3,7 @@ const pool = require('../config/db');
 // get dashboard data
 exports.getDashboardDetails = async (req, res) => {
   try {
-    const sql = `SELECT 
-                COUNT(CASE WHEN OrderStatus = 'Shipped' THEN 1 END) AS ShippedOrders,  
+    const sql = `SELECT  
                 COUNT(CASE WHEN OrderStatus = 'Pending' THEN 1 END) AS PendingOrders,
                 SUM(CASE WHEN PaymentStatus = 'Paid' THEN Total_Amount ELSE 0 END) AS TotalRevenue,
                 (SELECT COUNT(*) FROM Customer) AS TotalCustomers,
