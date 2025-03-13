@@ -19,11 +19,11 @@ type OrderReturns = {
   OrderID: string;
   CustomerName: string;
   ReturnDate: Date;
-  Status: string;  
+  Status: string;
 };
 
 const OrderReturns = () => {
-  const [OrderReturns, setOrderReturns] = useState<OrderReturns[]>([]);
+  const [orderReturns, setOrderReturns] = useState<OrderReturns[]>([]);
   const router = useRouter();
 
   useEffect(() => {
@@ -68,13 +68,13 @@ const OrderReturns = () => {
         header: 'Actions',
         size: 20,
         Cell: ({ row }) => (
-          <button style={{ backgroundColor: '#0A2F6E', borderRadius: 50, width: '60px', height: '30px' }} onClick={() => router.push(`/ViewOrderReturn?orderId=${row.original.OrderID}`)}>
+          <button style={{ backgroundColor: '#0A2F6E', borderRadius: 50, width: '60px', height: '30px' }} onClick={() => router.push(`/ViewOrderReturn?orderReturnId=${row.original.ReturnID}`)}>
             <AiOutlineFileSearch color='white' size={20} />
           </button>
         ),
       },
     ],
-    [OrderReturns],
+    [orderReturns],
   );
 
   return (
@@ -87,7 +87,7 @@ const OrderReturns = () => {
         <div className="content">
           <h1>Order Returns</h1>
           <div className="table-content">
-            <MaterialReactTable columns={columns} data={OrderReturns} />
+            <MaterialReactTable columns={columns} data={orderReturns} />
           </div>
         </div>
       </main> 
