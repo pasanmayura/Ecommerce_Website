@@ -9,6 +9,7 @@ const batchRoutes = require('./routes/batchRoutes');
 const employeeRoutes = require('./routes/employeeRoutes');
 const profileRoutes = require('./routes/profileRoutes');
 const orderRoutes = require('./routes/orderRoutes');
+const dashboardRoutes = require('./routes/dashboardRoutes');
 
 const app = express();
 
@@ -24,5 +25,6 @@ app.use('/batch', batchRoutes);
 app.use('/employee', employeeRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/order', orderRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 
 module.exports = app;
