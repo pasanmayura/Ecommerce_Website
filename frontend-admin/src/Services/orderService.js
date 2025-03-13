@@ -106,3 +106,24 @@ export const viewOrderReturnById = async (id) => {
         return { message: 'There was an error getting the order return details. Please try again.' };
     }
 }
+
+export const updateOrderReturnStatus = async (orderReturnId, updatedReturnStatus) => {
+    try {
+        const response = await fetch(`http://localhost:5000/api/order/updateOrderReturnStatus/${orderReturnId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${sessionStorage.getItem('jwtToken')}`
+            },
+            body: JSON.stringify({ ReturnStatus: updatedReturnStatus })
+        });
+        if (!response.ok) {
+            const responseText = await response.text();
+            console.log('Response text:', responseText);
+            throw new Error(responseText);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        return { message: 'There was an error updating the order return status. Please try again.' };
+    }
+}

@@ -4,9 +4,11 @@ import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Header } from "@/components/Header"; 
 import { Sidebar } from "@/components/Sidebar";
-import { viewOrderReturnById } from '@/Services/orderService';
+import { viewOrderReturnById, updateOrderReturnStatus } from '@/Services/orderService';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import MenuItem from '@mui/material/MenuItem';
+import AlertComponent from '@/components/AlertComponent';
 import "@/styles/Register.css"; 
 import "@/styles/MostSold.css";
 import "@/styles/Structure.css";
@@ -15,6 +17,9 @@ import "@/styles/ViewOrder.css";
 const ViewOrderReturn = () => {
   const [orderReturn, setOrderReturn] = useState(null);
   const [products, setProducts] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
+  const [updatedOrderReturnStatus, setUpdatedOrderReturnStatus] = useState('');
+  const [alert, setAlert] = useState({ severity: '', title: '', message: '' });
   const searchParams = useSearchParams();
   const orderReturnId = searchParams.get('orderReturnId');
   const router = useRouter();
@@ -26,6 +31,7 @@ const ViewOrderReturn = () => {
         if (data.length > 0) {
           const { OrderReturnID, OrderID, ReturnStatus, OrderReturnDate, Email, MobileNumber, Reason } = data[0];
           setOrderReturn({ OrderReturnID, OrderID, ReturnStatus, OrderReturnDate, Email, MobileNumber, Reason });
+          setUpdatedOrderReturnStatus(ReturnStatus);
           setProducts(data.map(item => ({
             ProductID: item.ProductID,
             ProductName: item.Product_Name,
@@ -46,6 +52,29 @@ const ViewOrderReturn = () => {
   const handleBackToOrderReturns = () => {
     router.push('/OrderReturns');
   };
+
+  const handleUpdateStatus = () => {
+    setIsEditing(true);
+  };
+
+    const handleSave = async () => {
+        try {
+        await updateOrderReturnStatus(orderReturnId, updatedOrderReturnStatus);
+        setOrderReturn(prevOrderReturn => ({
+            ...prevOrderReturn,
+            ReturnStatus: updatedOrderReturnStatus
+        }));
+        setIsEditing(false);
+        setAlert({ severity: 'success', title: 'Success', message: 'Order return status updated successfully' });
+        } catch (error) {
+        setAlert({ severity: 'error', title: 'Error', message: error.message });
+        }
+    };
+
+    const closeAlert = () => {
+       setAlert({ severity: '', title: '', message: '' });
+    };
+
 
   return (
     <div className="common">
@@ -81,13 +110,20 @@ const ViewOrderReturn = () => {
             <div className="order-details-row">
               <TextField
                 label="Return Status"
-                value={orderReturn.ReturnStatus}
+                value={updatedOrderReturnStatus}
+                onChange={e => setUpdatedOrderReturnStatus(e.target.value)}
+                select
                 fullWidth
                 margin="normal"
                 InputProps={{
-                  readOnly: true,
+                  readOnly: !isEditing,
                 }}
-              />
+              >
+                <MenuItem value="Pending">Pending</MenuItem>
+                <MenuItem value="Approved">Approved</MenuItem>
+                <MenuItem value="Rejected">Rejected</MenuItem>
+                <MenuItem value="Completed">Completed</MenuItem>
+              </TextField>
               <TextField
                 label="Order Return Date"
                 value={new Date(orderReturn.OrderReturnDate).toLocaleDateString()}
@@ -173,9 +209,19 @@ const ViewOrderReturn = () => {
               </div>
             ))}
           </div>
-          <Button variant="contained" onClick={handleBackToOrderReturns} style={{ marginTop: '20px', backgroundColor: '#0A2F6E' }}> Back To Order Returns </Button>
+            <Button variant="contained" onClick={handleBackToOrderReturns} style={{ marginTop: '20px', backgroundColor: '#0A2F6E' }}> Back To Order Returns </Button>
+            <Button variant="contained" onClick={handleUpdateStatus} style={{ marginTop: '20px', backgroundColor: '#0A2F6E', marginLeft: '20px' }}> Update Status </Button>
+            <Button variant="contained" onClick={handleSave} style={{ marginTop: '20px', backgroundColor: '#0A2F6E', marginLeft: '20px' }} disabled={!isEditing}> Save </Button>
         </div>
-      </main>  
+      </main> 
+      {alert.message && (
+        <AlertComponent 
+            severity={alert.severity} 
+            title={alert.title} 
+            onClose={closeAlert}
+            sx={{ width: '25%', position: 'fixed', top: '10%', left: '75%', zIndex: 9999 }}
+        />
+      )} 
     </div>
   );
 };

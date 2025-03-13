@@ -123,3 +123,21 @@ exports.viewOrderReturnById = async (req, res) => {
     }
 }
 
+exports.updateOrderReturnStatus = async (req, res) => {
+    try {
+        const { orderReturnId } = req.params;
+        const { ReturnStatus } = req.body;
+        const sql = 'UPDATE Order_Returns SET ReturnStatus = ? WHERE OrderReturnID = ?';
+        pool.query(sql, [ReturnStatus, orderReturnId], (err, result) => {
+            if (err) {
+                console.error('Error querying database:', err);
+                return res.status(500).json({ message: 'Database query error' });
+            }
+            res.status(200).json(result);
+        });
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+}
+
