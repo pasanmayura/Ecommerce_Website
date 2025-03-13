@@ -94,20 +94,22 @@ exports.getOrderReturns = async (req, res) => {
 exports.viewOrderReturnById = async (req, res) => {
     try {
         const { id } = req.params;
-        const sql = `SELECT c.FirstName,,
-                    p.ProductID, b.BatchID, po.Quantity, o.OrderStatus, o.PaymentStatus
+        const sql = `SELECT orr.OrderReturnID, orr.OrderID, orr.ReturnStatus, orr.OrderReturnDate, c.Email, c.MobileNumber, ri.Reason, p.ProductID, p.Product_Name,
+                    b.Selling_Price, ri.Quantity 
                     FROM 
-                        Customer c 
+                        Order_Returns orr
                     JOIN 
-                        Orders o ON c.CustomerID = o.CustomerID 
+                        Customer c ON orr.CustomerID = c.CustomerID
                     JOIN 
-                        ProductOrders po ON o.OrderID = po.OrderID
+                        Return_Items ri ON orr.OrderReturnID = ri.OrderReturnID
                     JOIN 
-                        Product p ON po.ProductID = p.ProductID
+                        Product p ON ri.ProductID = p.ProductID
+                    JOIN 
+                        ProductOrders po ON po.OrderID = orr.OrderID AND po.ProductID = ri.ProductID
                     JOIN 
                         Batch b ON po.BatchID = b.BatchID
-                    WHERE 
-                        o.OrderID = ?`;
+                    WHERE
+                        orr.OrderReturnID= ?`;
         pool.query(sql, [id], (err, result) => {
             if (err) {
                 console.error('Error querying database:', err);
