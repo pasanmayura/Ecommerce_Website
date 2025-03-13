@@ -15,13 +15,11 @@ import "@/styles/CategoryList.css";
 import "@/styles/Structure.css";
 
 type OrderReturns = {
-  OrderReturnID: string;
+  ReturnID: string;
   OrderID: string;
-  Reason: string;
-  CustomerID: string;  
-  ReturnStatus: string;
-  OrderReturnDate: Date;
-  
+  CustomerName: string;
+  ReturnDate: Date;
+  Status: string;  
 };
 
 const OrderReturns = () => {
@@ -40,34 +38,29 @@ const OrderReturns = () => {
   const columns = useMemo<MRT_ColumnDef<OrderReturns>[]>(
     () => [
       {
-        accessorKey: 'OrderReturnID',
-        header: 'Order Return ID',
+        accessorKey: 'ReturnID',
+        header: 'Return ID',
         size: 100,
       },
       {
         accessorKey: 'OrderID',
-        header: 'OrderID',
+        header: 'Order ID',
         size: 100,
       },
       {
-        accessorKey: 'Reason',
-        header: 'Reason',
-        size: 100,
+        accessorKey: 'CustomerName',
+        header: 'Customer Name',
+        size: 150,
       },
       {
-        accessorKey: 'OrderReturnDate',
-        header: 'Order Return Date',
+        accessorKey: 'ReturnDate',
+        header: 'Return Date',
         size: 100,
         Cell: ({ cell }) => new Date(cell.getValue<string>()).toLocaleDateString(),
       },
       {
-        accessorKey: 'ReturnStatus',
-        header: 'Return Status',
-        size: 100,
-      },
-      {
-        accessorKey: 'CustomerID',
-        header: 'Customer ID',
+        accessorKey: 'Status',
+        header: 'Status',
         size: 100,
       },
       {
