@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Header } from "@/components/Header"; 
 import { Sidebar } from "@/components/Sidebar";
 import CardComponent from '@/components/CardComponent';
@@ -13,6 +14,7 @@ import "@/styles/Structure.css";
 
 const Dashboard = () => {
   const [details, setDetails] = useState({});
+  const router = useRouter();
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -23,13 +25,17 @@ const Dashboard = () => {
     fetchDetails();
   }, []);
 
+  const handleLowStockClick = () => {
+    router.push('/LowStockDetails');
+  };
+
   const cardDetails = [
     { title: 'Pending Orders', value: details.PendingOrders, description: 'Total number of pending orders' },
     { title: 'Total Revenue', value: `Rs.${details.TotalRevenue}`, description: 'Total revenue from paid orders' },
     { title: 'Total Customers', value: details.TotalCustomers, description: 'Total number of customers' },
     { title: 'Total Products', value: details.TotalProducts, description: 'Total number of products' },
     { title: 'Pending Order Returns', value: details.PendingOrderReturns, description: 'Total number of pending order returns' },
-    { title: 'Low Stock Products', value: details.NoOfLowStockProducts, description: 'Total number of low stock products' },
+    { title: 'Low Stock Products', value: details.NoOfLowStockProducts, description: 'Click To See Details', onClick: handleLowStockClick },
   ];
 
   return (
@@ -49,6 +55,7 @@ const Dashboard = () => {
                     title={detail.title} 
                     value={detail.value} 
                     description={detail.description} 
+                    onClick={detail.onClick}
                   />
                 </Grid>
               ))}
