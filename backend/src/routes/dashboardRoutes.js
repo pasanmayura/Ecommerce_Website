@@ -4,5 +4,6 @@ const dashboardController = require('../controllers/dashboardController');
 const verifyToken = require('../middlewares/VerifyToken');
 
 router.get('/getDashboardDetails', verifyToken, dashboardController.getDashboardDetails);
+router.get('/getLowStockProducts', verifyToken, dashboardController.getLowStockProducts);
 
 module.exports = router;
