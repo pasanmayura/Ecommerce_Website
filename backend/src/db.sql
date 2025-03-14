@@ -107,9 +107,11 @@ CREATE VIEW LowStockProducts AS
 SELECT 
     p.ProductID, 
     p.Product_Name, 
-    p.Threshold, 
+    p.Threshold,
+    c.Category_Name,
     COALESCE(SUM(b.Stock_Quantity), 0) AS TotalStock
 FROM Product p
 LEFT JOIN Batch b ON p.ProductID = b.ProductID
+JOIN category c ON p.CategoryID = c.CategoryID
 GROUP BY p.ProductID, p.Product_Name, p.Threshold
 HAVING TotalStock < p.Threshold;
