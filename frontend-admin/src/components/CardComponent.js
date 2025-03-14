@@ -4,9 +4,9 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
-const CardComponent = ({ title, value, description }) => {
+const CardComponent = ({ title, value, description, onClick }) => {
   return (
-    <Card sx={{ minWidth: 275, margin: 2 }}>
+    <Card sx={{ minWidth: 275, margin: 2 }} onClick={onClick}>
       <CardContent>
         <Typography variant="h5" component="div">
           {title}
