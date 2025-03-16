@@ -34,7 +34,7 @@ const LoginAdmin = () => {
       if (result.message === 'Login successful') {
         sessionStorage.setItem('jwtToken', result.token);
         alert(result.message);
-        router.push('/MostSold'); // Navigate in Next.js
+        router.push('/Dashboard'); // Navigate in Next.js
       } else {
         setErrorMessage(result.message);
       }
