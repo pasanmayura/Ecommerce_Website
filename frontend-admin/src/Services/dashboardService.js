@@ -42,7 +42,7 @@ export const getLowStockProducts = async () => {
 
 export const getSalesChart = async (period) => {
   try {
-    const response = await fetch(`http://localhost:5000/api/dashboard/getSalesChart?period=${period}`, {
+    const response = await fetch(`http://localhost:5000/api/dashboard/getSalesChart`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

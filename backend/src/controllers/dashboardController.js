@@ -42,30 +42,24 @@ exports.getLowStockProducts = async (req, res) => {
 };
 
 // sales chart 
-
 exports.getSalesChart = async (req, res) => {
   try {
-    const { period } = req.query;
-    let sql = '';
 
-    if (period === 'week') {
-      sql = `SELECT DATE(OrderDate) AS date, SUM(Total_Amount) AS total 
-            FROM Orders 
-            WHERE OrderDate BETWEEN DATE_SUB(CURDATE(), INTERVAL 7 DAY) AND CURDATE() 
-            GROUP BY DATE(OrderDate)`;
-    } else if (period === 'month') {
-      sql = `SELECT DATE(OrderDate) AS date, SUM(Total_Amount) AS total 
-            FROM Orders 
-            WHERE OrderDate BETWEEN DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND CURDATE() 
-            GROUP BY DATE(OrderDate)`;
-    } else if (period === 'year') {
-      sql = `SELECT DATE(OrderDate) AS date, SUM(Total_Amount) AS total 
-            FROM Orders 
-            WHERE OrderDate BETWEEN DATE_SUB(CURDATE(), INTERVAL 365 DAY) AND CURDATE() 
-            GROUP BY DATE(OrderDate)`;
-    } else {
-      return res.status(400).json({ message: 'Invalid period' });
-    }
+    const sql = `
+      WITH DateSeries AS (
+        SELECT CURDATE() - INTERVAL n DAY AS Date
+        FROM (SELECT 0 AS n UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL 
+                      SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL 
+                      SELECT 6) AS numbers
+      )
+      SELECT ds.Date AS date, COALESCE(SUM(o.Total_Amount), 0) AS total
+      FROM DateSeries ds
+      LEFT JOIN Orders o ON DATE(o.OrderDate) = ds.Date
+      AND o.PaymentStatus = 'Paid'
+      GROUP BY ds.Date
+      ORDER BY ds.Date;
+    `;
+    
 
     pool.query(sql, (err, result) => {
       if (err) {
@@ -74,7 +68,6 @@ exports.getSalesChart = async (req, res) => {
       }
       res.status(200).json(result);
     });
-    
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({ message: 'Server error' });
