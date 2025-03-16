@@ -5,15 +5,17 @@ import { useRouter } from 'next/navigation';
 import { Header } from "@/components/Header"; 
 import { Sidebar } from "@/components/Sidebar";
 import CardComponent from '@/components/CardComponent';
+import SalesChart from '@/components/salesChart';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import { getDashboardDetails } from '@/Services/dashboardService';
+import { getDashboardDetails, getSalesChart } from '@/Services/dashboardService';
 import "@/styles/Register.css"; 
 import "@/styles/MostSold.css";
 import "@/styles/Structure.css";
 
 const Dashboard = () => {
   const [details, setDetails] = useState({});
+  const [salesData, setSalesData] = useState([]);
   const router = useRouter();
 
   useEffect(() => {
@@ -23,6 +25,16 @@ const Dashboard = () => {
     };
 
     fetchDetails();
+  }, []);
+
+  useEffect(() => {
+    const fetchSalesData = async () => {
+      const data = await getSalesChart();
+      console.log('Fetched sales data:', data);
+      setSalesData(data);
+    };
+
+    fetchSalesData();
   }, []);
 
   const handleLowStockClick = () => {
@@ -61,8 +73,13 @@ const Dashboard = () => {
               ))}
             </Grid>
           </Box>
+          <div className="sales-chart">
+            <h1>Sales Chart</h1>
+            <p>Sales Revenue of Last 7 days</p>
+            <SalesChart data={salesData} />
+          </div>
         </div>
-      </main>  
+      </main> 
     </div>
   );
 };
