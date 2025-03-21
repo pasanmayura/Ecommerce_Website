@@ -18,8 +18,8 @@ export const Sidebar = () => {
 
   const menuItems = [
     { 
-      id: "dashboard", 
-      title: "Dashboard", 
+      id: "home", 
+      title: "Home", 
       icon: <FiGrid />, 
       subItems: [
         { title: "Dashboard", link: "/Dashboard" },
