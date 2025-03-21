@@ -102,14 +102,18 @@ const EditProfile = () => {
         </div>
 
         <div className="content">
-          <h1></h1>
+          
           <div className="Profile-Section">
+            
+            <div className="Profile-Details" style={{maxWidth: '500px', marginLeft: '8%'}}>
+            <h1>Edit Profile</h1>
+            
             <div className="Profile-icon-wrapper">
-              <Stack direction="row" spacing={2} marginLeft={50}>
+              <Stack direction="row" spacing={2} marginLeft={25} marginBottom={5}>
                 <Avatar sx={{ bgcolor: '#0A2F6E', width: 70, height: 70 }}>{user.FirstName.charAt(0)}</Avatar>
               </Stack>
             </div>
-            <div className="Profile-Details" style={{maxWidth: '500px', marginLeft: '15%', marginTop: '5%'}}>
+
               <TextField
                 label="First Name"
                 name="FirstName"

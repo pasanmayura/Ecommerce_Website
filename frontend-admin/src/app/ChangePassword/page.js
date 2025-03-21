@@ -63,10 +63,11 @@ const ChangePassword = () => {
         </div>
 
         <div className="content">
-          <h1></h1>
-          <div className="Profile-Section">
+          
+          <div className="Profile-Section">          
             
-            <div className="Profile-Details" style={{maxWidth: '500px', marginLeft: '15%', marginTop: '15%'}}>
+            <div className="Profile-Details" style={{maxWidth: '500px', marginLeft: '8%', marginTop: '10%'}}>
+            <h1>Change Password</h1>
               <TextField
                 label="Current Password"
                 name="currentPassword"
