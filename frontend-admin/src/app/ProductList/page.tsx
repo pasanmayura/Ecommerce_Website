@@ -41,7 +41,7 @@ const ProductList = () => {
   }, []);
 
   const handleEdit = (product: Product) => {
-    // Implement your edit logic here
+    router.push(`/ProductEdit?id=${product.ProductID}`);
     console.log('Edit product:', product);
   };
 

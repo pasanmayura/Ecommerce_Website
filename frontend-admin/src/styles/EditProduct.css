@@ -1,0 +1,46 @@
+.product-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 70%;
+    flex-grow: 6;
+}
+
+.product {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping to create rows */
+    justify-content: space-between; /* Space between columns */
+    gap: 20px; /* Space between items */
+    width: 80%; /* Adjust width as needed */
+}
+
+.product-group {
+    flex: 1 1 calc(50% - 20px); /* Take 50% width minus the gap */
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+.product-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 10px;
+    gap: 40px;
+}
+
+.product-row div {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.product-row div:last-child {
+    margin-right: 0;
+}
+
+.product-button {
+    margin-top: 20px;
+    background-color: #0A2F6E;
+    color: white;
+}
