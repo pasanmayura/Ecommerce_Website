@@ -71,6 +71,10 @@ const ProductEdit = () => {
   const closeAlert = () => {
     setAlert({ severity: '', title: '', message: '' });
   };
+
+  const handlebackToProductList = () => {
+    router.push('/ProductList');
+  };
   
   return (
     <div className="common">
@@ -156,10 +160,12 @@ const ProductEdit = () => {
                   fullWidth
                   margin="normal"
                 />                
-              </div>
-              <Button variant="contained" className="product-button" type="submit">
-                Save Changes
-              </Button>
+              </div> 
+              <div className="product-buttons">
+                <Button variant="contained" onClick={handlebackToProductList} style={{backgroundColor: '#0A2F6E'}}> Back </Button>
+                <Button variant="contained" className="product-button" type="submit" style={{backgroundColor: '#0A2F6E'}}>Save Changes</Button>
+              </div>             
+              
             </form>
             {alert.message && (
               <AlertComponent
@@ -170,6 +176,8 @@ const ProductEdit = () => {
                 sx={{ width: '25%', position: 'fixed', top: '10%', left: '75%', zIndex: 9999 }}
               />
             )}
+            
+            
           </div>
         </div>
       </main> 
