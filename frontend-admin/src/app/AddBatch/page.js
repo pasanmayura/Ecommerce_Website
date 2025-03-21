@@ -58,9 +58,8 @@ const AddBatch = () => {
                 </div>
             
                 <div className="content">
-                <h1>Manage Products</h1>
-                    <div className="form-section">
-                        <p className="form-subtitle">Add Batch</p>
+                <h1>Add Batch</h1>
+                    <div className="form-section">                        
                         <form className="form" onSubmit={handleSubmit}>
 
                             <div className="form-group">

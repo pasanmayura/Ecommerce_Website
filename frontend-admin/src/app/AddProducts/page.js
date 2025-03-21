@@ -85,9 +85,8 @@ const AddProducts = () => {
             </div>
 
             <div className="content">
-                <h1>Manage Products</h1>
+                <h1>Add Products</h1>
                 <div className="form-section">
-                    <p className="form-subtitle">Add Products</p>
                     <form className="form" onSubmit={handleSubmit}>
 
                         <div className="form-group">

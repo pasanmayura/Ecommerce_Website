@@ -108,9 +108,8 @@ const CategoryList = () => {
           <Sidebar />
         </div>
         <div className="content">
-          <h1>Manage Categories</h1>
+          <h1>Categories List</h1>
           <div className="table-content">
-            <p>Categories List</p>
             <MaterialReactTable columns={columns} data={categories} />
           </div>
         </div>

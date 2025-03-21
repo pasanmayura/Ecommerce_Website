@@ -75,9 +75,8 @@ const AddEmployee = () => {
                 </div>
     
                 <div className="content">
-                    <h1>Employee</h1>
-                    <div className="form-section">
-                        <p className="form-subtitle">Add Employee</p>
+                    <h1>Add Employee</h1>
+                    <div className="form-section">                        
                         <form className="form" onSubmit={handleSubmit}>
                             <div className="form-group">
                                 <TextField 

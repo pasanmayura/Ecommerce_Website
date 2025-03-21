@@ -140,8 +140,7 @@ const ProductList = () => {
         </div>
         <div className="content">
           <div className="table-content">
-            <h1>Manage Products</h1>
-            <p>Product List</p>
+            <h1>Product List</h1>
             <MaterialReactTable columns={columns} data={products} />
           </div>
         </div>

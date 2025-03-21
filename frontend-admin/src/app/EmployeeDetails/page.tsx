@@ -76,9 +76,8 @@ const EmployeeDetails = () => {
           <Sidebar />
         </div>
         <div className="content">
-          <h1>Employee</h1>
-          <div className="table-content">
-            <p>Employee List</p>
+          <h1>Employee List</h1>
+          <div className="table-content">            
             <MaterialReactTable columns={columns} data={EmployeeDetails} />
           </div>
         </div>
