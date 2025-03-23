@@ -12,6 +12,20 @@ const auth = new google.auth.GoogleAuth({
 
 const drive = google.drive({ version: 'v3', auth });
 
+async function listFiles() {
+  try {
+    const response = await drive.files.list({
+      pageSize: 10,
+      fields: 'files(id, name)',
+    });
+    //console.log('Files:', response.data.files);
+  } catch (error) {
+    console.error('Error listing files:', error);
+  }
+}
+
+listFiles();
+
 async function uploadFile(filePath) {
   try {
     const response = await drive.files.create({

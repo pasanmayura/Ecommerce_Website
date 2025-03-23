@@ -1,7 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
+import React, { useState, useEffect, useRef } from 'react';
 import { Header } from "@/components/Header"; 
 import { Sidebar } from "@/components/Sidebar";
 import { Button, TextField, MenuItem } from "@mui/material";
@@ -19,6 +18,7 @@ const AddProducts = () => {
   const [imageFiles, setImageFiles] = useState([null, null, null]); 
   const [imagePreviews, setImagePreviews] = useState([null, null, null]); 
   const [alert, setAlert] = useState({ severity: '', title: '', message: '' });
+  const fileInputRefs = [useRef(null), useRef(null), useRef(null)];
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -53,28 +53,47 @@ const AddProducts = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
     const formData = new FormData();
     formData.append('Product_Name', productName);
     formData.append('Description', description);
     formData.append('Threshold', threshold);
     formData.append('CategoryID', selectedCategory);
-    for (const file of files) {
-      formData.append('files', file.file);
-    }
 
-    const result = await addProducts(formData);
-    if (result.message === 'Product added successfully') {
+    // Append image files
+  for (const file of imageFiles) {
+    if (file) {
+      formData.append('files', file); 
+    }
+  }
+
+  try {
+    const response = await addProducts(formData); // Call the service function
+    if (response.message === 'Product added successfully') {
       setAlert({ severity: 'success', title: 'Success', message: 'Product added successfully' });
+      // Reset form fields
       setProductName('');
       setDescription('');
       setThreshold('');
       setSelectedCategory('');
-      setFiles([]);
-      setImagePreviews([]);
+      setImageFiles([null, null, null]);
+      setImagePreviews([null, null, null]);
+
+      // Reset file input fields
+      fileInputRefs.forEach((ref) => {
+        if (ref.current) {
+          ref.current.value = ''; // Clear the file input field
+        }
+      });
+
     } else {
-      setAlert({ severity: 'error', title: 'Error', message: result.message });
+      setAlert({ severity: 'error', title: 'Error', message: response.message });
     }
-  };
+  } catch (error) {
+    console.error('Error adding product:', error);
+    setAlert({ severity: 'error', title: 'Error', message: 'Failed to add product. Please try again.' });
+  }
+};
 
   const closeAlert = () => {
     setAlert({ severity: '', title: '', message: '' });
@@ -156,6 +175,7 @@ const AddProducts = () => {
                             inputProps={{ accept: ".png, .jpg" }} 
                             fullWidth
                             required
+                            inputRef={fileInputRefs[0]}
                             onChange={(e) => handleImageChange(0, e.target.files[0])} // Handle the first file input
                           />
                           {imagePreviews[0] && (
@@ -180,6 +200,7 @@ const AddProducts = () => {
                             inputProps={{ accept: ".png, .jpg" }} 
                             fullWidth
                             required
+                            inputRef={fileInputRefs[1]}
                             onChange={(e) => handleImageChange(1, e.target.files[0])} 
                           />
                           {imagePreviews[1] && (
@@ -204,6 +225,7 @@ const AddProducts = () => {
                             inputProps={{ accept: ".png, .jpg" }} 
                             fullWidth
                             required
+                            inputRef={fileInputRefs[2]}
                             onChange={(e) => handleImageChange(2, e.target.files[0])} 
                           />
                           {imagePreviews[2] && (
@@ -219,10 +241,10 @@ const AddProducts = () => {
                             </div>
                           )}
                         </div>
-                      </div>                                                         
+                      </div> 
+                      <Button variant="contained" className="form-button" type="submit" style={{marginBottom:20}}>Add Product</Button>                                                        
                                                     
                     </form>
-                    <Button variant="contained" className="form-button" type="submit" style={{marginBottom:20}}>Add Product</Button>
                 </div>
             </div>
         </main>      

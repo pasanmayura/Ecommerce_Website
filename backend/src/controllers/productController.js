@@ -21,8 +21,11 @@ const upload = multer({ storage: storage }).array('files', 3);
 exports.addProducts= async (req, res) => {
   upload(req, res, async (err) => {
     if (err) {
+      console.error('File upload error:', err);
       return res.status(500).json({ message: 'File upload error' });
     }
+    // console.log('Uploaded files:', req.files); // Log the uploaded files
+    // console.log('Request body:', req.body);
 
     const { Product_Name, Description, Threshold, CategoryID } = req.body;
     const adminID = req.adminID;
@@ -30,7 +33,7 @@ exports.addProducts= async (req, res) => {
     const folderId = '15W1nusubkWsL154O0lLt1T8V3HmDC7m0';
   
     if (!Product_Name || !Description || !Threshold || !CategoryID) {
-      return res.status(400).json({ message: 'All fields are required!' });
+      return res.status(400).json({ message: 'All fields are aaa required!' });
     }
   
     try {
@@ -54,27 +57,40 @@ exports.addProducts= async (req, res) => {
           }
 
           // Upload images to Google Drive and store URLs in the database
+          const imageUrls = [];
           for (const file of files) {
             const filePath = path.join(__dirname, '../../uploads/', file.filename);
+            // console.log(`File path: ${filePath}`);
             const fileId = await uploadFile(filePath);
             const fileUrl = await generatePublicUrl(fileId);
+            imageUrls.push(fileUrl);
 
-            const imageSql = 'INSERT INTO ProductsImages (ProductID, ImageURL_1) VALUES (?, ?)';
-            pool.query(imageSql, [newID, fileUrl], (err, result) => {
-              if (err) {
-                console.error('Error inserting image URL into database:', err);
-              }
-            });
-
+            // Delete the local file after uploading
             fs.unlink(filePath, (err) => {
               if (err) {
                 console.error('Error deleting local file:', err);
               }
             });
           }
+
+          // Ensure we have exactly 3 image URLs (fill with null if fewer)
+          while (imageUrls.length < 3) {
+            imageUrls.push(null);
+          }
+
+          const imageSql = `
+            INSERT INTO productsimages (ProductID, ImageURL_1, ImageURL_2, ImageURL_3)
+            VALUES (?, ?, ?, ?)
+          `;
+          pool.query(imageSql, [newID, imageUrls[0], imageUrls[1], imageUrls[2]], (err, result) => {
+            if (err) {
+              console.error('Error inserting image URLs into database:', err);
+              return res.status(500).json({ message: 'Database insert error for images' });
+            }
           
           res.status(200).json({ message: 'Product added successfully' });
         });
+      });
     });
     } catch (error) {
       console.error('Error:', error);
@@ -119,3 +135,6 @@ exports.deleteProduct = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+// in product add page give the option to add multiple images with multiple file input fields
+// according to that change product edit page to display multiple images
