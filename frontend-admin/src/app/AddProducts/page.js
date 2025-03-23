@@ -6,6 +6,7 @@ import { Sidebar } from "@/components/Sidebar";
 import { Button, TextField, MenuItem } from "@mui/material";
 import { getCategories } from "@/Services/categoryService";
 import { addProducts } from "@/Services/productService";
+import LoadingComponent from '@/components/LoadingComponent';
 import AlertComponent from '@/components/AlertComponent';
 import "@/styles/AddProducts.css";
 
@@ -19,6 +20,7 @@ const AddProducts = () => {
   const [imagePreviews, setImagePreviews] = useState([null, null, null]); 
   const [alert, setAlert] = useState({ severity: '', title: '', message: '' });
   const fileInputRefs = [useRef(null), useRef(null), useRef(null)];
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -53,6 +55,7 @@ const AddProducts = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     
     const formData = new FormData();
     formData.append('Product_Name', productName);
@@ -92,6 +95,8 @@ const AddProducts = () => {
   } catch (error) {
     console.error('Error adding product:', error);
     setAlert({ severity: 'error', title: 'Error', message: 'Failed to add product. Please try again.' });
+  } finally {
+    setLoading(false); // Stop loading
   }
 };
 
@@ -242,7 +247,7 @@ const AddProducts = () => {
                           )}
                         </div>
                       </div> 
-                      <Button variant="contained" className="form-button" type="submit" style={{marginBottom:20}}>Add Product</Button>                                                        
+                      <Button variant="contained" className="form-button" type="submit" style={{marginBottom:20}} disabled={loading}>Add Product</Button>                                                        
                                                     
                     </form>
                 </div>
@@ -257,6 +262,8 @@ const AddProducts = () => {
                 sx={{ width: '25%', position: 'fixed', top: '10%', left: '75%', zIndex: 9999 }}
             />
         )}
+        {/* Show loading spinner */}
+        {loading && <LoadingComponent message="Adding product, please wait..." />}
     </div>
   );
 };
