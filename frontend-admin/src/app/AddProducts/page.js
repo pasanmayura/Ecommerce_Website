@@ -7,7 +7,6 @@ import { Sidebar } from "@/components/Sidebar";
 import { Button, TextField, MenuItem } from "@mui/material";
 import { getCategories } from "@/Services/categoryService";
 import { addProducts } from "@/Services/productService";
-import uploadimg from "@/images/upload-icon.png";
 import AlertComponent from '@/components/AlertComponent';
 import "@/styles/AddProducts.css";
 
@@ -17,8 +16,8 @@ const AddProducts = () => {
   const [productName, setProductName] = useState('');
   const [description, setDescription] = useState('');
   const [threshold, setThreshold] = useState('');
-  const [files, setFiles] = useState([]);
-  const [imagePreviews, setImagePreviews] = useState([]);
+  const [imageFiles, setImageFiles] = useState([null, null, null]); 
+  const [imagePreviews, setImagePreviews] = useState([null, null, null]); 
   const [alert, setAlert] = useState({ severity: '', title: '', message: '' });
 
   useEffect(() => {
@@ -30,20 +29,26 @@ const AddProducts = () => {
     fetchCategories();
   }, []);
 
-  const handleFileChange = (e) => {
-    const filesArray = Array.from(e.target.files).map((file, index) => ({
-      id: index,
-      file,
-      preview: URL.createObjectURL(file),
-    }));
-    setFiles(filesArray);
-    setImagePreviews(filesArray.map(file => file.preview));
+  const handleImageChange = (index, file) => {
+    const updatedFiles = [...imageFiles];
+    const updatedPreviews = [...imagePreviews];
+  
+    updatedFiles[index] = file; // Update the selected file
+    updatedPreviews[index] = file ? URL.createObjectURL(file) : null; // Update the preview
+  
+    setImageFiles(updatedFiles);
+    setImagePreviews(updatedPreviews);
   };
 
-  const handleRemoveImage = (id) => {
-    const updatedFiles = files.filter(file => file.id !== id);
-    setFiles(updatedFiles);
-    setImagePreviews(updatedFiles.map(file => file.preview));
+  const handleRemoveImage = (index) => {
+    const updatedFiles = [...imageFiles];
+    const updatedPreviews = [...imagePreviews];
+  
+    updatedFiles[index] = null; // Remove the file
+    updatedPreviews[index] = null; // Remove the preview
+  
+    setImageFiles(updatedFiles);
+    setImagePreviews(updatedPreviews);
   };
 
   const handleSubmit = async (e) => {
@@ -88,7 +93,7 @@ const AddProducts = () => {
                 <h1>Add Products</h1>
                 <div className="form-section">
                     <form className="form" onSubmit={handleSubmit}>
-
+                      <div className="row-1">
                         <div className="form-group">
                             <TextField 
                               fullWidth 
@@ -115,7 +120,19 @@ const AddProducts = () => {
                                 </MenuItem>
                               ))}
                             </TextField>
-                        </div>                        
+                        </div>   
+
+                        <div className="form-group">
+                            <TextField 
+                              fullWidth 
+                              label="Threshold Quantity" 
+                              id="ThresholdQuantity" 
+                              required
+                              value={threshold}
+                              onChange={(e) => setThreshold(e.target.value)}
+                            />
+                        </div>
+                      </div>                       
 
                         <div className="form-group">
                             <TextField 
@@ -128,44 +145,84 @@ const AddProducts = () => {
                               value={description}
                               onChange={(e) => setDescription(e.target.value)}
                             />
-                        </div>                        
+                        </div>      
+
+                      <div className="row-3">  
+                        <div className="form-group">
+                          <TextField
+                            type="file"
+                            label="Upload File"
+                            InputLabelProps={{ shrink: true }}
+                            inputProps={{ accept: ".png, .jpg" }} 
+                            fullWidth
+                            required
+                            onChange={(e) => handleImageChange(0, e.target.files[0])} // Handle the first file input
+                          />
+                          {imagePreviews[0] && (
+                            <div className="image-preview-container">
+                              <img src={imagePreviews[0]} alt="Preview" className="image-preview" />
+                              <button
+                                type="button"
+                                className="remove-image-button"
+                                onClick={() => handleRemoveImage(0)}
+                              >
+                                &times;
+                              </button>
+                            </div>
+                          )}
+                        </div>
 
                         <div className="form-group">
-                            <TextField 
-                              fullWidth 
-                              label="Threshold Quantity" 
-                              id="ThresholdQuantity" 
-                              required
-                              value={threshold}
-                              onChange={(e) => setThreshold(e.target.value)}
-                            />
-                        </div>  
-
-                        <div className="upload-section">                  
-                            <input 
-                                type="file" 
-                                id="fileElem" 
-                                multiple 
-                                accept="image/*"  
-                                required                                 
-                                onChange={handleFileChange}
-                            />
-                            <label htmlFor="fileElem">
-                                <Image src={uploadimg} alt="Upload Icon" className='uploadimg'/>    
-                            </label>
-                            <span>Upload Images (max 3)</span>
-                            <div className="image-previews">
-                              {imagePreviews.map((preview, index) => (
-                                <div key={index} className="image-preview-container">
-                                  <img src={preview} alt="Preview" className="image-preview" />
-                                  <button type="button" className="remove-image-button" onClick={() => handleRemoveImage(index)}>✖</button>
-                                </div>
-                              ))}
+                          <TextField
+                            type="file"
+                            label="Upload File"
+                            InputLabelProps={{ shrink: true }}
+                            inputProps={{ accept: ".png, .jpg" }} 
+                            fullWidth
+                            required
+                            onChange={(e) => handleImageChange(1, e.target.files[0])} 
+                          />
+                          {imagePreviews[1] && (
+                            <div className="image-preview-container">
+                              <img src={imagePreviews[1]} alt="Preview" className="image-preview" />
+                              <button
+                                type="button"
+                                className="remove-image-button"
+                                onClick={() => handleRemoveImage(1)}
+                              >
+                                &times;
+                              </button>
                             </div>
-                        </div>                      
-                        
-                        <Button variant="contained" className="form-button" type="submit" style={{marginBottom:20}}>Add Product</Button>                            
+                          )}
+                        </div>
+
+                        <div className="form-group">
+                          <TextField
+                            type="file"
+                            label="Upload File"
+                            InputLabelProps={{ shrink: true }}
+                            inputProps={{ accept: ".png, .jpg" }} 
+                            fullWidth
+                            required
+                            onChange={(e) => handleImageChange(2, e.target.files[0])} 
+                          />
+                          {imagePreviews[2] && (
+                            <div className="image-preview-container">
+                              <img src={imagePreviews[2]} alt="Preview" className="image-preview" />
+                              <button
+                                type="button"
+                                className="remove-image-button"
+                                onClick={() => handleRemoveImage(2)}
+                              >
+                                &times;
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      </div>                                                         
+                                                    
                     </form>
+                    <Button variant="contained" className="form-button" type="submit" style={{marginBottom:20}}>Add Product</Button>
                 </div>
             </div>
         </main>      
