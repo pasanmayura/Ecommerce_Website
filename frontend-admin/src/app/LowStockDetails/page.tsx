@@ -3,7 +3,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Header } from "@/components/Header"; 
 import { Sidebar } from "@/components/Sidebar";
+import { useRouter } from 'next/navigation';
 import { getLowStockProducts } from '@/Services/dashboardService';
+import Button from '@mui/material/Button';
 import {
   MaterialReactTable,
   type MRT_ColumnDef,
@@ -21,7 +23,7 @@ type LowStockProduct = {
 
 const LowStockDetails = () => {
     const [LowStockProducts, setLowStockProducts] = useState<LowStockProduct[]>([]);
-  
+    const router = useRouter();  
 
   useEffect(() => {
     const fetchLowStockProducts = async () => {
@@ -63,6 +65,10 @@ const LowStockDetails = () => {
     [LowStockProducts],
   );
 
+  const handleback = () => {
+    router.push('/Dashboard');
+  };
+
   return (
     <div className="common">
       <Header />
@@ -76,6 +82,7 @@ const LowStockDetails = () => {
             <p>Low Stock Product List</p>
             <MaterialReactTable columns={columns} data={LowStockProducts} />
           </div>
+          <Button variant="contained" onClick={handleback} style={{ marginTop: '20px', backgroundColor: '#0A2F6E', marginBottom: '20px' }}> Back </Button>
         </div>
       </main> 
     </div>

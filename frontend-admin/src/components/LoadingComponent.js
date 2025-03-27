@@ -12,7 +12,7 @@ const LoadingComponent = ({ message = 'Loading, please wait...' }) => {
 };
 
 LoadingComponent.propTypes = {
-  message: PropTypes.string, // Optional custom loading message
+  message: PropTypes.string, 
 };
 
 export default LoadingComponent;
