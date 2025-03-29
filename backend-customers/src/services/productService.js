@@ -4,8 +4,9 @@ exports.getProductCards = async () => {
   try {
     const query = `
       SELECT 
+        p.ProductID AS id,
         p.Product_Name AS name, 
-        MIN(b.Selling_Price) AS price, 
+        CAST(MIN(b.Selling_Price) AS DECIMAL(10, 2)) AS price,  
         pi.ImageURL_1 AS image
       FROM product p
       JOIN batch b ON p.ProductID = b.ProductID
