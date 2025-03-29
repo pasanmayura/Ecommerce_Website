@@ -4,7 +4,12 @@ import React, { useEffect, useState } from 'react';
 import { Header } from "@/components/Header";
 import Carousel from '@/components/Carousel';
 import ProductCard from '@/components/ProductCard';
+import CategoryCard from '@/components/CategoryCard';
 import { getProductCards } from '@/services/productService';
+import electronic from '@/images/Electronic.png'; 
+import perfume from '@/images/perfume.png';
+import foods from '@/images/foods.png';
+import cosmatics from '@/images/cosmatics.png';
 
 const HomePage = () => {
   const [products, setProducts] = useState([]);
@@ -34,6 +39,12 @@ const HomePage = () => {
             {products.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
+          </div>
+          <div className='category-grid'>
+            <CategoryCard icon={electronic} title="Electronics" />
+            <CategoryCard icon={perfume} title="Perfumes" />
+            <CategoryCard icon={foods} title="Foods" />
+            <CategoryCard icon={cosmatics} title="Cosmatics" />
           </div>
         </div>
       </main>
