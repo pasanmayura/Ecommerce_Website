@@ -40,7 +40,12 @@ const HomePage = () => {
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
-          <div className='category-grid'>
+
+          <div className='Category-title' style={{color: '#0A2F6E', textAlign: 'center', marginTop: '50px', fontSize: '20px'}}>
+            <h1>Browse By Category</h1>
+          </div>
+
+          <div className='category-grid'>                  
             <CategoryCard icon={electronic} title="Electronics" />
             <CategoryCard icon={perfume} title="Perfumes" />
             <CategoryCard icon={foods} title="Foods" />
