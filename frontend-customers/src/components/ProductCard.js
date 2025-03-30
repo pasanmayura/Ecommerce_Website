@@ -38,7 +38,7 @@ const ProductCard = ({ product }) => {
       <div className="product-details">
         <h3 className="product-name">{name}</h3>
         <p className="product-price">
-        ${!isNaN(price) ? parseFloat(price).toFixed(2) : 'N/A'}
+        Rs.{!isNaN(price) ? parseFloat(price).toFixed(2) : 'N/A'}
         </p>
         <Button
           variant="contained"
