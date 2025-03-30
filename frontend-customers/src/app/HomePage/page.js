@@ -14,6 +14,8 @@ import cosmatics from '@/images/cosmatics.png';
 import footerTop from '@/images/footerTop.png';
 import Divider from '@mui/material/Divider';
 import Footer from '@/components/Footer';
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const HomePage = () => {
   const [products, setProducts] = useState([]);
@@ -23,6 +25,26 @@ const HomePage = () => {
     '/images/carousel2.jpg',
     '/images/carousel3.jpg',
   ];
+
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,  // Slow animation 
+      easing: 'ease-in-out',
+      once: false,  // Animation runs every time element enters viewport
+      mirror: true, // Ensures animation happens when scrolling up & down
+    });
+
+    //Refresh AOS on scroll to ensure animations always work
+    const handleScroll = () => {
+      AOS.refresh();
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -43,10 +65,10 @@ const HomePage = () => {
       <main className="main-content">
         <div className="content">
           <Carousel images={images} autoplay={true} interval={8000} showDots={true} />
-          
+
           <div className="product-grid">
             {products.slice(0, visibleProducts).map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard key={product.id} product={product} data-aos="fade-up" />
             ))}
           </div>
 
@@ -70,10 +92,10 @@ const HomePage = () => {
           )}
 
           <div className='Category-title' style={{color: '#0A2F6E', textAlign: 'center', marginTop: '50px', fontSize: '20px'}}>
-            <h1>Browse By Category</h1>
+            <h1 data-aos="zoom-up">Browse By Category</h1>
           </div>
 
-          <div className='category-grid'>                  
+          <div className='category-grid' data-aos="fade-up">                  
             <CategoryCard icon={electronic} title="Electronics" />
             <CategoryCard icon={perfume} title="Perfumes" />
             <CategoryCard icon={foods} title="Foods" />
@@ -82,13 +104,13 @@ const HomePage = () => {
 
           <Divider variant="middle" />
 
-          <div className='footerTop-img'>
+          <div className='footerTop-img' data-aos="fade-up">
             <center>
               <Image 
                 src={footerTop} 
                 alt="footerTop"
                 style={{display:'flex', width:'80%', height:'auto', marginTop:'20px'}} />
-              </center>
+            </center>
           </div>  
           
         </div>
