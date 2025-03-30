@@ -13,6 +13,7 @@ import foods from '@/images/foods.png';
 import cosmatics from '@/images/cosmatics.png';
 import footerTop from '@/images/footerTop.png';
 import Divider from '@mui/material/Divider';
+import Footer from '@/components/Footer';
 
 const HomePage = () => {
   const [products, setProducts] = useState([]);
@@ -82,14 +83,18 @@ const HomePage = () => {
           <Divider variant="middle" />
 
           <div className='footerTop-img'>
-            <Image 
-              src={footerTop} 
-              alt="footerTop"
-              style={{display:'flex', width:'100%', height:'auto', marginTop:'20px'}} />
-          </div>
+            <center>
+              <Image 
+                src={footerTop} 
+                alt="footerTop"
+                style={{display:'flex', width:'80%', height:'auto', marginTop:'20px'}} />
+              </center>
+          </div>  
           
         </div>
+        <Footer />
       </main>
+      
     </div>
   );
 };
