@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 20px;
+  padding: 15px 0px;
   background-color: #f8f8f8; /* App bar color */
   color: white;
   position: sticky;
