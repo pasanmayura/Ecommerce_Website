@@ -28,41 +28,6 @@ exports.register = async (req, res) => {
   }
 };
 
-// Login User
-exports.login = async (req, res) => {
-  const { email, password } = req.body;
-
-  if (!email || !password) {
-    return res.status(400).json({ message: 'Email and password are required!' });
-  }
-
-  try {
-    const sql = 'SELECT * FROM user WHERE email = ?';
-    pool.query(sql, [email], async (err, result) => {
-      if (err) {
-        console.error('Error querying database:', err);
-        return res.status(500).json({ message: 'Database query error' });
-      }
-
-      if (result.length === 0) {
-        return res.status(400).json({ message: 'Invalid credentials' });
-      }
-
-      const user = result[0]; // Get the first matching user
-      const isPasswordValid = await bcrypt.compare(password, user.password);
-
-      if (!isPasswordValid) {
-        return res.status(400).json({ message: 'Invalid credentials' });
-      }
-
-      res.status(200).json({ message: 'Login successful' });
-    });
-  } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ message: 'Server error' });
-  }
-};
-
 // Login Admin
 exports.loginAdmin = async (req, res) => {
   const { Email, Password } = req.body;
