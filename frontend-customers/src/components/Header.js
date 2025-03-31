@@ -59,7 +59,7 @@ export const Header = () => {
         <Link href="/" className="nav-link">Home</Link>
         <Link href="/contact" className="nav-link">Contact</Link>
         <Link href="/about" className="nav-link">About Us</Link>
-        <Link href="/signin" className="nav-link">Sign In</Link>
+        <Link href="/SignIn" className="nav-link">Sign In</Link>
       </nav>
 
       {/* Search Bar and Icons */}

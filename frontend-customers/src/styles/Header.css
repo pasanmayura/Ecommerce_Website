@@ -35,6 +35,13 @@
   font-size: 24px;
 }
 
+.menu-icon-auth {
+  display: none;
+  color: black;
+  cursor: pointer;
+  font-size: 24px;
+}
+
 .header-nav {
   display: flex;
   gap: 20px;
@@ -82,7 +89,16 @@
   .menu-icon {
     display: block;
     position: absolute;
-    right: 10px; /* Adjust spacing from right edge */
+    right: 20px; /* Adjust spacing from right edge */
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1000;
+  }
+
+  .menu-icon-auth {
+    display: block;
+    position: absolute;
+    right: 30px; /* Adjust spacing from right edge */
     top: 50%;
     transform: translateY(-50%);
     z-index: 1000;
@@ -145,7 +161,7 @@
 
   .header-actions {
     right: 40px; /* Adjust for smaller screens */
-    margin-right: 0px;
+    margin-right: 10px;
   }
 }
 
