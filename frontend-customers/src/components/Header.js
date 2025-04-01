@@ -11,7 +11,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 
-export const Header = () => {
+export const Header = ({ isHomePage = false }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const searchBarRef = useRef(null);
@@ -59,7 +59,11 @@ export const Header = () => {
         <Link href="/" className="nav-link">Home</Link>
         <Link href="/contact" className="nav-link">Contact</Link>
         <Link href="/about" className="nav-link">About Us</Link>
-        <Link href="/SignIn" className="nav-link">Sign In</Link>
+        {isHomePage ? (
+          <Link href="/SignIn" className="nav-link">Sign In</Link>
+        ) : (
+          <Link href="/MyAccount" className="nav-link">My Account</Link>
+        )}
       </nav>
 
       {/* Search Bar and Icons */}

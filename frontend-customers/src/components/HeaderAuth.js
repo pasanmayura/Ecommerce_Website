@@ -7,7 +7,7 @@ import "@/styles/Header.css";
 import logoSmartKade2 from "../images/logo-smart-kade-removebg-1.png";
 import MenuIcon from "@mui/icons-material/Menu";
 
-export const HeaderAuth = () => {
+export const HeaderAuth = ({ isSignIn = false }) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -30,7 +30,11 @@ export const HeaderAuth = () => {
         <Link href="/" className="nav-link">Home</Link>
         <Link href="/contact" className="nav-link">Contact</Link>
         <Link href="/about" className="nav-link">About Us</Link>
-        <Link href="/SignIn" className="nav-link">Sign In</Link>
+        {isSignIn ? (
+          <Link href="/SignUp" className="nav-link">Sign Up</Link>
+        ) : (
+          <Link href="/SignIn" className="nav-link">Sign In</Link>
+        )}
       </nav>
 
       {/* Menu Icon for Smaller Screens */}
