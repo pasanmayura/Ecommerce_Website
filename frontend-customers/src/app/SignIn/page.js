@@ -41,7 +41,7 @@ const SignIn = () => {
 
   return (
     <div className="signIn">
-      <HeaderAuth />
+      <HeaderAuth isSignIn={true} />
 
       <main className="main-content">
         <div className="image-section">

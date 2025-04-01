@@ -61,7 +61,7 @@ const HomePage = () => {
 
   return (
     <div className="common">
-      <Header />
+      <Header isHomePage={true}/>
       <main className="main-content">
         <div className="content">
           <Carousel images={images} autoplay={true} interval={8000} showDots={true} />
