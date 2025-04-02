@@ -3,31 +3,6 @@ const jwt = require('jsonwebtoken');
 const pool = require('../config/db'); // Import database connection
 require('dotenv').config();
 
-// Register User
-exports.register = async (req, res) => {
-  const { name, email, password } = req.body;
-
-  if (!name || !email || !password) {
-    return res.status(400).json({ message: 'All fields are required!' });
-  }
-
-  try {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const sql = 'INSERT INTO user (name, email, password) VALUES (?, ?, ?)';
-
-    pool.query(sql, [name, email, hashedPassword], (err, result) => {
-      if (err) {
-        console.error('Error inserting into database:', err);
-        return res.status(500).json({ message: 'Database insert error' });
-      }
-      res.status(200).json({ message: 'User registered successfully' });
-    });
-  } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ message: 'Server error' });
-  }
-};
-
 // Login Admin
 exports.loginAdmin = async (req, res) => {
   const { Email, Password } = req.body;
