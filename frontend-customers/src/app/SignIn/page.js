@@ -30,7 +30,7 @@ const SignIn = () => {
       if (result.message === 'Login successful') {
         sessionStorage.setItem('jwtToken', result.token);
         alert(result.message);
-        window.location.href = '/HomePage';
+        window.location.href = '/HomeLogin';
       } else {
         setErrorMessage(result.message);
       }

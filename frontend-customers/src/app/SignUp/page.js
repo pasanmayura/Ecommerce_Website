@@ -49,7 +49,7 @@ const SignUp = () => {
   
       if (result.success) {
         alert('Email verified successfully!');
-        router.push('/HomePage'); // Redirect to the homepage
+        router.push('/SignIn'); 
       } else {
         alert(result.message);
       }
