@@ -30,7 +30,7 @@ const SignIn = () => {
       if (result.message === 'Login successful') {
         sessionStorage.setItem('jwtToken', result.token);
         alert(result.message);
-        window.location.href = '/HomeLogin';
+        router.push('/HomeLogin'); 
       } else {
         setErrorMessage(result.message);
       }
