@@ -34,8 +34,8 @@ exports.registerUser = async (req, res) => {
       const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-          user: process.env.EMAIL_USER, // Your email
-          pass: process.env.EMAIL_PASS, // Your email password
+          user: process.env.EMAIL_USER, 
+          pass: process.env.EMAIL_PASS, 
         },
         tls: {
           rejectUnauthorized: false, // Allow self-signed certificates
@@ -70,18 +70,11 @@ exports.registerUser = async (req, res) => {
 exports.verifyEmailCode = async (req, res) => {
   const { Email, Code, FirstName, LastName, Password } = req.body;
 
-  console.log('Request Body:', req.body);
-
   if (!Email || !Code || !FirstName || !LastName || !Password) {
     return res.status(400).json({ message: 'All fields are required!' });
   }
 
   try {
-    console.log('Stored Verification Codes:', verificationCodes);
-    console.log('Stored Code:', verificationCodes[Email]);
-    console.log('Received Code:', Code);
-    console.log('Code Match:', verificationCodes[Email] === parseInt(Code));
-
     // Check if the code matches
     if (verificationCodes[Email] && verificationCodes[Email] === parseInt(Code)) {
       // Hash the password
