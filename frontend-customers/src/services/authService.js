@@ -16,17 +16,37 @@ export const loginUser = async (Email, Password) => {
     }
   };
   
-  export const registerUser = async (name, email, password) => {
-    try {
-      const response = await axios.post(`${API_BASE_URL}/register`, {
-        name,
-        email,
-        password,
-      });
-  
-      return response.data;
-    } catch (error) {
-      console.error('Error:', error);
-      return { message: 'There was an error with the registration. Please try again.' };
-    }
-  };
+  // Register User
+export const registerUser = async (FirstName, LastName, Email, Password) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/register`, {
+      FirstName,
+      LastName,
+      Email,
+      Password,
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error:', error.response?.data || error.message);
+    return { success: false, message: 'There was an error with the registration.' };
+  }
+};
+
+// Verify Email Code
+export const verifyEmailCode = async (Email, Code, FirstName, LastName, Password) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/verify-email`, {
+      Email,
+      Code,
+      FirstName,
+      LastName,
+      Password,
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error:', error.response?.data || error.message);
+    return { success: false, message: 'There was an error verifying the email code.' };
+  }
+};
