@@ -21,6 +21,7 @@ const SignIn = () => {
     
     if (!Email || !Password) {
       setErrorMessage('Both fields are required!');
+      alert('Both fields are required!');
       return;
     }
   
@@ -33,9 +34,11 @@ const SignIn = () => {
         router.push('/HomeLogin'); 
       } else {
         setErrorMessage(result.message);
+        alert(result.message);
       }
     } catch (error) {
       setErrorMessage('There was an error with the login. Please try again.');
+      alert('There was an error with the login. Please try again.');
     }
   };
 

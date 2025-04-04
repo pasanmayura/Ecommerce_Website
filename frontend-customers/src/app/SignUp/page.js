@@ -24,8 +24,34 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
   
+    // Frontend validations
     if (!FirstName || !LastName || !Email || !Password) {
       setErrorMessage('All fields are required!');
+      alert('All fields are required!');
+      return;
+    }
+  
+    if (!/^[a-zA-Z]+$/.test(FirstName)) {
+      setErrorMessage('First name should only contain letters!');
+      alert('First name should only contain letters!');
+      return;
+    }
+  
+    if (!/^[a-zA-Z]+$/.test(LastName)) {
+      setErrorMessage('Last name should only contain letters!');
+      alert('Last name should only contain letters!');
+      return;
+    }
+  
+    if (!/^\S+@\S+\.\S+$/.test(Email)) {
+      setErrorMessage('Invalid email format!');
+      alert('Invalid email format!');
+      return;
+    }
+  
+    if (Password.length < 8) {
+      setErrorMessage('Password must be at least 8 characters long!');
+      alert('Password must be at least 8 characters long!');
       return;
     }
   
@@ -37,9 +63,11 @@ const SignUp = () => {
         setIsModalOpen(true); // Open the modal for email verification
       } else {
         setErrorMessage(result.message);
+        alert(result.message);
       }
     } catch (error) {
       setErrorMessage('There was an error with the sign-up. Please try again.');
+      alert('There was an error with the sign-up. Please try again.');
     }
   };
   
