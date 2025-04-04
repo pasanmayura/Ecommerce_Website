@@ -2,15 +2,22 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const pool = require('../config/db'); // Import database connection
+const { registerUserSchema, verifyEmailCodeSchema, loginUserSchema } = require('../validators/validation');
 require('dotenv').config();
 
 const verificationCodes = {};
 
+// Register User
 exports.registerUser = async (req, res) => {
   const { FirstName, LastName, Email, Password } = req.body;
 
   if (!FirstName || !LastName || !Email || !Password) {
     return res.status(400).json({ message: 'All fields are required!' });
+  }
+
+  const { error } = registerUserSchema.validate({ FirstName, LastName, Email, Password });
+  if (error) {
+    return res.status(400).json({ message: error.details[0].message });
   }
 
   try {
@@ -74,6 +81,11 @@ exports.verifyEmailCode = async (req, res) => {
     return res.status(400).json({ message: 'All fields are required!' });
   }
 
+  const { error } = verifyEmailCodeSchema.validate({ Email, Code, FirstName, LastName, Password });
+  if (error) {
+    return res.status(400).json({ message: error.details[0].message });
+  }
+
   try {
     // Check if the code matches
     if (verificationCodes[Email] && verificationCodes[Email] === parseInt(Code)) {
@@ -121,6 +133,12 @@ exports.loginUser = async (req, res) => {
     if (!Email || !Password) {
       return res.status(400).json({ message: 'Email and password are required!' });
     }
+
+    // Validate request data
+    const { error } = loginUserSchema.validate({ Email, Password });
+    if (error) {
+      return res.status(400).json({ message: error.details[0].message });
+    }
   
     try {
       const sql = 'SELECT * FROM customer WHERE Email = ?';
@@ -151,7 +169,7 @@ exports.loginUser = async (req, res) => {
           process.env.JWT_SECRET, // Use the secret from environment variables
           { expiresIn: '5h' }
         );
-  
+
         res.status(200).json({ message: 'Login successful', token });
       });
     } catch (error) {
