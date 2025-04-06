@@ -12,7 +12,7 @@ import {
   type MRT_ColumnDef,
 } from 'material-react-table';
 import "@/styles/Register.css"; 
-import "@/styles/CategoryList.css";
+import "@/styles/ProductList.css";
 
 type Product = {
   ProductID: string;
@@ -134,16 +134,18 @@ const ProductList = () => {
   return (
     <div className="common">
       <Header />
-      <main className="main-content">
-        <div className="sidebar-section">
+      <main className="main-product-content">
+      <div className="flex-container">
+        <div className="product-sidebar-section">
           <Sidebar />
         </div>
-        <div className="content">
-          <div className="table-content">
+        <div className="product-content">
+          <div className="product-table-content">
             <h1>Product List</h1>
             <MaterialReactTable columns={columns} data={products} />
           </div>
         </div>
+      </div>
       </main>
       <ConfirmationDialog
         open={openDialog}
