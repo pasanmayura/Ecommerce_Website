@@ -77,9 +77,8 @@ const LowStockDetails = () => {
           <Sidebar />
         </div>
         <div className="content">
-          <h1></h1>
+          <h1>Low Stock Product List</h1>
           <div className="table-content">
-            <p>Low Stock Product List</p>
             <MaterialReactTable columns={columns} data={LowStockProducts} />
           </div>
           <Button variant="contained" onClick={handleback} style={{ marginTop: '20px', backgroundColor: '#0A2F6E', marginBottom: '20px' }}> Back </Button>
