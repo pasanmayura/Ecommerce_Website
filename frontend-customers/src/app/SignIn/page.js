@@ -31,7 +31,7 @@ const SignIn = () => {
       if (result.message === 'Login successful') {
         sessionStorage.setItem('jwtToken', result.token);
         alert(result.message);
-        router.push('/HomeLogin'); 
+        router.push('/HomePage'); 
       } else {
         setErrorMessage(result.message);
         alert(result.message);

@@ -14,6 +14,7 @@ import SearchIcon from "@mui/icons-material/Search";
 export const Header = ({ isHomePage = false }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const searchBarRef = useRef(null);
 
   const toggleMenu = () => {
@@ -23,6 +24,12 @@ export const Header = ({ isHomePage = false }) => {
   const toggleSearch = () => {
     setSearchOpen(!searchOpen);
   };
+
+  // Check if the user is logged in
+  useEffect(() => {
+    const token = sessionStorage.getItem("jwtToken"); 
+    setIsLoggedIn(!!token); // Set login status based on token presence
+  }, []);
 
   // Close the search bar when clicking outside
   useEffect(() => {
@@ -58,11 +65,11 @@ export const Header = ({ isHomePage = false }) => {
       <nav className={`header-nav ${menuOpen ? "open" : ""}`}>
         <Link href="/" className="nav-link">Home</Link>
         <Link href="/contact" className="nav-link">Contact</Link>
-        <Link href="/about" className="nav-link">About Us</Link>
-        {isHomePage ? (
-          <Link href="/SignIn" className="nav-link">Sign In</Link>
-        ) : (
+        <Link href="/AboutUs" className="nav-link">About Us</Link>
+        {isLoggedIn ? (
           <Link href="/MyAccount" className="nav-link">My Account</Link>
+        ) : (
+          <Link href="/SignIn" className="nav-link">Sign In</Link>
         )}
       </nav>
 
