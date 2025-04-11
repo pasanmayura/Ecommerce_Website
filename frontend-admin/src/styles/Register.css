@@ -24,6 +24,7 @@ body {
 
   .headerLoginAdmin-logo-smart-kade {
     display: flex;
+    flex: 1;
     height: 50px;
     width: 400px;
     align-items: flex-start;
@@ -33,7 +34,7 @@ body {
 
   .nav {
     display: flex;
-    flex: 1;
+    flex: 1.5;
     justify-content: space-evenly;
     margin-left: 50%
   }
