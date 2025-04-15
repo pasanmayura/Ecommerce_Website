@@ -60,10 +60,10 @@ const HomePage = () => {
   };
 
   return (
-    <div className="common">
+    <div className="HomePage">
       <Header isHomePage={true}/>
-      <main className="main-content">
-        <div className="content">
+      <main className="main-HomePage-content">
+        <div className="Home-content">
           <Carousel images={images} autoplay={true} interval={8000} showDots={true} />
 
           <div className="product-grid">

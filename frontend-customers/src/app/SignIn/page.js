@@ -46,7 +46,7 @@ const SignIn = () => {
     <div className="signIn">
       <HeaderAuth isSignIn={true} />
 
-      <main className="main-content">
+      <main className="main-signin-content">
         <div className="image-section">
           <Image className="login-img" alt="Login Illustration" src={loginImg1} height={600} width={500} />
         </div>

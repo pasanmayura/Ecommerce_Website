@@ -24,9 +24,9 @@ const AboutUs = () => {
   }); 
 
   return (
-    <div className="common">
+    <div className="AboutUs">
       <Header isHomePage={true}/>
-      <main className="main-content">
+      <main className="main-about-content">
         <h1 className='story'>Our Story</h1>
         <div className='story-content'>
             <div className='story-text'>
