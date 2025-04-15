@@ -1,21 +1,20 @@
+import axios from 'axios';
+
+const API_BASE_URL = 'http://localhost:5000/api/products';
+
 export const getProductCards = async () => {
-    try {
-      const response = await fetch('http://localhost:5000/api/products/getProductCards', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-  
-      if (!response.ok) {
-        const responseText = await response.text();
-        console.log('Response text:', responseText);
-        throw new Error(responseText);
-      }
-  
-      return await response.json();
-    } catch (error) {
-      console.error('Error:', error);
-      return [];
-    }
+  try {
+    const response = await axios.get(`${API_BASE_URL}/getProductCards`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    return response.data; // Return the response data
+  } catch (error) {
+    console.error('Error Details:', error); // Log the full error object
+    console.error('Error Response:', error.response); 
+    console.error('Error:', error.response?.data || error.message); // Log the error details
+    return []; // Return an empty array in case of an error
+  }
 };
