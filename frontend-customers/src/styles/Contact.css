@@ -1,0 +1,67 @@
+.common {
+    display: flex;
+    flex-direction: column; /* Arrange children vertically */
+    min-height: 100vh; /* Ensure the container takes the full height of the viewport */
+}
+
+.main-content {
+    display: flex;
+    flex: 1;
+    margin: 5%;
+    align-items: center;
+}
+
+.contact {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+}
+
+.icon {
+    display: flex;
+}
+
+.phone-icon, .mail-icon{
+    margin-top: 8px;
+    margin-right: 15px;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    flex: 2.5;
+    margin: 20px;
+}
+
+.customer-details {
+    display: flex; 
+    justify-content: space-between;    
+    margin-bottom: 20px;   
+}
+
+.contact-form .form-button {
+    margin-top: 3%;
+    background-color: #0A2F6E; 
+    color: white; 
+    width: 20%;
+}
+
+.customer-details-text {
+    flex: 1; /* Ensure equal spacing for all text fields */
+    margin-right: 30px; /* Add spacing between fields */
+}
+
+.customer-details-text:last-child {
+    margin-right: 0; /* Remove margin for the last text field */
+}
+
+.customer-details-text .MuiTextField-root {
+    width: 100%; /* Ensure the text field takes the full width of its container */
+}
