@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Header } from "@/components/Header";
 import Image from "next/image";
 import Footer from '@/components/Footer';
@@ -8,9 +8,40 @@ import mail from '@/images/icons-mail.svg';
 import phone from '@/images/icons-phone.svg';
 import Divider from '@mui/material/Divider';
 import { Button, TextField } from "@mui/material";
+import { submitContactForm } from '@/services/contactService';
+import AlertComponent from '@/components/AlertComponent';
 import '@/styles/Contact.css';
 
 const Contact = () => {
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        phone: '',
+        message: '',
+      });
+    
+      const [alert, setAlert] = useState({ severity: '', title: '', message: '' });
+
+      const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+      };
+
+      const handleSubmit = async (e) => {
+        e.preventDefault();
+    
+        try {
+          const response = await submitContactForm(formData);
+          setAlert({ severity: 'success', title: 'Success', message: response.message });
+          setFormData({ name: '', email: '', phone: '', message: '' }); // Clear the form
+        } catch (error) {          
+          setAlert({ severity: 'error', title: 'Error', message: error.message });
+        }
+      };
+
+      const closeAlert = () => {
+        setAlert({ severity: '', title: '', message: '' });
+    };
 
   return (
     <div className="common">
@@ -37,48 +68,72 @@ const Contact = () => {
         </div>
 
         <div className='contact-form'>
+        <form onSubmit={handleSubmit}>
             <div className='customer-details'>
                 <div className='customer-details-text'>
                     <TextField 
                         label="Name"
+                        name="name"
                         type="text"
                         variant="outlined"
-                        required                  
+                        required 
+                        value={formData.name}
+                        onChange={handleChange}                 
                     />
                 </div>
                 <div className='customer-details-text'>
                     <TextField 
                         label="Email"
+                        name="email"
                         type="email"
                         variant="outlined"
                         required
+                        value={formData.email}
+                        onChange={handleChange}
                     />
                 </div>
                 <div className='customer-details-text'>
                     <TextField 
                         label="Phone"
+                        name="phone"
                         type="text"
                         variant="outlined"
                         required
+                        value={formData.phone}
+                        onChange={handleChange}
                     />
                 </div>
             </div>
 
             <TextField 
                 label="Message"
+                name="message"
                 type="text"
                 variant="outlined"
                 required
+                fullWidth
                 multiline
-                rows={4}                  
+                rows={4}  
+                value={formData.message}
+                onChange={handleChange}                
             />
 
-            <Button variant="contained" className="form-button" type="submit"> Send Message </Button>        
+            <Button variant="contained" className="form-button" type="submit"> Send Message </Button>  
+        </form>   
         </div>         
         
         
       </main>  
       <Footer />
+      {alert.message && (
+            <AlertComponent
+                severity={alert.severity}
+                title={alert.title}
+                message={alert.message}
+                onClose={closeAlert}
+                sx={{ width: '25%', position: 'fixed', top: '10%', left: '75%', zIndex: 9999 }}
+            />
+        )}
     </div>
   );
 };
