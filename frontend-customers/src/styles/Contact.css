@@ -1,10 +1,10 @@
-.common {
+.contact-all {
     display: flex;
     flex-direction: column; 
     min-height: 100vh; 
 }
 
-.main-content {
+.main-contact-content {
     display: flex;
     flex: 1;
     margin: 5%;

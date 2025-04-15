@@ -44,9 +44,9 @@ const Contact = () => {
     };
 
   return (
-    <div className="common">
+    <div className="contact-all">
       <Header isHomePage={true}/>
-      <main className="main-content">
+      <main className="main-contact-content">
 
         <div className='contact'>
             <div className='phone'>
