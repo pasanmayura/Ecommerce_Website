@@ -1,7 +1,7 @@
 .common {
     display: flex;
-    flex-direction: column; /* Arrange children vertically */
-    min-height: 100vh; /* Ensure the container takes the full height of the viewport */
+    flex-direction: column; 
+    min-height: 100vh; 
 }
 
 .main-content {
@@ -54,14 +54,76 @@
 }
 
 .customer-details-text {
-    flex: 1; /* Ensure equal spacing for all text fields */
-    margin-right: 30px; /* Add spacing between fields */
+    flex: 1; 
+    margin-right: 30px; 
 }
 
 .customer-details-text:last-child {
-    margin-right: 0; /* Remove margin for the last text field */
+    margin-right: 0; 
 }
 
 .customer-details-text .MuiTextField-root {
-    width: 100%; /* Ensure the text field takes the full width of its container */
+    width: 100%; 
+}
+
+@media (max-width: 1024px) {
+    .main-content {
+        flex-direction: column;
+        margin: 2%; 
+        align-items: center;
+    }
+
+    .customer-details {
+        flex-direction: column; 
+        gap: 15px; 
+    }
+
+    .contact-form .form-button {
+        width: 50%;
+        margin: 20px auto; 
+    }
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        margin: 1%; 
+    }
+
+    .contact {
+        padding: 10px; 
+        margin: 10px; 
+    }
+
+    .customer-details-text {
+        margin-right: 0; 
+        width: 100%; 
+    }
+
+    .contact-form .form-button {
+        width: 80%; 
+    }
+}
+
+@media (max-width: 480px) {
+    .main-content {
+        margin: 0; 
+    }
+
+    .contact {
+        padding: 5px; 
+        margin: 5px; 
+    }
+
+    .customer-details {
+        flex-direction: column; 
+        gap: 10px; 
+    }
+
+    .contact-form .form-button {
+        width: 100%; 
+    }
+
+    .customer-details-text .MuiTextField-root {
+        width: 100%; 
+    }
 }
