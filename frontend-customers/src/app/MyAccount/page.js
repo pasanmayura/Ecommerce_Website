@@ -9,6 +9,7 @@ import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import { Button, TextField } from "@mui/material";
 import { submitContactForm } from '@/services/contactService';
+import { getUserDetails } from '@/services/userService'; 
 import AlertComponent from '@/components/AlertComponent';
 import '@/styles/MyAccount.css';
 
@@ -18,8 +19,8 @@ const MyAccount = () => {
         FirstName: '',
         LastName: '',
         Email: '',
-        PhoneNumber: '',
-        StreetAddress: '',
+        MobileNumber: '',
+        Street_No: '',
         Village: '',
         City: '',
         PostalCode: '',
@@ -35,7 +36,12 @@ const MyAccount = () => {
                 router.push('/SignIn'); // Redirect to Sign In page if not logged in
             } else {
                 setIsAuthenticated(true); // Set authentication status
-            }
+
+                // Fetch user details
+                getUserDetails()
+                .then((data) => setUser(data))
+                .catch((error) => console.error('Error fetching user details:', error.message));
+        }
         }, [router]);
 
         if (!isAuthenticated) {
@@ -85,6 +91,8 @@ const MyAccount = () => {
                         type="text"
                         variant="outlined"
                         fullWidth
+                        value={user.FirstName}
+                        onChange={(e) => setUser({ ...user, FirstName: e.target.value })}
                     />
                 </div>
                 <div className='user-details-text'>
@@ -93,6 +101,8 @@ const MyAccount = () => {
                         name="LastName"
                         type="text"
                         variant="outlined"
+                        value={user.LastName}
+                        onChange={(e) => setUser({ ...user, LastName: e.target.value })}
                     />
                 </div>
             </div>
@@ -103,15 +113,19 @@ const MyAccount = () => {
                         label="Email"
                         name="Email"
                         type="email"
-                        variant="outlined"                 
+                        variant="outlined"
+                        value={user.Email}
+                        onChange={(e) => setUser({ ...user, Email: e.target.value })}                 
                     />
                 </div>
                 <div className='user-details-text'>
                     <TextField 
-                        label="Phone"
-                        name="PhoneNumber"
+                        label="Phone Number"
+                        name="MobileNumber"
                         type="text"
-                        variant="outlined"                 
+                        variant="outlined" 
+                        value={user.MobileNumber}
+                        onChange={(e) => setUser({ ...user, MobileNumber: e.target.value })}                
                     />
                 </div>
             </div>
@@ -119,10 +133,12 @@ const MyAccount = () => {
             <div className='user-details'>
                 <div className='user-details-text'>
                     <TextField 
-                        label="Street Address"
-                        name="StreetAddress"
+                        label="Street Number"
+                        name="Street_No"
                         type="text"
-                        variant="outlined"                 
+                        variant="outlined"  
+                        value={user.Street_No}
+                        onChange={(e) => setUser({ ...user, Street_No: e.target.value })}               
                     />
                 </div>
                 <div className='user-details-text'>
@@ -130,7 +146,9 @@ const MyAccount = () => {
                         label="Village"
                         name="Village"
                         type="text"
-                        variant="outlined"                 
+                        variant="outlined"
+                        value={user.Village}
+                        onChange={(e) => setUser({ ...user, Village: e.target.value })}                 
                     />
                 </div>
             </div>
@@ -141,7 +159,9 @@ const MyAccount = () => {
                         label="City"
                         name="City"
                         type="text"
-                        variant="outlined"                 
+                        variant="outlined" 
+                        value={user.City}
+                        onChange={(e) => setUser({ ...user, City: e.target.value })}                
                     />
                 </div>
                 <div className='user-details-text'>
@@ -149,7 +169,9 @@ const MyAccount = () => {
                         label="Postal Code"
                         name="PostalCode"
                         type="text"
-                        variant="outlined"                 
+                        variant="outlined" 
+                        value={user.PostalCode}
+                        onChange={(e) => setUser({ ...user, PostalCode: e.target.value })}                
                     />
                 </div>
             </div>
