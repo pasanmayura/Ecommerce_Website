@@ -35,3 +35,20 @@ export const updateUserDetails = async (userDetails) => {
     throw new Error(error.response?.data?.message || 'Failed to update user details');
   }
 };
+
+export const changePassword = async (passwordData) => {
+  try {
+    const token = sessionStorage.getItem('jwtToken'); // Get the token from sessionStorage
+    const response = await axios.put(`${API_BASE_URL}/change-password`, passwordData, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+      },
+    });
+
+    return response.data; // Return the response
+  } catch (error) {
+    console.error('Error changing password:', error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || 'Failed to change password');
+  }
+};
