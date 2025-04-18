@@ -5,6 +5,8 @@ import { useRouter, usePathname } from "next/navigation";
 import { FiBox, FiUsers, FiLogOut } from "react-icons/fi";
 import { FiMenu, FiX } from "react-icons/fi";
 import ConfirmationDialog from '@/components/ConfirmationDialog';
+import ChangePasswordModal from '@/components/ChangePasswordModal'; 
+import { changePassword } from '@/services/userService'; 
 import "@/styles/Sidebar.css";
 
 export const Sidebar = () => {
@@ -14,6 +16,7 @@ export const Sidebar = () => {
   const [expandedMenus, setExpandedMenus] = useState([]);
   const [activeSubItem, setActiveSubItem] = useState(null); 
   const [openDialog, setOpenDialog] = useState(false);
+  const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] = useState(false);
 
   const menuItems = [
     { 
@@ -75,6 +78,25 @@ export const Sidebar = () => {
     setOpenDialog(false);
   };
 
+  const handleOpenChangePasswordModal = () => {
+    setIsChangePasswordModalOpen(true);
+  };
+
+  const handleCloseChangePasswordModal = () => {
+    setIsChangePasswordModalOpen(false);
+  };
+
+  const handleChangePassword = async (passwordData) => {
+    try {
+      await changePassword(passwordData); // Call the backend API
+      alert('Password changed successfully!');
+      handleCloseChangePasswordModal();
+    } catch (error) {
+      console.error('Error changing password:', error.message);
+      alert(error.message || 'Failed to change password. Please try again.');
+    }
+  };
+
   return (
     <div className="sidebar-container">
       <button onClick={toggleSidebar} className="toggle-btn">
@@ -92,7 +114,7 @@ export const Sidebar = () => {
                   >
                     <span className="menu-icon">{item.icon}</span>
                     <span className="menu-text">{item.title}</span>
-                    {/* <span className="chevron">{expandedMenus.includes(item.id) ? <FiChevronUp /> : <FiChevronDown />}</span> */}
+                    
                   </button>
                   {expandedMenus.includes(item.id) && (
                     <ul className="submenu">
@@ -100,7 +122,11 @@ export const Sidebar = () => {
                         <li key={subItem.title}>
                           <button 
                             className={`submenu-btn ${activeSubItem === subItem.title ? 'active' : ''}`} 
-                            onClick={() => handleSubItemClick(subItem.link, subItem.title)}
+                            onClick={() =>
+                              subItem.title === 'Change Password'
+                                ? handleOpenChangePasswordModal()
+                                : handleSubItemClick(subItem.link, subItem.title)
+                            }
                           >
                             {subItem.title}
                           </button>
@@ -124,6 +150,13 @@ export const Sidebar = () => {
         onConfirm={handleLogout}
         title="Confirm Logout"
         message="Are you sure you want to Log out ?"
+      />
+
+      {/* Change Password Modal */}
+      <ChangePasswordModal
+        open={isChangePasswordModalOpen}
+        onClose={handleCloseChangePasswordModal}
+        onSubmit={handleChangePassword}
       />
     </div>
   );
