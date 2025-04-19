@@ -34,3 +34,19 @@ export const searchProducts = async (searchQuery) => {
     return []; // Return an empty array in case of an error
   }
 };
+
+export const getProductsByCategory = async (category) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/category`, {
+      params: { category },
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    return response.data; // Return the products
+  } catch (error) {
+    console.error('Error fetching products by category:', error.response?.data || error.message);
+    return []; // Return an empty array in case of an error
+  }
+};

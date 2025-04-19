@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Header } from "@/components/Header";
 import ProductCard from '@/components/ProductCard';
-import { getProductCards, searchProducts } from '@/services/productService';
+import { getProductCards, searchProducts, getProductsByCategory } from '@/services/productService';
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -13,6 +13,7 @@ const Products = () => {
   const [visibleProducts, setVisibleProducts] = useState(4); // Number of products to display initially
   const searchParams = useSearchParams(); // Get query parameters from the URL
   const searchQuery = searchParams.get('search');
+  const category = searchParams.get('category');
 
   useEffect(() => {
     AOS.init({
@@ -40,6 +41,10 @@ const Products = () => {
         // Fetch products based on the search query
         const searchResults = await searchProducts(searchQuery);
         setProducts(searchResults);
+      } else if (category) {
+        // Fetch products based on the category
+        const categoryProducts = await getProductsByCategory(category);
+        setProducts(categoryProducts);
       } else {
         // Fetch all products if no search query is provided
         const productData = await getProductCards();
@@ -48,7 +53,7 @@ const Products = () => {
     };
 
     fetchProducts();
-  }, [searchQuery]);
+  }, [searchQuery, category]);
 
   const handleViewMore = () => {
     setVisibleProducts((prevVisible) => prevVisible + 4); // Show 4 more products
