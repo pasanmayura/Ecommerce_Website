@@ -46,3 +46,28 @@ exports.searchProducts = async (req, res) => {
     res.status(500).json({ message: 'Failed to search products' });
   }
 };
+
+exports.getProductsByCategory = async (req, res) => {
+  const { category } = req.query; // Extract the category name from the query parameters
+
+  try {
+    const query = `
+      SELECT 
+        p.ProductID AS id,
+        p.Product_Name AS name, 
+        CAST(MIN(b.Selling_Price) AS DECIMAL(10, 2)) AS price,  
+        pi.ImageURL_1 AS image
+      FROM product p
+      JOIN batch b ON p.ProductID = b.ProductID
+      JOIN productsimages pi ON p.ProductID = pi.ProductID
+      JOIN category c ON p.CategoryID = c.CategoryID
+      WHERE c.Category_Name = ?
+      GROUP BY p.ProductID, p.Product_Name, pi.ImageURL_1;
+    `;
+    const [rows] = await pool.promise().query(query, [category]); // Use the category name to filter products
+    res.status(200).json(rows); // Return the products
+  } catch (error) {
+    console.error('Error fetching products by category:', error);
+    res.status(500).json({ message: 'Failed to fetch products by category' });
+  }
+};
