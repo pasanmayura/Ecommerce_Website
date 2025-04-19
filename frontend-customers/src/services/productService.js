@@ -18,3 +18,19 @@ export const getProductCards = async () => {
     return []; // Return an empty array in case of an error
   }
 };
+
+export const searchProducts = async (searchQuery) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/search`, {
+      params: { query: searchQuery },
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    return response.data; // Return the search results
+  } catch (error) {
+    console.error('Error searching products:', error.response?.data || error.message);
+    return []; // Return an empty array in case of an error
+  }
+};

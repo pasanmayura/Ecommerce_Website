@@ -3,27 +3,22 @@
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import "@/styles/Header.css";
+import { useRouter } from "next/navigation";
 import logoSmartKade2 from "../images/logo-smart-kade-removebg-1.png";
 import { TextField, IconButton } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
+import "@/styles/Header.css";
 
 export const Header = ({ isHomePage = false }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const searchBarRef = useRef(null);
-
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
-
-  const toggleSearch = () => {
-    setSearchOpen(!searchOpen);
-  };
+  const router = useRouter();
 
   // Check if the user is logged in
   useEffect(() => {
@@ -49,6 +44,21 @@ export const Header = ({ isHomePage = false }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [searchOpen]);
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
+  const toggleSearch = () => {
+    setSearchOpen(!searchOpen);
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim() !== "") {
+      router.push(`/Products?search=${encodeURIComponent(searchQuery)}`); // Navigate to the Products page with the search query
+    }
+  };
 
   return (
     <header className="header">
@@ -76,14 +86,18 @@ export const Header = ({ isHomePage = false }) => {
       {/* Search Bar and Icons */}
       <div className="header-actions">
         {searchOpen ? (
-          <TextField
-            ref={searchBarRef}
-            className="search-bar"
-            placeholder="Search products..."
-            variant="outlined"
-            size="small"
-            autoFocus
-          />
+          <form onSubmit={handleSearchSubmit}>
+            <TextField
+              ref={searchBarRef}
+              className="search-bar"
+              placeholder="Search products..."
+              variant="outlined"
+              size="small"
+              autoFocus
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </form>
         ) : (
           <IconButton aria-label="search" className="icon-button" onClick={toggleSearch}>
             <SearchIcon />
@@ -96,7 +110,7 @@ export const Header = ({ isHomePage = false }) => {
           <ShoppingCartIcon />
         </IconButton>
       </div>
-
+      
       {/* Menu Icon for Smaller Screens */}
       <div className="menu-icon" onClick={toggleMenu}>
         <MenuIcon />
