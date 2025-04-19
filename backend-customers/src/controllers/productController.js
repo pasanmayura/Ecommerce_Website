@@ -1,12 +1,48 @@
-const ProductService = require('../services/productService');
+const pool = require('../config/db'); // Import the database connection
 
 // Fetch Product details for ProductCards
 exports.getProductCards = async (req, res) => {
   try {
-    const products = await ProductService.getProductCards();
-    res.status(200).json(products);
+    const query = `
+      SELECT 
+        p.ProductID AS id,
+        p.Product_Name AS name, 
+        CAST(MIN(b.Selling_Price) AS DECIMAL(10, 2)) AS price,  
+        pi.ImageURL_1 AS image
+      FROM product p
+      JOIN batch b ON p.ProductID = b.ProductID
+      JOIN productsimages pi ON p.ProductID = pi.ProductID
+      GROUP BY p.ProductID, p.Product_Name, pi.ImageURL_1;
+    `;
+    const [rows] = await pool.promise().query(query); // Execute the query
+    res.status(200).json(rows); // Return the product cards
   } catch (error) {
     console.error('Error fetching product cards:', error);
     res.status(500).json({ message: 'Failed to fetch product cards' });
+  }
+};
+
+// Search Products by Name
+exports.searchProducts = async (req, res) => {
+  const { query } = req.query; // Extract the search query from the request
+
+  try {
+    const searchQuery = `
+      SELECT 
+        p.ProductID AS id,
+        p.Product_Name AS name, 
+        CAST(MIN(b.Selling_Price) AS DECIMAL(10, 2)) AS price,  
+        pi.ImageURL_1 AS image
+      FROM product p
+      JOIN batch b ON p.ProductID = b.ProductID
+      JOIN productsimages pi ON p.ProductID = pi.ProductID
+      WHERE p.Product_Name LIKE ?
+      GROUP BY p.ProductID, p.Product_Name, pi.ImageURL_1;
+    `;
+    const [rows] = await pool.promise().query(searchQuery, [`%${query}%`]); // Execute the query with the search term
+    res.status(200).json(rows); // Return the search results
+  } catch (error) {
+    console.error('Error searching products:', error);
+    res.status(500).json({ message: 'Failed to search products' });
   }
 };
