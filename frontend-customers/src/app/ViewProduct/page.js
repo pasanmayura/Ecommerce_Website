@@ -1,0 +1,196 @@
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { Header } from "@/components/Header";
+import { getProductDetails } from '@/services/productService';
+import Image from 'next/image';
+import { GrFavorite } from "react-icons/gr";
+import { HiOutlineShare } from "react-icons/hi";
+import "aos/dist/aos.css";
+import '@/styles/ViewProduct.css';
+
+const ViewProduct = () => {
+    const [product, setProduct] = useState(null);
+    const [quantity, setQuantity] = useState(1);
+    const [selectedColor, setSelectedColor] = useState('white');
+    const [selectedSize, setSelectedSize] = useState('M');
+    const [selectedImage, setSelectedImage] = useState(0);
+    const searchParams = useSearchParams();
+    const productId = searchParams.get('id');
+
+    useEffect(() => {
+        const fetchProductDetails = async () => {
+          try {
+            const productData = await getProductDetails(productId);
+            setProduct(productData);
+          } catch (error) {
+            console.error('Error fetching product details:', error.message);
+          }
+        };
+    
+        if (productId) {
+          fetchProductDetails();
+        }
+      }, [productId]);
+    
+      if (!product) {
+        return <div className="loading-container">Loading...</div>;
+      }
+
+    const { image1, image2, image3, name, description, price, attributes } = product;
+
+    const processedAttributes = {
+      color: [],
+      size: []
+    };
+    
+    product.attributes.forEach(attr => {
+      if (attr.attribute === "color") {
+        processedAttributes.color.push(attr.value);
+      } else if (attr.attribute === "size") {
+        processedAttributes.size.push(attr.value);
+      }
+    });
+  
+    const getDirectImageUrl = (url) => {
+        if (url && url.includes('drive.google.com')) {
+          const fileId = url.split('/d/')[1]?.split('/')[0];
+          return fileId ? `https://drive.google.com/uc?id=${fileId}` : url;
+        }
+        return url;
+    };
+
+    const productImages = [
+      getDirectImageUrl(image1),
+      getDirectImageUrl(image2),
+      getDirectImageUrl(image3),
+    ];
+
+    const handleQuantityChange = (action) => {
+      if (action === 'increase') {
+        setQuantity(prev => prev + 1);
+      } else if (action === 'decrease' && quantity > 1) {
+        setQuantity(prev => prev - 1);
+      }
+    };
+
+    const handleColorSelect = (color) => {
+      setSelectedColor(color);
+    };
+
+    const handleSizeSelect = (size) => {
+      setSelectedSize(size);
+    };    
+
+    return (
+        <div className="view-product">
+          <Header isHomePage={false} />
+          <main className="product-content-container">
+            <div className="product-gallery">
+              <div className="thumbnail-container">
+                {productImages.map((img, index) => (
+                  <div 
+                    key={index} 
+                    className={`thumbnail ${selectedImage === index ? 'active' : ''}`}
+                    onClick={() => setSelectedImage(index)}
+                  >
+                    <Image
+                      src={img}
+                      alt={`${name} thumbnail ${index + 1}`}
+                      width={100}
+                      height={100}
+                      objectFit="contain"
+                    />
+                  </div>
+                ))}
+              </div>
+              <div className="main-image-container">
+                <Image
+                  src={productImages[selectedImage]}
+                  alt={name}
+                  width={500}
+                  height={500}
+                  objectFit="contain"
+                  className="main-product-image"
+                />
+              </div>
+            </div>
+            
+            <div className="product-info">
+              <h1 className="product-title">{name}</h1>
+              {/* <div className="product-rating">
+                <div className="stars">
+                  <span className="star filled">★</span>
+                  <span className="star filled">★</span>
+                  <span className="star filled">★</span>
+                  <span className="star filled">★</span>
+                  <span className="star half-filled">★</span>
+                </div>
+                <span className="reviews-count">(150 Reviews)</span>
+                <span className="stock-status">In Stock</span>
+              </div> */}
+              
+              <div className="product-price">Rs. {!isNaN(price) ? parseFloat(price).toFixed(2) : 'N/A'}</div>
+              
+              <div className="product-description">
+                {description}
+              </div>
+              
+              <div className="product-options">
+                {processedAttributes.color.length > 0 && (
+                  <div className="color-options">
+                    <span className="option-label">Colours:</span>
+                    <div className="color-selector">
+                      {processedAttributes.color.map((color) => (
+                        <button 
+                          key={color}
+                          className={`color-btn ${selectedColor === color ? 'selected' : ''}`}
+                          onClick={() => handleColorSelect(color)}
+                          style={{ backgroundColor: color.toLowerCase() }}
+                        ></button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                
+                {processedAttributes.size.length > 0 && (
+                  <div className="size-options">
+                    <span className="option-label">Size:</span>
+                    <div className="size-selector">
+                      {processedAttributes.size.map((size) => (
+                        <button 
+                          key={size}
+                          className={`size-btn ${selectedSize === size ? 'selected' : ''}`}
+                          onClick={() => handleSizeSelect(size)}
+                        >
+                          {size.toUpperCase()}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+              
+              <div className="product-actions">
+                <div className="quantity-selector">
+                  <button className="quantity-btn" onClick={() => handleQuantityChange('decrease')}>−</button>
+                  <input type="text" value={quantity} readOnly className="quantity-input" />
+                  <button className="quantity-btn" onClick={() => handleQuantityChange('increase')}>+</button>
+                </div>
+                
+                <button className="buy-now-btn">Buy Now</button>
+                <button className="wishlist-btn"><GrFavorite /></button>
+              </div>
+              
+              <div className="additional-actions">
+                <button className="add-to-cart-btn">Add to Cart</button>
+                <button className="share-btn"><HiOutlineShare /></button>
+              </div>
+            </div>
+          </main>
+        </div>
+      );
+    };
+    
+    export default ViewProduct;
