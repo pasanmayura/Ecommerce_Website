@@ -71,7 +71,7 @@ CREATE TABLE Orders (
     FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID)
 );
 
-CREATE TABLE ProductOrder (
+CREATE TABLE ProductOrders (
     OrderID VARCHAR(255),
     ProductID VARCHAR(255),
     BatchID INT, 
@@ -115,3 +115,17 @@ LEFT JOIN Batch b ON p.ProductID = b.ProductID
 JOIN category c ON p.CategoryID = c.CategoryID
 GROUP BY p.ProductID, p.Product_Name, p.Threshold
 HAVING TotalStock < p.Threshold;
+
+CREATE TABLE attributes (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  Attribute_Name VARCHAR(50) 
+);
+
+CREATE TABLE product_attributes (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  ProductID VARCHAR(255),
+  attribute_id INT,
+  value VARCHAR(100),
+  FOREIGN KEY (ProductID) REFERENCES product(ProductID),
+  FOREIGN KEY (attribute_id) REFERENCES attributes(id)
+);
