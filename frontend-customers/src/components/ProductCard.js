@@ -1,10 +1,11 @@
 'use client';
 
 import React from 'react';
-import '@/styles/ProductCard.css';
+import { useRouter } from 'next/navigation';
 import Image from "next/image";
 import { Button } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import '@/styles/ProductCard.css';
 
 // Helper function to convert Google Drive URL to direct image link
 const getDirectImageUrl = (url) => {
@@ -18,7 +19,12 @@ const getDirectImageUrl = (url) => {
 };
 
 const ProductCard = ({ product }) => {
-  const { image, name, price } = product;
+  const { id, image, name, price } = product;
+  const router = useRouter();
+
+  const handleCardClick = () => {
+    router.push(`/ViewProduct?id=${id}`); // Navigate to the View Product page with the ProductID
+  };
 
   const handleAddToCart = () => {
     console.log(`${name} added to cart!`);
@@ -26,7 +32,7 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <div className="product-card">
+    <div className="product-card" onClick={handleCardClick} style={{ cursor: 'pointer' }}>
       <div className="product-image">
         <Image
           src={getDirectImageUrl(image)}
