@@ -50,3 +50,18 @@ export const getProductsByCategory = async (category) => {
     return []; // Return an empty array in case of an error
   }
 };
+
+export const getProductDetails = async (productId) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/details/${productId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    return response.data; // Return the product details
+  } catch (error) {
+    console.error('Error fetching product details:', error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || 'Failed to fetch product details');
+  }
+};
