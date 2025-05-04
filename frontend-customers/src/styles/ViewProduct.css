@@ -288,6 +288,11 @@
   color: #666;
 }
 
+.product-comments {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
 @media (max-width: 1024px) {
   .product-content-container {
     flex-direction: column;

@@ -2,11 +2,13 @@
 
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
+import axios from 'axios'; // Import axios
 import { Header } from "@/components/Header";
-import { getProductDetails } from '@/services/productService';
+import { getProductDetails, getProductComments } from '@/services/productService';
 import Image from 'next/image';
 import { GrFavorite } from "react-icons/gr";
 import { HiOutlineShare } from "react-icons/hi";
+import Comment from '@/components/Comment'; 
 import "aos/dist/aos.css";
 import '@/styles/ViewProduct.css';
 
@@ -18,6 +20,7 @@ const ViewProduct = () => {
     const [selectedImage, setSelectedImage] = useState(0);
     const searchParams = useSearchParams();
     const productId = searchParams.get('id');
+    const [comments, setComments] = useState([]); 
 
     useEffect(() => {
         const fetchProductDetails = async () => {
@@ -28,9 +31,20 @@ const ViewProduct = () => {
             console.error('Error fetching product details:', error.message);
           }
         };
+
+        const fetchComments = async () => {
+          try {
+            const commentsData = await getProductComments(productId);
+            console.log('Fetched comments:', commentsData);
+            setComments(commentsData);
+          } catch (error) {
+            console.error('Error fetching comments:', error.message);
+          }
+        };
     
         if (productId) {
           fetchProductDetails();
+          fetchComments(); // Fetch comments for the product
         }
       }, [productId]);
     
@@ -45,7 +59,7 @@ const ViewProduct = () => {
       size: []
     };
     
-    product.attributes.forEach(attr => {
+    attributes.forEach(attr => {
       if (attr.attribute === "color") {
         processedAttributes.color.push(attr.value);
       } else if (attr.attribute === "size") {
@@ -202,6 +216,23 @@ const ViewProduct = () => {
               </div>
             </div>
           </main>
+          {/* Comment Section */}
+        <div className="product-comments">
+          <h2>Comments</h2>
+          {comments.length > 0 ? (
+            comments.map((comment) => (
+              <Comment
+                key={comment.id}
+                name={comment.name}
+                rating={comment.rating}
+                date={comment.date}
+                text={comment.text}
+              />
+            ))
+          ) : (
+            <p>No comments yet. Be the first to comment!</p>
+          )}
+        </div>
         </div>
       );
     };
