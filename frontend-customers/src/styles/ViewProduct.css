@@ -75,48 +75,43 @@
   margin: 0;
 }
 
-/* .product-rating {
+.product-rating {
   display: flex;
   align-items: center;
   gap: 8px;
-}
-
-.stars {
-  display: flex;
-  color: #ffc107;
+  font-size: 18px;
+  color: #ffc107; /* Default color for stars */
 }
 
 .star {
-  font-size: 18px;
+  font-size: 20px;
 }
 
 .star.filled {
-  color: #ffc107;
+  color: #ffc107; /* Gold for filled stars */
 }
 
 .star.half-filled {
   position: relative;
-  color: #e0e0e0;
+  color: #e0e0e0; /* Gray for empty part */
 }
 
 .star.half-filled::before {
   content: "★";
   position: absolute;
-  color: #ffc107;
+  color: #ffc107; /* Gold for filled part */
   width: 50%;
   overflow: hidden;
 }
 
-.reviews-count {
-  color: #666;
-  font-size: 14px;
+.star.empty {
+  color: #e0e0e0; /* Gray for empty stars */
 }
 
-.stock-status {
-  color: #2e7d32;
+.rating-value {
   font-size: 14px;
-  margin-left: auto;
-} */
+  color: #666;
+}
 
 .product-price {
   font-size: 22px;

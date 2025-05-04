@@ -38,7 +38,7 @@ const ViewProduct = () => {
         return <div className="loading-container">Loading...</div>;
       }
 
-    const { image1, image2, image3, name, description, price, attributes } = product;
+    const { image1, image2, image3, name, description, price, rating, attributes } = product;
 
     const processedAttributes = {
       color: [],
@@ -81,7 +81,25 @@ const ViewProduct = () => {
 
     const handleSizeSelect = (size) => {
       setSelectedSize(size);
-    };    
+    };   
+    
+    const renderStars = (rating) => {
+      const fullStars = Math.floor(rating); // Number of full stars
+      const halfStar = rating % 1 >= 0.5; // Check if there's a half star
+      const emptyStars = 5 - fullStars - (halfStar ? 1 : 0); // Remaining empty stars
+
+      return (
+        <>
+          {[...Array(fullStars)].map((_, index) => (
+            <span key={`full-${index}`} className="star filled">★</span>
+          ))}
+          {halfStar && <span className="star half-filled">★</span>}
+          {[...Array(emptyStars)].map((_, index) => (
+            <span key={`empty-${index}`} className="star empty">★</span>
+          ))}
+        </>
+      );
+    };
 
     return (
         <div className="view-product">
@@ -118,23 +136,18 @@ const ViewProduct = () => {
             </div>
             
             <div className="product-info">
-              <h1 className="product-title">{name}</h1>
-              {/* <div className="product-rating">
-                <div className="stars">
-                  <span className="star filled">★</span>
-                  <span className="star filled">★</span>
-                  <span className="star filled">★</span>
-                  <span className="star filled">★</span>
-                  <span className="star half-filled">★</span>
-                </div>
-                <span className="reviews-count">(150 Reviews)</span>
-                <span className="stock-status">In Stock</span>
-              </div> */}
+              <h1 className="product-title">{name}</h1>               
               
               <div className="product-price">Rs. {!isNaN(price) ? parseFloat(price).toFixed(2) : 'N/A'}</div>
               
               <div className="product-description">
                 {description}
+              </div>
+
+              {/* Product Rating */}
+              <div className="product-rating">
+                {renderStars(rating)}
+                <span className="rating-value">({rating.toFixed(1)})</span>
               </div>
               
               <div className="product-options">

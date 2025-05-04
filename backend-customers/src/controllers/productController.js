@@ -82,6 +82,7 @@ exports.getProductDetails = async (req, res) => {
           p.Product_Name AS name,
           p.Description AS description,
           CAST(MIN(b.Selling_Price) AS DECIMAL(10, 2)) AS price,
+          p.Product_Rating AS rating,
           pi.ImageURL_1 AS image1,
           pi.ImageURL_2 AS image2,
           pi.ImageURL_3 AS image3,
