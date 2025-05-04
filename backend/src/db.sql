@@ -23,7 +23,10 @@ CREATE TABLE Product (
     Description TEXT,
     Threshold INT NOT NULL,
     AdminID VARCHAR(255), 
-    CategoryID VARCHAR(255),         
+    CategoryID VARCHAR(255),  
+    Product_Rating FLOAT DEFAULT 0,
+    Rating_Count INT DEFAULT 0,
+    Total_Rating INT DEFAULT 0,       
     FOREIGN KEY (AdminID) REFERENCES Admin(AdminID),
     FOREIGN KEY (CategoryID) REFERENCES Category(CategoryID)
 );
@@ -104,17 +107,17 @@ CREATE TABLE Return_Items (
 
 -- Create a view to get low stock products
 CREATE VIEW LowStockProducts AS
-SELECT 
-    p.ProductID, 
-    p.Product_Name, 
-    p.Threshold,
-    c.Category_Name,
-    COALESCE(SUM(b.Stock_Quantity), 0) AS TotalStock
-FROM Product p
-LEFT JOIN Batch b ON p.ProductID = b.ProductID
-JOIN category c ON p.CategoryID = c.CategoryID
-GROUP BY p.ProductID, p.Product_Name, p.Threshold
-HAVING TotalStock < p.Threshold;
+    SELECT 
+        p.ProductID, 
+        p.Product_Name, 
+        p.Threshold,
+        c.Category_Name,
+        COALESCE(SUM(b.Stock_Quantity), 0) AS TotalStock
+    FROM Product p
+    LEFT JOIN Batch b ON p.ProductID = b.ProductID
+    JOIN category c ON p.CategoryID = c.CategoryID
+    GROUP BY p.ProductID, p.Product_Name, p.Threshold
+    HAVING TotalStock < p.Threshold;
 
 CREATE TABLE attributes (
   id INT PRIMARY KEY AUTO_INCREMENT,
@@ -128,4 +131,15 @@ CREATE TABLE product_attributes (
   value VARCHAR(100),
   FOREIGN KEY (ProductID) REFERENCES product(ProductID),
   FOREIGN KEY (attribute_id) REFERENCES attributes(id)
+);
+
+CREATE TABLE product_review (
+  ReviewID INT AUTO_INCREMENT PRIMARY KEY,
+  ProductID VARCHAR(255),
+  CustomerID VARCHAR(255),
+  CustomerRating FLOAT DEFAULT 0,
+  Comment VARCHAR(255),
+  Created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (ProductID) REFERENCES Product(ProductID),
+  FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID)
 );
