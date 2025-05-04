@@ -112,3 +112,28 @@ exports.getProductDetails = async (req, res) => {
     res.status(500).json({ message: 'Failed to fetch product details' });
   }
 };
+
+exports.getProductComments = async (req, res) => {
+  const { id } = req.params; // Extract ProductID from the request parameters
+
+  try {
+    const query = `
+      SELECT 
+        pv.ReviewID AS id,
+        pv.Comment AS text,
+        pv.Created_at AS date,
+        pv.CustomerRating AS rating,
+        CONCAT(c.FirstName, ' ', c.LastName) AS name
+      FROM product_review pv
+      JOIN customer c ON pv.CustomerID = c.CustomerID
+      WHERE pv.ProductID = ?
+      ORDER BY pv.Created_at DESC;
+    `;
+    const [rows] = await pool.promise().query(query, [id]); // Fetch comments for the product
+
+    res.status(200).json(rows); // Return the comments
+  } catch (error) {
+    console.error('Error fetching comments:', error);
+    res.status(500).json({ message: 'Failed to fetch comments' });
+  }
+};

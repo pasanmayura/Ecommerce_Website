@@ -7,5 +7,6 @@ router.get('/getProductCards', productController.getProductCards);
 router.get('/search', productController.searchProducts);
 router.get('/category', productController.getProductsByCategory);
 router.get('/details/:id', productController.getProductDetails);
+router.get('/:id/comments', productController.getProductComments);
 
 module.exports = router;

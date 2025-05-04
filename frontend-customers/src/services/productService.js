@@ -28,7 +28,7 @@ export const searchProducts = async (searchQuery) => {
       },
     });
 
-    return response.data; // Return the search results
+    return response.data; 
   } catch (error) {
     console.error('Error searching products:', error.response?.data || error.message);
     return []; // Return an empty array in case of an error
@@ -63,5 +63,21 @@ export const getProductDetails = async (productId) => {
   } catch (error) {
     console.error('Error fetching product details:', error.response?.data || error.message);
     throw new Error(error.response?.data?.message || 'Failed to fetch product details');
+  }
+};
+
+export const getProductComments = async (productId) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/${productId}/comments`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    console.log('API Response:', response.data);
+    return response.data; // Return the product comments
+  } catch (error) {
+    console.error('Error fetching product comments:', error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || 'Failed to fetch product comments');
   }
 };
