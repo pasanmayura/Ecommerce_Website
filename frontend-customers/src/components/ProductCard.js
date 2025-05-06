@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from "next/image";
 import { Button } from '@mui/material';
@@ -8,6 +8,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import StarRating from '@/components/StarRating'; 
 import { useCart } from '@/contexts/CartContext';
+import { addToWishlist, removeFromWishlist, getWishlist } from '@/services/wishlistService';
 import '@/styles/ProductCard.css';
 
 // Helper function to convert Google Drive URL to direct image link
@@ -23,23 +24,51 @@ const getDirectImageUrl = (url) => {
 const ProductCard = ({ product }) => {
   const { id, image, name, price, sold_count, rating } = product;
   const router = useRouter();
-  const [isHovered, setIsHovered] = React.useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isWishlisted, setIsWishlisted] = useState(false);
   const { addToCart } = useCart();
+
+  useEffect(() => {
+    const checkWishlistStatus = async () => {
+      try {
+        const wishlist = await getWishlist(); // Fetch the user's wishlist
+        console.log('Fetched wishlist:', wishlist); // Debugging: Log the fetched wishlist
+        setIsWishlisted(wishlist.some(item => item.id === id)); // Check if the product is in the wishlist
+      } catch (error) {
+        console.error('Error checking wishlist status:', error.message);
+      }
+    };
+  
+    checkWishlistStatus(); // Call the function to check wishlist status
+  }, [id]);
 
   const handleCardClick = () => {
     router.push(`/ViewProduct?id=${id}`);
   };
 
   const handleAddToCart = (e) => {
-    e.stopPropagation(); // to prevent card click
-    addToCart(product); // 👈 add to cart
+    e.stopPropagation(); // Prevent card click
+    addToCart(product); // Add to cart
     console.log(`${name} added to cart!`);
   };
 
-  const handleWishlist = (e) => {
-    e.stopPropagation(); // Prevent card click event from firing
-    console.log(`${name} added to wishlist!`);
-    // Wishlist logic here
+  const handleWishlistToggle = async (e) => {
+    e.stopPropagation();
+    try {
+      if (isWishlisted) {
+        setIsWishlisted(false); // Optimistically update the state
+        await removeFromWishlist(id); // Remove from wishlist
+        console.log(`${name} removed from wishlist!`);
+      } else {
+        setIsWishlisted(true); // Optimistically update the state
+        await addToWishlist(id); // Add to wishlist
+        console.log(`${name} added to wishlist!`);
+      }
+    } catch (error) {
+      console.error('Error toggling wishlist:', error.message);
+      // Revert the state if the API call fails
+      setIsWishlisted((prev) => !prev);
+    }
   };
 
   const formattedPrice = !isNaN(price) ? parseFloat(price).toFixed(2) : 'N/A';
@@ -55,7 +84,11 @@ const ProductCard = ({ product }) => {
         {sold_count > 50 && <span className="badge bestseller">Bestseller</span>}
       </div>
       
-      <div className="wishlist-icon" onClick={handleWishlist}>
+      <div 
+        className="wishlist-icon" 
+        onClick={handleWishlistToggle} 
+        style={{ color: isWishlisted ? '#ff6b6b' : '#ccc' }}
+      >
         <FavoriteIcon className="heart-icon" />
       </div>
       

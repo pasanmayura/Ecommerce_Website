@@ -4,11 +4,13 @@ import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Header } from "@/components/Header";
 import { getProductDetails, getProductComments } from '@/services/productService';
+import { useCart } from '@/contexts/CartContext';
 import Image from 'next/image';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { HiOutlineShare } from "react-icons/hi";
 import Comment from '@/components/Comment'; 
 import StarRating from '@/components/StarRating'; 
+import { addToWishlist, removeFromWishlist, getWishlist } from '@/services/wishlistService';
 import "aos/dist/aos.css";
 import '@/styles/ViewProduct.css';
 
@@ -21,6 +23,8 @@ const ViewProduct = () => {
     const searchParams = useSearchParams();
     const productId = searchParams.get('id');
     const [comments, setComments] = useState([]); 
+    const { addToCart } = useCart(); 
+    const [isWishlisted, setIsWishlisted] = useState(false);
 
     useEffect(() => {
         const fetchProductDetails = async () => {
@@ -41,10 +45,21 @@ const ViewProduct = () => {
             console.error('Error fetching comments:', error.message);
           }
         };
+
+        const checkWishlistStatus = async () => {
+          try {
+            const wishlist = await getWishlist(); // Fetch the user's wishlist
+            console.log('Fetched wishlist:', wishlist); // Debugging: Log the fetched wishlist
+            setIsWishlisted(wishlist.some(item => item.id === productId)); // Check if the product is in the wishlist
+          } catch (error) {
+            console.error('Error checking wishlist status:', error.message);
+          }
+        };
     
         if (productId) {
           fetchProductDetails();
           fetchComments(); // Fetch comments for the product
+          checkWishlistStatus(); // Check if the product is in the wishlist
         }
       }, [productId]);
     
@@ -52,8 +67,40 @@ const ViewProduct = () => {
         return <div className="loading-container">Loading...</div>;
       }
 
-    const { image1, image2, image3, name, description, price, rating, attributes } = product;
+    const { id, image1, image2, image3, name, description, price, rating, attributes } = product;
 
+    const handleAddToCart = () => {
+      const cartItem = {
+        id: productId, // Use the product ID
+        name,
+        price,
+        image: productImages[selectedImage], // Use the currently selected image
+        color: selectedColor,
+        size: selectedSize,
+        quantity,
+      };
+    
+      addToCart(cartItem); // Add the item to the cart using the CartContext
+      console.log(`${name} added to cart with quantity: ${quantity}, color: ${selectedColor}, size: ${selectedSize}`);
+    };
+
+    const handleWishlistToggle = async (e) => {
+        e.stopPropagation();
+        try {
+          if (isWishlisted) {
+            await removeFromWishlist(id); // Remove from wishlist
+            setIsWishlisted(false);
+            console.log(`${name} removed from wishlist!`);
+          } else {
+            await addToWishlist(id); // Add to wishlist
+            setIsWishlisted(true);
+            console.log(`${name} added to wishlist!`);
+          }
+        } catch (error) {
+          console.error('Error toggling wishlist:', error.message);
+        }
+    };
+      
     const processedAttributes = {
       color: [],
       size: []
@@ -189,11 +236,16 @@ const ViewProduct = () => {
                 </div>
                 
                 <button className="buy-now-btn">Buy Now</button>
-                <button className="wishlist-btn"><FavoriteIcon className="heart-icon" /></button>
+                <button className="wishlist-btn" onClick={handleWishlistToggle}>
+                  <FavoriteIcon 
+                    className="heart-icon" 
+                    style={{ color: isWishlisted ? '#ff6b6b' : '#ccc' }} // Change color dynamically
+                  />
+                </button>
               </div>
               
               <div className="additional-actions">
-                <button className="add-to-cart-btn">Add to Cart</button>
+                <button className="add-to-cart-btn" onClick={handleAddToCart}>Add to Cart</button>
                 <button className="share-btn"><HiOutlineShare /></button>
               </div>
             </div>
