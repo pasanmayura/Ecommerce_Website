@@ -8,10 +8,12 @@ exports.getProductCards = async (req, res) => {
         p.ProductID AS id,
         p.Product_Name AS name, 
         CAST(MIN(b.Selling_Price) AS DECIMAL(10, 2)) AS price,  
-        pi.ImageURL_1 AS image
+        pi.ImageURL_1 AS image,
+        COALESCE(SUM(po.Quantity), 0) AS sold_count
       FROM product p
       JOIN batch b ON p.ProductID = b.ProductID
       JOIN productsimages pi ON p.ProductID = pi.ProductID
+      LEFT JOIN ProductOrders po ON p.ProductID = po.ProductID
       GROUP BY p.ProductID, p.Product_Name, pi.ImageURL_1;
     `;
     const [rows] = await pool.promise().query(query); // Execute the query
@@ -32,10 +34,12 @@ exports.searchProducts = async (req, res) => {
         p.ProductID AS id,
         p.Product_Name AS name, 
         CAST(MIN(b.Selling_Price) AS DECIMAL(10, 2)) AS price,  
-        pi.ImageURL_1 AS image
+        pi.ImageURL_1 AS image,
+        COALESCE(SUM(po.Quantity), 0) AS sold_count
       FROM product p
       JOIN batch b ON p.ProductID = b.ProductID
       JOIN productsimages pi ON p.ProductID = pi.ProductID
+      LEFT JOIN ProductOrders po ON p.ProductID = po.ProductID
       WHERE p.Product_Name LIKE ?
       GROUP BY p.ProductID, p.Product_Name, pi.ImageURL_1;
     `;

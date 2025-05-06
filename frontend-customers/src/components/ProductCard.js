@@ -19,7 +19,7 @@ const getDirectImageUrl = (url) => {
 };
 
 const ProductCard = ({ product }) => {
-  const { id, image, name, price } = product;
+  const { id, image, name, price, sold_count } = product;
   const router = useRouter();
 
   const handleCardClick = () => {
@@ -28,7 +28,7 @@ const ProductCard = ({ product }) => {
 
   const handleAddToCart = () => {
     console.log(`${name} added to cart!`);
-    // Add your "Add to Cart" logic here
+    // "Add to Cart" logic here
   };
 
   return (
@@ -37,15 +37,16 @@ const ProductCard = ({ product }) => {
         <Image
           src={getDirectImageUrl(image)}
           alt={name}
-          width={150} // Set the width of the image
-          height={150} // Set the height of the image
+          width={150} 
+          height={150} 
         />
       </div>
       <div className="product-details">
         <h3 className="product-name">{name}</h3>
         <p className="product-price">
-        Rs.{!isNaN(price) ? parseFloat(price).toFixed(2) : 'N/A'}
+          Rs.{!isNaN(price) ? parseFloat(price).toFixed(2) : 'N/A'}
         </p>
+        <p className="product-sold">Sold: {sold_count}</p>
         <Button
           variant="contained"
           className='btn-cart'
