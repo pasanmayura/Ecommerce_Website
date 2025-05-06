@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 import { Header } from "@/components/Header";
 import { getProductDetails, getProductComments } from '@/services/productService';
@@ -25,6 +26,7 @@ const ViewProduct = () => {
     const [comments, setComments] = useState([]); 
     const { addToCart } = useCart(); 
     const [isWishlisted, setIsWishlisted] = useState(false);
+    const router = useRouter();
 
     useEffect(() => {
         const fetchProductDetails = async () => {
@@ -86,6 +88,15 @@ const ViewProduct = () => {
 
     const handleWishlistToggle = async (e) => {
         e.stopPropagation();
+
+        // Check if the user is logged in
+        const token = sessionStorage.getItem('jwtToken'); // Replace with your token key
+        if (!token) {
+          alert('Please log in to add items to your wishlist.');
+          router.push('/SignIn'); // Redirect to the login page
+          return;
+        }
+
         try {
           if (isWishlisted) {
             await removeFromWishlist(id); // Remove from wishlist
