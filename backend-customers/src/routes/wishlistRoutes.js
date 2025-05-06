@@ -7,5 +7,6 @@ const { verifyToken } = require('../middlewares/authMiddleware');
 router.post('/add', verifyToken, wishlistController.addToWishlist); 
 router.post('/remove', verifyToken, wishlistController.removeFromWishlist); 
 router.get('/getWishlist', verifyToken, wishlistController.getWishlist); 
+router.delete('/clear', verifyToken, wishlistController.clearWishlist); 
 
 module.exports = router;

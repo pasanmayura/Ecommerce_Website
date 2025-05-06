@@ -67,3 +67,18 @@ exports.getWishlist = async (req, res) => {
       res.status(500).json({ message: 'Failed to fetch wishlist' });
     }
   };
+
+// Clear all items from the wishlist for a specific user
+exports.clearWishlist = async (req, res) => {
+    const customerId = req.user.customerID; // Extract customer ID from the token
+  
+    try {
+      const query = `DELETE FROM Wishlist WHERE CustomerID = ?`;
+      await pool.promise().query(query, [customerId]);
+  
+      res.status(200).json({ message: 'Wishlist cleared successfully' });
+    } catch (error) {
+      console.error('Error clearing wishlist:', error);
+      res.status(500).json({ message: 'Failed to clear wishlist' });
+    }
+  };
