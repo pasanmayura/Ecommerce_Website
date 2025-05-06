@@ -83,31 +83,6 @@
   color: #ffc107; /* Default color for stars */
 }
 
-.star {
-  font-size: 20px;
-}
-
-.star.filled {
-  color: #ffc107; /* Gold for filled stars */
-}
-
-.star.half-filled {
-  position: relative;
-  color: #e0e0e0; /* Gray for empty part */
-}
-
-.star.half-filled::before {
-  content: "★";
-  position: absolute;
-  color: #ffc107; /* Gold for filled part */
-  width: 50%;
-  overflow: hidden;
-}
-
-.star.empty {
-  color: #e0e0e0; /* Gray for empty stars */
-}
-
 .rating-value {
   font-size: 14px;
   color: #666;

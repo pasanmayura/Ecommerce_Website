@@ -9,6 +9,7 @@ import Image from 'next/image';
 import { GrFavorite } from "react-icons/gr";
 import { HiOutlineShare } from "react-icons/hi";
 import Comment from '@/components/Comment'; 
+import StarRating from '@/components/StarRating'; 
 import "aos/dist/aos.css";
 import '@/styles/ViewProduct.css';
 
@@ -97,23 +98,23 @@ const ViewProduct = () => {
       setSelectedSize(size);
     };   
     
-    const renderStars = (rating) => {
-      const fullStars = Math.floor(rating); // Number of full stars
-      const halfStar = rating % 1 >= 0.5; // Check if there's a half star
-      const emptyStars = 5 - fullStars - (halfStar ? 1 : 0); // Remaining empty stars
+    // const renderStars = (rating) => {
+    //   const fullStars = Math.floor(rating); // Number of full stars
+    //   const halfStar = rating % 1 >= 0.5; // Check if there's a half star
+    //   const emptyStars = 5 - fullStars - (halfStar ? 1 : 0); // Remaining empty stars
 
-      return (
-        <>
-          {[...Array(fullStars)].map((_, index) => (
-            <span key={`full-${index}`} className="star filled">★</span>
-          ))}
-          {halfStar && <span className="star half-filled">★</span>}
-          {[...Array(emptyStars)].map((_, index) => (
-            <span key={`empty-${index}`} className="star empty">★</span>
-          ))}
-        </>
-      );
-    };
+    //   return (
+    //     <>
+    //       {[...Array(fullStars)].map((_, index) => (
+    //         <span key={`full-${index}`} className="star filled">★</span>
+    //       ))}
+    //       {halfStar && <span className="star half-filled">★</span>}
+    //       {[...Array(emptyStars)].map((_, index) => (
+    //         <span key={`empty-${index}`} className="star empty">★</span>
+    //       ))}
+    //     </>
+    //   );
+    // };
 
     return (
         <div className="view-product">
@@ -160,7 +161,7 @@ const ViewProduct = () => {
 
               {/* Product Rating */}
               <div className="product-rating">
-                {renderStars(rating)}
+                <StarRating rating={rating} />
                 <span className="rating-value">({rating.toFixed(1)})</span>
               </div>
               

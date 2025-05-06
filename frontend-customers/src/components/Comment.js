@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import StarRating from '@/components/StarRating';
 import '@/styles/Comment.css';
 
 const renderStars = (rating) => {
@@ -48,8 +49,8 @@ const Comment = ({ name, date, text, rating, avatar }) => {
             <div className="name-rating">
               <span className="comment-name">{name}</span>
               <div className="comment-rating">
-                {renderStars(rating)}
-                <span className="rating-value">{rating.toFixed(1)}</span>
+                <StarRating rating={rating} /> 
+              <span className="rating-value">{rating.toFixed(1)}</span>
               </div>
             </div>
             <span className="comment-date">{formattedDate}</span>
