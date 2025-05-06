@@ -7,6 +7,7 @@ import { Button } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import StarRating from '@/components/StarRating'; 
+import { useCart } from '@/contexts/CartContext';
 import '@/styles/ProductCard.css';
 
 // Helper function to convert Google Drive URL to direct image link
@@ -23,15 +24,16 @@ const ProductCard = ({ product }) => {
   const { id, image, name, price, sold_count, rating } = product;
   const router = useRouter();
   const [isHovered, setIsHovered] = React.useState(false);
+  const { addToCart } = useCart();
 
   const handleCardClick = () => {
     router.push(`/ViewProduct?id=${id}`);
   };
 
   const handleAddToCart = (e) => {
-    e.stopPropagation(); // Prevent card click event from firing
+    e.stopPropagation(); // to prevent card click
+    addToCart(product); // 👈 add to cart
     console.log(`${name} added to cart!`);
-    // Add to Cart logic here
   };
 
   const handleWishlist = (e) => {
