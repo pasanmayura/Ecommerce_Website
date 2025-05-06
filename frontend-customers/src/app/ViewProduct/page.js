@@ -2,11 +2,10 @@
 
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import axios from 'axios'; // Import axios
 import { Header } from "@/components/Header";
 import { getProductDetails, getProductComments } from '@/services/productService';
 import Image from 'next/image';
-import { GrFavorite } from "react-icons/gr";
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import { HiOutlineShare } from "react-icons/hi";
 import Comment from '@/components/Comment'; 
 import StarRating from '@/components/StarRating'; 
@@ -97,24 +96,6 @@ const ViewProduct = () => {
     const handleSizeSelect = (size) => {
       setSelectedSize(size);
     };   
-    
-    // const renderStars = (rating) => {
-    //   const fullStars = Math.floor(rating); // Number of full stars
-    //   const halfStar = rating % 1 >= 0.5; // Check if there's a half star
-    //   const emptyStars = 5 - fullStars - (halfStar ? 1 : 0); // Remaining empty stars
-
-    //   return (
-    //     <>
-    //       {[...Array(fullStars)].map((_, index) => (
-    //         <span key={`full-${index}`} className="star filled">★</span>
-    //       ))}
-    //       {halfStar && <span className="star half-filled">★</span>}
-    //       {[...Array(emptyStars)].map((_, index) => (
-    //         <span key={`empty-${index}`} className="star empty">★</span>
-    //       ))}
-    //     </>
-    //   );
-    // };
 
     return (
         <div className="view-product">
@@ -208,7 +189,7 @@ const ViewProduct = () => {
                 </div>
                 
                 <button className="buy-now-btn">Buy Now</button>
-                <button className="wishlist-btn"><GrFavorite /></button>
+                <button className="wishlist-btn"><FavoriteIcon className="heart-icon" /></button>
               </div>
               
               <div className="additional-actions">
