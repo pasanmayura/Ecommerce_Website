@@ -9,6 +9,7 @@ exports.getProductCards = async (req, res) => {
         p.Product_Name AS name, 
         CAST(MIN(b.Selling_Price) AS DECIMAL(10, 2)) AS price,  
         pi.ImageURL_1 AS image,
+        p.Product_Rating AS rating,
         COALESCE(SUM(po.Quantity), 0) AS sold_count
       FROM product p
       JOIN batch b ON p.ProductID = b.ProductID
@@ -35,6 +36,7 @@ exports.searchProducts = async (req, res) => {
         p.Product_Name AS name, 
         CAST(MIN(b.Selling_Price) AS DECIMAL(10, 2)) AS price,  
         pi.ImageURL_1 AS image,
+        p.Product_Rating AS rating,
         COALESCE(SUM(po.Quantity), 0) AS sold_count
       FROM product p
       JOIN batch b ON p.ProductID = b.ProductID
