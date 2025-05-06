@@ -143,3 +143,12 @@ CREATE TABLE product_review (
   FOREIGN KEY (ProductID) REFERENCES Product(ProductID),
   FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID)
 );
+
+CREATE TABLE Wishlist (
+  WishlistID INT AUTO_INCREMENT PRIMARY KEY,
+  CustomerID VARCHAR(255),
+  ProductID VARCHAR(255),
+  CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID),
+  FOREIGN KEY (ProductID) REFERENCES Product(ProductID)
+);
