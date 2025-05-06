@@ -64,6 +64,10 @@ export const Header = ({ isHomePage = false }) => {
     router.push("/ViewCart");
   }
 
+  const ViewWishlistPage = () => {
+    router.push("/WishlistPage");
+  }
+
   return (
     <header className="header">
       {/* Logo */}
@@ -107,7 +111,7 @@ export const Header = ({ isHomePage = false }) => {
             <SearchIcon />
           </IconButton>
         )}
-        <IconButton aria-label="favorites" className="icon-button">
+        <IconButton aria-label="favorites" className="icon-button" onClick={ViewWishlistPage}>
           <FavoriteBorderIcon />
         </IconButton>
         <IconButton aria-label="cart" className="icon-button" onClick={ViewCart}>
