@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import Image from "next/image";
 import { Button } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import StarRating from '@/components/StarRating'; 
 import '@/styles/ProductCard.css';
 
 // Helper function to convert Google Drive URL to direct image link
@@ -12,48 +14,78 @@ const getDirectImageUrl = (url) => {
   if (url.includes('drive.google.com')) {
     const fileId = url.split('/d/')[1]?.split('/')[0];
     const directUrl = fileId ? `https://drive.google.com/uc?id=${fileId}` : url;
-    console.log('Converted URL:', directUrl); // Debugging
     return directUrl;
   }
-  return url; // Return the original URL if it's not a Google Drive URL
+  return url;
 };
 
 const ProductCard = ({ product }) => {
-  const { id, image, name, price, sold_count } = product;
+  const { id, image, name, price, sold_count, rating } = product;
   const router = useRouter();
+  const [isHovered, setIsHovered] = React.useState(false);
 
   const handleCardClick = () => {
-    router.push(`/ViewProduct?id=${id}`); // Navigate to the View Product page with the ProductID
+    router.push(`/ViewProduct?id=${id}`);
   };
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (e) => {
+    e.stopPropagation(); // Prevent card click event from firing
     console.log(`${name} added to cart!`);
-    // "Add to Cart" logic here
+    // Add to Cart logic here
   };
+
+  const handleWishlist = (e) => {
+    e.stopPropagation(); // Prevent card click event from firing
+    console.log(`${name} added to wishlist!`);
+    // Wishlist logic here
+  };
+
+  const formattedPrice = !isNaN(price) ? parseFloat(price).toFixed(2) : 'N/A';
 
   return (
-    <div className="product-card" onClick={handleCardClick} style={{ cursor: 'pointer' }}>
-      <div className="product-image">
-        <Image
-          src={getDirectImageUrl(image)}
-          alt={name}
-          width={150} 
-          height={150} 
-        />
+    <div 
+      className="product-card" 
+      onClick={handleCardClick}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div className="product-badge">
+        {sold_count > 50 && <span className="badge bestseller">Bestseller</span>}
       </div>
+      
+      <div className="wishlist-icon" onClick={handleWishlist}>
+        <FavoriteIcon className="heart-icon" />
+      </div>
+      
+      <div className="product-image-container">
+        <div className={`product-image ${isHovered ? 'zoomed' : ''}`}>
+          <Image
+            src={getDirectImageUrl(image)}
+            alt={name}
+            width={220}
+            height={220}
+            className="product-img"
+          />
+        </div>
+      </div>
+      
       <div className="product-details">
         <h3 className="product-name">{name}</h3>
-        <p className="product-price">
-          Rs.{!isNaN(price) ? parseFloat(price).toFixed(2) : 'N/A'}
-        </p>
-        <p className="product-sold">Sold: {sold_count}</p>
+        
+        <div className="product-rating-row">
+          <StarRating rating={rating} />
+          <span className="sold-count">{sold_count} sold</span>
+        </div>
+        
+        <div className="product-price-container">
+          <p className="product-price">Rs.{formattedPrice}</p>
+        </div>
+        
         <Button
           variant="contained"
-          className='btn-cart'
-          color="#f8f8f8"
-          startIcon={<ShoppingCartIcon />}
+          className="btn-cart"
           onClick={handleAddToCart}
-          style={{backgroundColor:"#0A2F6E", color:"#fff"}}
+          startIcon={<ShoppingCartIcon />}
         >
           Add to Cart
         </Button>
