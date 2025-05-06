@@ -60,6 +60,10 @@ export const Header = ({ isHomePage = false }) => {
     }
   };
 
+  const ViewCart = () => {
+    router.push("/ViewCart");
+  }
+
   return (
     <header className="header">
       {/* Logo */}
@@ -106,7 +110,7 @@ export const Header = ({ isHomePage = false }) => {
         <IconButton aria-label="favorites" className="icon-button">
           <FavoriteBorderIcon />
         </IconButton>
-        <IconButton aria-label="cart" className="icon-button">
+        <IconButton aria-label="cart" className="icon-button" onClick={ViewCart}>
           <ShoppingCartIcon />
         </IconButton>
       </div>
