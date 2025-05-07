@@ -12,6 +12,7 @@ import { HiOutlineShare } from "react-icons/hi";
 import Comment from '@/components/Comment'; 
 import StarRating from '@/components/StarRating'; 
 import { addToWishlist, removeFromWishlist, getWishlist } from '@/services/wishlistService';
+import ShareModal from '@/components/ShareModal'; 
 import "aos/dist/aos.css";
 import '@/styles/ViewProduct.css';
 
@@ -26,7 +27,11 @@ const ViewProduct = () => {
     const [comments, setComments] = useState([]); 
     const { addToCart } = useCart(); 
     const [isWishlisted, setIsWishlisted] = useState(false);
+    const [isShareModalOpen, setIsShareModalOpen] = useState(false); // Share modal state
     const router = useRouter();
+
+    const shareUrl = `https://smartkade.com/ViewProduct?id=${productId}`; 
+    const title = `Check out this product: ${product?.name}`;
 
     useEffect(() => {
         const fetchProductDetails = async () => {
@@ -153,7 +158,15 @@ const ViewProduct = () => {
 
     const handleSizeSelect = (size) => {
       setSelectedSize(size);
-    };   
+    }; 
+    
+    const openShareModal = () => {
+      setIsShareModalOpen(true);
+    };
+    
+    const closeShareModal = () => {
+      setIsShareModalOpen(false);
+    };
 
     return (
         <div className="view-product">
@@ -257,7 +270,7 @@ const ViewProduct = () => {
               
               <div className="additional-actions">
                 <button className="add-to-cart-btn" onClick={handleAddToCart}>Add to Cart</button>
-                <button className="share-btn"><HiOutlineShare /></button>
+                <button className="share-btn" onClick={openShareModal}><HiOutlineShare /></button>
               </div>
             </div>
           </main>
@@ -278,8 +291,16 @@ const ViewProduct = () => {
             <p>No comments yet. Be the first to comment!</p>
           )}
         </div>
+        {/* Share Modal */}
+        <ShareModal
+          open={isShareModalOpen}
+          onClose={closeShareModal}
+          shareUrl={shareUrl}
+          title={title}
+        />
         </div>
       );
     };
     
-    export default ViewProduct;
+
+export default ViewProduct;
