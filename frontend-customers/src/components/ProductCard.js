@@ -22,7 +22,7 @@ const getDirectImageUrl = (url) => {
 };
 
 const ProductCard = ({ product }) => {
-  const { id, image, name, price, sold_count, rating } = product;
+  const { id, image, name, price, sold_count, rating = 0 } = product;
   const router = useRouter();
   const [isHovered, setIsHovered] = useState(false);
   const [isWishlisted, setIsWishlisted] = useState(false);
