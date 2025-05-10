@@ -152,3 +152,12 @@ CREATE TABLE Wishlist (
   FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID),
   FOREIGN KEY (ProductID) REFERENCES Product(ProductID)
 );
+
+CREATE TABLE product_attributes_batch (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    id_pa INT,
+    BatchID INT,
+    Quantity INT,
+    FOREIGN KEY (BatchID) REFERENCES batch(BatchID),
+    FOREIGN KEY (id_pa) REFERENCES product_attributes(id)
+);
