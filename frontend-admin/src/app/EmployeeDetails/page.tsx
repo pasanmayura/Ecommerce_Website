@@ -8,7 +8,7 @@ import {
   MaterialReactTable,
   type MRT_ColumnDef,
 } from 'material-react-table';
-import "@/styles/CategoryList.css";
+import "@/styles/EmployeeDetails.css";
 
 type Employee = {
   AdminID: string;
@@ -20,68 +20,98 @@ type Employee = {
 };
 
 const EmployeeDetails = () => {
-  const [EmployeeDetails, setEmployeeDetails] = useState<Employee[]>([]);
+  const [employees, setEmployees] = useState<Employee[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchEmployee = async () => {
-      const data = await getEmployee();
-      setEmployeeDetails(data);
+    const fetchEmployees = async () => {
+      try {
+        setIsLoading(true);
+        const data = await getEmployee();
+        setEmployees(data);
+        setError(null);
+      } catch (err) {
+        setError('Failed to fetch employee data');
+        console.error('Error fetching employees:', err);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
-    fetchEmployee();
+    fetchEmployees();
   }, []);
 
   const columns = useMemo<MRT_ColumnDef<Employee>[]>(
     () => [
-        {
-            accessorKey: 'AdminID',
-            header: 'Admin ID',
-            size: 100,
-        },
-        {
-            accessorKey: 'FirstName',
-            header: 'First Name',
-            size: 100,
-        },
-        {
-            accessorKey: 'LastName',
-            header: 'Last ID',
-            size: 100,
-        },
-
-        {
-            accessorKey: 'Email',
-            header: 'Email',
-            size: 100,
-        },
-        {
-            accessorKey: 'PhoneNumber',
-            header: 'Phone Number',
-            size: 100,
-        },
-        {
-            accessorKey: 'Role',
-            header: 'Role',
-            size: 100,
-        },
+      {
+        accessorKey: 'AdminID',
+        header: 'Admin ID',
+        size: 100,
+      },
+      {
+        accessorKey: 'FirstName',
+        header: 'First Name',
+        size: 150,
+      },
+      {
+        accessorKey: 'LastName',
+        header: 'Last Name', // Fixed the typo from "Last ID" to "Last Name"
+        size: 150,
+      },
+      {
+        accessorKey: 'Email',
+        header: 'Email',
+        size: 200,
+      },
+      {
+        accessorKey: 'PhoneNumber',
+        header: 'Phone Number',
+        size: 150,
+      },
+      {
+        accessorKey: 'Role',
+        header: 'Role',
+        size: 120,
+      },
     ],
     [],
   );
 
   return (
-    <div className="common">
+    <div className="EmployeeDetails-page">
       <Header />
-      <main className="main-content">
-        <div className="sidebar-section">
+      <main className="EmployeeDetails-main-layout">
+        <div className="EmployeeDetails-sidebar-container">
           <Sidebar />
         </div>
-        <div className="content">
-          <h1>Employee List</h1>
-          <div className="table-content">            
-            <MaterialReactTable columns={columns} data={EmployeeDetails} />
+        
+        <div className="EmployeeDetails-content-container">
+          <div className="page-header">
+            <h1 className='page-title'>Employee List</h1>
+          </div>
+          
+          <div className="EmployeeDetails-table-container">
+            {error && (
+              <div className="error-message">
+                {error}
+              </div>
+            )}
+            
+            <MaterialReactTable 
+              columns={columns} 
+              data={employees} 
+              state={{ isLoading }}
+              enableTopToolbar={true}
+              enableBottomToolbar={true}
+              enableColumnFilters={true}
+              enableGlobalFilter={true}
+              enablePagination={true}
+              muiTableContainerProps={{ className: 'data-table' }}
+            />
           </div>
         </div>
-      </main> 
+      </main>
     </div>
   );
 };

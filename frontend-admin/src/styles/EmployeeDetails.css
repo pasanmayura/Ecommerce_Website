@@ -1,0 +1,106 @@
+.EmployeeDetails-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+  }
+  
+  /* Main layout with sidebar and content */
+  .EmployeeDetails-main-layout {
+    display: flex;
+    flex: 1;
+    position: relative;
+  }
+  
+  /* Sidebar container */
+  .EmployeeDetails-sidebar-container {
+    width: 280px;
+    flex-shrink: 0;
+    transition: width 0.3s ease;   
+    background: #f8f9fa;
+   }
+  
+  /* Content container */
+  .EmployeeDetails-content-container {
+    flex: 1;
+    padding: 2rem;
+    overflow-y: auto;
+    margin-top: 80px;
+  }
+  
+  .page-title {
+    margin-bottom: 40px !important;
+    color: #0a2f6e;
+    font-weight: 600 !important;
+    position: relative;
+  }
+  
+  .page-title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -10px;
+    width: 50px;
+    height: 4px;
+    background-color: #0a2f6e;
+    border-radius: 2px;
+  }
+  
+  /* Table container */
+  .EmployeeDetails-table-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    padding: 1rem;
+    overflow: hidden;
+  }
+  
+  /* Custom styles for Material React Table */
+  .data-table {
+    border: none !important;
+  }
+  
+  /* Error message */
+  .error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    font-weight: 500;
+  }
+  
+  /* Loading state */
+  .loading-indicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 992px) {
+    .EmployeeDetails-content-container {
+      padding: 1.5rem;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .EmployeeDetails-main-layout {
+      flex-direction: column;
+    }
+    
+    .EmployeeDetails-sidebar-container {
+      width: 100%;
+      height: auto;
+    }
+    
+    .EmployeeDetails-content-container {
+      padding: 1rem;
+    }
+    
+    .EmployeeDetails-table-container {
+      padding: 0.5rem;
+      overflow-x: auto;
+    }
+  }
