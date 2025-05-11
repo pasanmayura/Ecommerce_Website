@@ -77,7 +77,7 @@ const ViewOrderReturn = () => {
     <div className="ViewOrderReturn">
       <Header />
       <main className="ViewOrderReturn-main-content">
-        <div className="sidebar-section">
+        <div className="ViewOrderReturn-sidebar-section">
           <Sidebar />
         </div>
 

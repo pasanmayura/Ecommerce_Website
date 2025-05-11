@@ -11,7 +11,7 @@
     flex: 1;
   }
   
-  .sidebar-section {
+  .ViewOrderReturn-sidebar-section {
     width: 280px;
     flex-shrink: 0;
     transition: width 0.3s ease;   
@@ -23,6 +23,7 @@
     padding: 30px;
     background-color: #f5f7fa;
     margin-top: 50px;
+    margin-left: 100px;
   }
   
   /* Typography */
@@ -59,7 +60,6 @@
     flex-direction: column;
     width: 90%;
     max-width: 1000px;
-    margin: 0 auto;
     padding: 24px;
     background-color: #ffffff;
     border-radius: 8px;
@@ -81,8 +81,7 @@
   /* Product Details Section */
   .product-details {
     width: 90%;
-    max-width: 1000px;
-    margin: 24px auto 0;
+    max-width: 1050px;
   }
   
   .product-item {
