@@ -86,29 +86,29 @@
   }
   
   /* Summary Cards */
-  .summary-cards {
+  .order-returns-summary-cards {
     margin-bottom: 24px;
   }
   
-  .summary-card {
+  .order-returns-summary-card {
     border-radius: 12px !important;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
     transition: all 0.3s ease-in-out !important;
     height: 100%;
   }
   
-  .summary-card:hover {
+  .order-returns-summary-card:hover {
     transform: translateY(-4px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1) !important;
   }
   
-  .card-content {
+  .order-returns-card-content {
     display: flex !important;
     align-items: center !important;
     padding: 20px !important;
   }
   
-  .card-icon {
+  .order-returns-card-icon {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -119,32 +119,32 @@
     margin-right: 16px;
   }
   
-  .card-icon.total {
+  .order-returns-card-icon.total {
     background-color: rgba(25, 118, 210, 0.1);
     color: #1976d2;
   }
   
-  .card-icon.pending {
+  .order-returns-card-icon.pending {
     background-color: rgba(255, 152, 0, 0.1);
     color: #ff9800;
   }
   
-  .card-icon.processed {
+  .order-returns-card-icon.processed {
     background-color: rgba(76, 175, 80, 0.1);
     color: #4caf50;
   }
   
-  .card-icon.rejected {
+  .order-returns-card-icon.rejected {
     background-color: rgba(244, 67, 54, 0.1);
     color: #f44336;
   }
   
-  .card-data {
+  .order-returns-card-data {
     display: flex;
     flex-direction: column;
   }
   
-  .card-value {
+  .order-returns-card-value {
     font-weight: 600 !important;
     font-size: 1.75rem !important;
     line-height: 1.2 !important;
@@ -152,7 +152,7 @@
     margin: 0 !important;
   }
   
-  .card-label {
+  .order-returns-card-label {
     color: #666 !important;
     font-size: 0.875rem !important;
     margin-top: 4px !important;

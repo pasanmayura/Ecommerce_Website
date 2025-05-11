@@ -193,18 +193,18 @@ const OrderReturns = () => {
           </Box>
 
           {/* Summary Cards */}
-          <Grid container spacing={3} className="summary-cards">
+          <Grid container spacing={3} className="order-returns-summary-cards">
             <Grid item xs={12} sm={6} md={3}>
-              <Card className="summary-card total">
-                <CardContent className="card-content">
-                  <Box className="card-icon total">
+              <Card className="order-returns-summary-card total">
+                <CardContent className="order-returns-card-content">
+                  <Box className="order-returns-card-icon total">
                     <MdOutlineAssignmentReturn />
                   </Box>
-                  <Box className="card-data">
-                    <Typography variant="h4" className="card-value">
+                  <Box className="order-returns-card-data">
+                    <Typography variant="h4" className="order-return-scard-value">
                       {totalReturns}
                     </Typography>
-                    <Typography variant="body2" className="card-label">
+                    <Typography variant="body2" className="order-returns-card-label">
                       Total Returns
                     </Typography>
                   </Box>
@@ -212,16 +212,16 @@ const OrderReturns = () => {
               </Card>
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Card className="summary-card pending">
-                <CardContent className="card-content">
-                  <Box className="card-icon pending">
+              <Card className="order-returns-summary-card pending">
+                <CardContent className="order-returns-card-content">
+                  <Box className="order-returns-card-icon pending">
                     <MdOutlineAssignmentReturn />
                   </Box>
-                  <Box className="card-data">
-                    <Typography variant="h4" className="card-value">
+                  <Box className="order-returns-card-data">
+                    <Typography variant="h4" className="order-returns-card-value">
                       {pendingReturns}
                     </Typography>
-                    <Typography variant="body2" className="card-label">
+                    <Typography variant="body2" className="order-returns-card-label">
                       Pending
                     </Typography>
                   </Box>
@@ -229,16 +229,16 @@ const OrderReturns = () => {
               </Card>
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Card className="summary-card processed">
-                <CardContent className="card-content">
-                  <Box className="card-icon processed">
+              <Card className="order-returns-summary-card processed">
+                <CardContent className="order-returns-card-content">
+                  <Box className="order-returns-card-icon processed">
                     <MdOutlineAssignmentReturn />
                   </Box>
-                  <Box className="card-data">
-                    <Typography variant="h4" className="card-value">
+                  <Box className="order-returns-card-data">
+                    <Typography variant="h4" className="order-returns-card-value">
                       {processedReturns}
                     </Typography>
-                    <Typography variant="body2" className="card-label">
+                    <Typography variant="body2" className="order-returns-card-label">
                       Processed
                     </Typography>
                   </Box>
@@ -246,16 +246,16 @@ const OrderReturns = () => {
               </Card>
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Card className="summary-card rejected">
-                <CardContent className="card-content">
-                  <Box className="card-icon rejected">
+              <Card className="order-returns-summary-card rejected">
+                <CardContent className="order-returns-card-content">
+                  <Box className="order-returns-card-icon rejected">
                     <MdOutlineAssignmentReturn />
                   </Box>
-                  <Box className="card-data">
-                    <Typography variant="h4" className="card-value">
+                  <Box className="order-returns-card-data">
+                    <Typography variant="h4" className="order-returns-card-value">
                       {rejectedReturns}
                     </Typography>
-                    <Typography variant="body2" className="card-label">
+                    <Typography variant="body2" className="order-returns-card-label">
                       Rejected
                     </Typography>
                   </Box>
