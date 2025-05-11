@@ -1,0 +1,201 @@
+.ViewOrderReturn {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f5f7fa;
+  }
+  
+  .ViewOrderReturn-main-content {
+    display: flex;
+    flex: 1;
+  }
+  
+  .ViewOrderReturn-sidebar-section {
+    width: 280px;
+    flex-shrink: 0;
+    transition: width 0.3s ease;   
+    background: #f8f9fa;
+  }
+  
+  .ViewOrderReturn-content {
+    flex: 1;
+    padding: 30px;
+    background-color: #f5f7fa;
+    margin-top: 50px;
+    margin-left: 100px;
+  }
+  
+  /* Typography */
+  .ViewOrderReturn-content h1 {
+    margin-bottom: 24px;
+    color: #0A2F6E;
+    font-size: 28px;
+    font-weight: 600;
+    padding-bottom: 12px;
+    position: relative;
+  }
+
+  .ViewOrderReturn-content h1::after {
+    content: '';
+    left: 0;
+    bottom: -10px;
+    width: 50px;
+    height: 4px;
+    background-color: #0a2f6e;
+    border-radius: 2px;
+    position: absolute;
+  }
+  
+  .ViewOrderReturn-content h2 {
+    margin: 32px 0 16px;
+    color: #0A2F6E;
+    font-size: 22px;
+    font-weight: 500;
+  }
+  
+  /* Order Details Section */
+  .order-details {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    max-width: 1000px;
+    padding: 24px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  }
+  
+  .order-details-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 16px;
+    gap: 20px;
+  }
+  
+  .order-details-row > div {
+    flex: 1;
+  }
+  
+  /* Product Details Section */
+  .product-details {
+    width: 90%;
+    max-width: 1050px;
+  }
+  
+  .product-item {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    padding: 16px 24px;
+    margin-bottom: 16px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+  .product-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  }
+  
+  .product-item > div {
+    flex: 1 1 200px;
+    min-width: 200px;
+    margin-right: 16px;
+  }
+  
+  /* Button Styling */
+  .ViewOrderReturn-content button {
+    text-transform: none;
+    font-weight: 500;
+    border-radius: 6px;
+    padding: 10px 20px;
+    transition: all 0.2s ease;
+    margin-right: 12px;
+    box-shadow: 0 2px 5px rgba(10, 47, 110, 0.2);
+  }
+  
+  .ViewOrderReturn-content button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(10, 47, 110, 0.3);
+    background-color: #0d3b8b !important;
+  }
+  
+  .ViewOrderReturn-content button:last-child {
+    margin-right: 0;
+  }
+  
+  .ViewOrderReturn-content button:disabled {
+    background-color: #a0a0a0 !important;
+    box-shadow: none;
+    transform: none;
+  }
+  
+  /* Alert Styling */
+  .MuiAlert-root {
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    animation: slideIn 0.3s ease-out;
+  }
+  
+  @keyframes slideIn {
+    from {
+      transform: translateX(30px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  /* Input Field Customization */
+  .MuiInputBase-root {
+    border-radius: 6px !important;
+  }
+  
+  .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: #0A2F6E !important;
+    border-width: 2px !important;
+  }
+  
+  .MuiInputLabel-root.Mui-focused {
+    color: #0A2F6E !important;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 1100px) {
+    .order-details-row {
+      flex-direction: column;
+      gap: 0;
+    }
+    
+    .product-item {
+      flex-direction: column;
+    }
+    
+    .product-item > div {
+      margin-right: 0;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .ViewOrderReturn-content {
+      padding: 20px 16px;
+    }
+    
+    .order-details, .product-details {
+      width: 100%;
+    }
+  }
+  
+  /* Button Container */
+  .action-buttons {
+    display: flex;
+    margin-top: 24px;
+    justify-content: flex-start;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
