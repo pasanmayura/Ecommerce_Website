@@ -5,11 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Button, TextField } from "@mui/material";
 import { Header } from "@/components/Header"; 
 import { Sidebar } from "@/components/Sidebar";
-import { getProducts } from "@/Services/productService";
+import { getProducts, updateProduct } from "@/Services/productService";
 import AlertComponent from '@/components/AlertComponent';
-import "@/styles/Structure.css"; 
-import "@/styles/Register.css"; 
-import "@/styles/MostSold.css";
 import "@/styles/EditProduct.css";
 
 const ProductEdit = () => {
@@ -46,25 +43,38 @@ const ProductEdit = () => {
     const { id, value } = e.target;
     setProduct(prevState => ({
       ...prevState,
-      [id]: value, // Dynamically update the field based on the input's ID
+      [id]: value, 
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!Product.Product_Name) {
-      setAlert({ severity: 'error', title: 'Error', message: 'Product Name is required' });
+  
+    console.log('Submitting Product:', Product); // Debugging Log the Product object
+  
+    if (
+      !Product.Product_Name ||
+      !Product.Description ||
+      !Product.Threshold ||
+      !Product.BatchID ||
+      !Product.Buying_Price ||
+      !Product.Selling_Price ||
+      !Product.Stock_Quantity
+    ) {
+      setAlert({ severity: 'error', title: 'Error', message: 'All fields are required......!' });
+      return;
+    }
+  
+    setAlert('');
+    const result = await updateProduct(Product.ProductID, Product); // Call the service function
+  
+    if (result.message === 'Product and batch updated successfully.') {
+      setAlert({ severity: 'success', title: 'Success', message: result.message });
+      setTimeout(() => {
+        router.push('/ProductList'); 
+      }, 2000);
     } else {
-      setAlert('');
-      const result = await updateProduct(Product.ProductID, Product); // Pass the entire Product object
-      if (result.message === 'Product updated successfully') {
-        setAlert({ severity: 'success', title: 'Success', message: 'Product updated successfully' });
-        setTimeout(() => {
-          router.push('/ProductList'); 
-        }, 2000);
-      } else {
-        setAlert({ severity: 'error', title: 'Error', message: result.message });
-      }
+      setAlert({ severity: 'error', title: 'Error', message: result.message });
     }
   };
 
@@ -77,18 +87,18 @@ const ProductEdit = () => {
   };
   
   return (
-    <div className="common">
+    <div className="ProductEdit-Page">
       <Header />
-      <main className="main-content">
+      <main className="ProductEdit-main-content">
         <div className="sidebar-section">
           <Sidebar />
         </div>
 
-        <div className="content">
-          <h1>Product Edit</h1>
-          <div className="product-section">
-            <form className="product" onSubmit={handleSubmit}>                  
-              <div className="product-row">
+        <div className="ProductEdit-content">
+          <h1 className="page-title">Product Edit</h1>
+          <div className="ProductEdit-section">
+            <form className="ProductEdit" onSubmit={handleSubmit}>                  
+              <div className="ProductEdit-row">
                 <TextField
                   label="Product ID"
                   id="ProductID"
@@ -106,7 +116,7 @@ const ProductEdit = () => {
                   margin="normal"
                 />
               </div>
-              <div className="product-row">
+              <div className="ProductEdit-row">
                 <TextField
                   label="Description"
                   id="Description"
@@ -125,7 +135,7 @@ const ProductEdit = () => {
                   disabled
                 />                
               </div>
-              <div className="product-row">
+              <div className="ProductEdit-row">
                 <TextField
                   label="Threshold"
                   id="Threshold"
@@ -143,7 +153,7 @@ const ProductEdit = () => {
                   margin="normal"
                 />                
               </div>
-              <div className="product-row">
+              <div className="ProductEdit-row">
                 <TextField
                   label="Selling Price"
                   id="Selling_Price"
@@ -161,7 +171,7 @@ const ProductEdit = () => {
                   margin="normal"
                 />                
               </div> 
-              <div className="product-buttons">
+              <div className="ProductEdit-buttons">
                 <Button variant="contained" onClick={handlebackToProductList} style={{backgroundColor: '#0A2F6E'}}> Back </Button>
                 <Button variant="contained" className="product-button" type="submit" style={{backgroundColor: '#0A2F6E'}}>Save Changes</Button>
               </div>             
@@ -175,9 +185,7 @@ const ProductEdit = () => {
                 onClose={closeAlert}
                 sx={{ width: '25%', position: 'fixed', top: '10%', left: '75%', zIndex: 9999 }}
               />
-            )}
-            
-            
+            )}              
           </div>
         </div>
       </main> 
