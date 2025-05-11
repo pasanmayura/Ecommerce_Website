@@ -1,0 +1,185 @@
+.add-batch-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f5f7fa;
+  }
+  
+  .addbatch-main-content {
+    display: flex;
+    flex: 1;
+  }
+  
+  .sidebar-section {
+    width: 280px;
+  }
+  
+  .addbatch-content {    
+    margin-top: 120px;
+  }
+  
+  /* Page Title */
+  .page-title {
+    margin-bottom: 40px !important;
+    color: #0a2f6e;
+    font-weight: 600 !important;
+    position: relative;
+  }
+  
+  .page-title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -10px;
+    width: 50px;
+    height: 4px;
+    background-color: #0a2f6e;
+    border-radius: 2px;
+  }
+  
+  /* Form Container */
+  .addbatch-form-container {
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+  }
+  
+  .form-title {
+    font-weight: 600 !important;
+    color: #0a2f6e;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  .form-divider {
+    margin-bottom: 1.5rem !important;
+    background-color: #e0e6ed;
+  }
+  
+  .batch-form {
+    margin-top: 1.5rem;
+  }
+  
+  /* Form Fields */
+  .form-field {
+    margin-bottom: 0.5rem;
+  }
+  
+  .form-field label {
+    font-weight: 500;
+    color: #546e7a;
+  }
+  
+  .form-field input, .form-field .MuiSelect-select {
+    padding: 12px !important;
+  }
+  
+  .currency-symbol {
+    margin-right: 8px;
+    color: #757575;
+  }
+  
+  /* Attributes Section */
+  .attributes-section {
+    margin-top: 2rem;
+    padding-top: 1rem;
+  }
+  
+  .attributes-title {
+    font-weight: 600 !important;
+    color: #0a2f6e;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  .attributes-divider {
+    margin-bottom: 1.5rem !important;
+    background-color: #e0e6ed;
+  }
+  
+  .attribute-item {
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    border: 1px solid #e0e6ed;
+    transition: all 0.3s ease;
+  }
+  
+  .attribute-item:hover {
+    border-color: #0a2f6e;
+    box-shadow: 0 2px 8px rgba(63, 81, 181, 0.15);
+  }
+  
+  .attribute-name {
+    font-weight: 500 !important;
+    color: #455a64;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  .attribute-field {
+    margin-top: 0.5rem;
+  }
+  
+  /* Form Actions */
+  .form-actions {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .submit-button {
+    padding: 10px 24px !important;
+    text-transform: none !important;
+    font-weight: 500 !important;
+    font-size: 1rem !important;
+    border-radius: 6px !important;
+    box-shadow: 0 4px 6px rgba(63, 81, 181, 0.15) !important;
+    transition: all 0.3s ease !important;
+  }
+  
+  .submit-button:hover {
+    box-shadow: 0 6px 10px rgba(63, 81, 181, 0.25) !important;
+    transform: translateY(-2px);
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 960px) {
+    .sidebar-section {
+      width: 200px;
+    }
+    
+    .content {
+      padding: 1.5rem;
+    }
+    
+    .form-container {
+      padding: 1.5rem;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .main-content {
+      flex-direction: column;
+    }
+    
+    .sidebar-section {
+      width: 100%;
+      height: auto;
+    }
+    
+    .content {
+      padding: 1rem;
+    }
+    
+    .form-container {
+      padding: 1rem;
+    }
+    
+    .submit-button {
+      width: 100%;
+    }
+    
+    .alert-notification {
+      width: calc(100% - 40px) !important;
+      right: 20px !important;
+    }
+  }
