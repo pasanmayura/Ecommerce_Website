@@ -16,6 +16,7 @@
   
   .addbatch-content {    
     margin-top: 120px;
+    margin-left: 50px;
   }
   
   /* Page Title */
@@ -128,6 +129,7 @@
   
   .submit-button {
     padding: 10px 24px !important;
+    background-color: #0a2f6e !important;
     text-transform: none !important;
     font-weight: 500 !important;
     font-size: 1rem !important;
