@@ -121,27 +121,27 @@ const ProductList = () => {
         header: 'Update',
         size: 25,
         Cell: ({ row }) => (
-          <div>
+          <div className="action-buttons-container">
             <button onClick={() => handleEdit(row.original)} className='edit-button'><MdEdit /></button>  
             <button onClick={() => openConfirmationDialog(row.original)} className='delete-button'><MdDelete /></button>
           </div>
-        ),
+        )
       },
     ],
     [products],
   );
 
   return (
-    <div className="common">
+    <div className="ProductList-page">
       <Header />
-      <main className="main-product-content">
-      <div className="flex-container">
-        <div className="product-sidebar-section">
+      <main className="ProductList-main-content">
+      <div className="ProductList-flex-container">
+        <div className="ProductList-sidebar-section">
           <Sidebar />
         </div>
-        <div className="product-content">
-          <div className="product-table-content">
-            <h1>Product List</h1>
+        <div className="ProductList-content">
+          <div className="ProductList-table-content">
+            <h1 className='page-title'>Product List</h1>
             <MaterialReactTable columns={columns} data={products} />
           </div>
         </div>
