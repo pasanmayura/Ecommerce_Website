@@ -141,3 +141,77 @@ exports.getAttributes = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+exports.updateProduct = async (req, res) => {
+  const { id } = req.params; // ProductID from URL
+  const {
+    Product_Name,
+    Description,
+    Threshold,
+    BatchID,
+    Buying_Price,
+    Selling_Price,
+    Stock_Quantity,
+  } = req.body;
+
+  // Simple validation
+  if (
+    !Product_Name || !Description || !Threshold || 
+    !BatchID || !Buying_Price || !Selling_Price || !Stock_Quantity
+  ) {
+    return res.status(400).json({ message: 'All fields are required!' });
+  }
+
+  const connection = await pool.getConnection();
+
+  try {
+    await connection.beginTransaction(); // Start transaction
+
+    // 👉 Update Product table
+    const updateProductSql = `
+      UPDATE Product
+      SET Product_Name = ?, Description = ?, Threshold = ?
+      WHERE ProductID = ?
+    `;
+
+    const [productResult] = await connection.query(updateProductSql, [
+      Product_Name,
+      Description,
+      Threshold,
+      id,
+    ]);
+
+    if (productResult.affectedRows === 0) {
+      throw new Error('Product not found or no changes made.');
+    }
+
+    // 👉 Update Batch table
+    const updateBatchSql = `
+      UPDATE Batch
+      SET Buying_Price = ?, Selling_Price = ?, Stock_Quantity = ?
+      WHERE BatchID = ? AND ProductID = ?
+    `;
+
+    const [batchResult] = await connection.query(updateBatchSql, [
+      Buying_Price,
+      Selling_Price,
+      Stock_Quantity,
+      BatchID,
+      id,
+    ]);
+
+    if (batchResult.affectedRows === 0) {
+      throw new Error('Batch not found or no changes made.');
+    }
+
+    await connection.commit(); // All good ✅
+    res.status(200).json({ message: 'Product and batch updated successfully.' });
+
+  } catch (error) {
+    console.error('❌ Error updating:', error);
+    await connection.rollback(); // Undo changes on error
+    res.status(500).json({ message: 'Failed to update. Transaction rolled back.' });
+  } finally {
+    connection.release(); // Free up the connection
+  }
+};
