@@ -10,9 +10,7 @@ import {
   MaterialReactTable,
   type MRT_ColumnDef,
 } from 'material-react-table';
-import "@/styles/Register.css"; 
-import "@/styles/CategoryList.css";
-import "@/styles/Structure.css";
+import "@/styles/CustomerOrders.css";
 
 type Orders = {
   OrderID: string;
@@ -47,11 +45,20 @@ const CustomerOrders = () => {
         accessorKey: 'Total_Amount',
         header: 'Total Amount',
         size: 100,
+        Cell: ({ cell }) => `Rs.${cell.getValue<string>()}`,
       },
       {
         accessorKey: 'PaymentStatus',
         header: 'Payment Status',
         size: 100,
+        Cell: ({ cell }) => {
+          const status = cell.getValue<string>();
+          return (
+            <span className={`payment-status ${status.toLowerCase().replace(' ', '-')}`}>
+              {status}
+            </span>
+          );
+        },
       },
       {
         accessorKey: 'OrderDate',
@@ -63,6 +70,14 @@ const CustomerOrders = () => {
         accessorKey: 'OrderStatus',
         header: 'Order Status',
         size: 100,
+        Cell: ({ cell }) => {
+          const status = cell.getValue<string>();
+          return (
+            <span className={`order-status ${status.toLowerCase().replace(' ', '-')}`}>
+              {status}
+            </span>
+          );
+        },
       },
       {
         accessorKey: 'CustomerID',
@@ -74,26 +89,41 @@ const CustomerOrders = () => {
         header: 'Actions',
         size: 20,
         Cell: ({ row }) => (
-          <button style={{ backgroundColor: '#0A2F6E', borderRadius:50, width: '60px', height: '30px'} } onClick={() => router.push(`/ViewOrder?orderId=${row.original.OrderID}`)}>
-            <AiOutlineFileSearch color='white' size={20} />
+          <button 
+            className="view-order-btn"
+            onClick={() => router.push(`/ViewOrder?orderId=${row.original.OrderID}`)}
+          >
+            <AiOutlineFileSearch size={20} />
           </button>
         ),
       },
     ],
-    [orders],
+    [],
   );
 
   return (
-    <div className="common">
+    <div className="customer-orders">
       <Header />
-      <main className="main-content">
-        <div className="sidebar-section">
+      <main className="customer-orders-main-content">
+        <div className="customer-orders-sidebar-section">
           <Sidebar />
         </div>
-        <div className="content">
-          <h1>Customer Orders</h1>
-          <div className="table-content">
-            <MaterialReactTable columns={columns} data={orders} />
+        <div className="customer-orders-content-area">
+          <div className="customer-orders-page-header">
+            <h1 className='page-title'>Customer Orders</h1>
+          </div>
+          <div className="customer-orders-table-container">
+            <MaterialReactTable 
+              columns={columns} 
+              data={orders} 
+              enableColumnFilters
+              enableGlobalFilter
+              enablePagination
+              muiTablePaperProps={{
+                elevation: 0,
+                className: 'customer-orders-table-paper'
+              }}
+            />
           </div>
         </div>
       </main> 
