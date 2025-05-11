@@ -33,8 +33,7 @@ export const Sidebar = () => {
       subItems: [
         { title: "Add Products", link: "/AddProducts" },
         { title: "Product List", link: "/ProductList" },
-        { title: "Add Category", link: "/AddCategory" },
-        { title: "Category List", link: "/CategoryList" },
+        { title: "Category", link: "/CategoryList" },
         { title: "Add Batch", link: "/AddBatch" }
       ] 
     },
