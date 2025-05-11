@@ -2,21 +2,34 @@ import React from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
+import '@/styles/CardComponent.css';
 
-const CardComponent = ({ title, value, description, onClick }) => {
+const CardComponent = ({ title, value, description, onClick, icon }) => {
   return (
-    <Card sx={{ minWidth: 275, margin: 2 }} onClick={onClick}>
-      <CardContent>
-        <Typography variant="h5" component="div">
-          {title}
+    <Card 
+      className={`stat-card-dashboard ${onClick ? 'clickable' : ''}`} 
+      onClick={onClick}
+      elevation={3}
+    >
+      <CardContent className="card-content">
+        <div className="card-header">
+          <div className="card-icon">{icon}</div>
+          <Typography className="card-title" variant="h6" component="div">
+            {title}
+          </Typography>
+        </div>
+        <Typography className="card-value" variant="h4" component="div">
+          {value || '0'}
         </Typography>
-        <Typography variant="h4" component="div" sx={{ marginTop: 2 }}>
-          {value}
-        </Typography>
-        <Typography variant="body2" sx={{ marginTop: 2 }}>
+        <Typography className="card-description" color="text.secondary">
           {description}
         </Typography>
+        {onClick && (
+          <div className="click-indicator">
+            <span>View details</span>
+            <span className="arrow">→</span>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

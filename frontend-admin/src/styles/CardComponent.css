@@ -1,0 +1,82 @@
+.stat-card-dashboard {
+    height: 100%;
+    border-radius: 12px !important;
+    transition: all 0.3s ease !important;
+    position: relative;
+    overflow: hidden !important;
+  }
+  
+  .stat-card-dashboard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  .clickable {
+    cursor: pointer;
+  }
+  
+  .clickable:hover {
+    background-color: #f8f9ff !important;
+  }
+  
+  .card-content {
+    padding: 20px !important;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .card-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  
+  .card-icon {
+    font-size: 24px;
+    margin-right: 12px;
+    background-color: rgba(0, 123, 255, 0.1);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .card-title {
+    font-weight: 600 !important;
+    color: #495057;
+    font-size: 16px !important;
+  }
+  
+  .card-value {
+    font-weight: 700 !important;
+    font-size: 28px !important;
+    color: #2c3e50 !important;
+    margin-bottom: 10px !important;
+  }
+  
+  .card-description {
+    font-size: 13px !important;
+    color: #6c757d !important;
+    margin-top: auto !important;
+  }
+  
+  .click-indicator {
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #007bff;
+    font-weight: 500;
+  }
+  
+  .arrow {
+    margin-left: 6px;
+    transition: transform 0.3s ease;
+  }
+  
+  .clickable:hover .arrow {
+    transform: translateX(4px);
+  }
