@@ -9,9 +9,6 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import AlertComponent from '@/components/AlertComponent';
-import "@/styles/Register.css"; 
-import "@/styles/MostSold.css";
-import "@/styles/Structure.css";
 import "@/styles/ViewOrder.css";
 
 const ViewOrderReturn = () => {
@@ -77,14 +74,14 @@ const ViewOrderReturn = () => {
 
 
   return (
-    <div className="common">
+    <div className="ViewOrderReturn">
       <Header />
-      <main className="main-content">
+      <main className="ViewOrderReturn-main-content">
         <div className="sidebar-section">
           <Sidebar />
         </div>
 
-        <div className="content">
+        <div className="ViewOrderReturn-content">
           <h1>Order Return Details</h1>
           <div className="order-details">
             <div className="order-details-row">
@@ -209,9 +206,11 @@ const ViewOrderReturn = () => {
               </div>
             ))}
           </div>
-            <Button variant="contained" onClick={handleBackToOrderReturns} style={{ marginTop: '20px', backgroundColor: '#0A2F6E' }}> Back To Order Returns </Button>
-            <Button variant="contained" onClick={handleUpdateStatus} style={{ marginTop: '20px', backgroundColor: '#0A2F6E', marginLeft: '20px' }}> Update Status </Button>
-            <Button variant="contained" onClick={handleSave} style={{ marginTop: '20px', backgroundColor: '#0A2F6E', marginLeft: '20px' }} disabled={!isEditing}> Save </Button>
+            <div className="action-buttons">
+              <Button variant="contained" onClick={handleBackToOrderReturns} style={{ backgroundColor: '#0A2F6E' }}> Back To Order Returns </Button>
+              <Button variant="contained" onClick={handleUpdateStatus} style={{ backgroundColor: '#0A2F6E' }}> Update Status </Button>
+              <Button variant="contained" onClick={handleSave} style={{ backgroundColor: '#0A2F6E' }} disabled={!isEditing}> Save </Button>
+            </div>
         </div>
       </main> 
       {alert.message && (
