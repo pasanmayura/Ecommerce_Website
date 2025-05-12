@@ -7,6 +7,7 @@ import { Header } from "@/components/Header";
 import { getProductDetails, getProductComments } from '@/services/productService';
 import { useCart } from '@/contexts/CartContext';
 import Image from 'next/image';
+import { Button } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { HiOutlineShare } from "react-icons/hi";
 import Comment from '@/components/Comment'; 
@@ -37,6 +38,7 @@ const ViewProduct = () => {
         const fetchProductDetails = async () => {
           try {
             const productData = await getProductDetails(productId);
+            productData.attributes = productData.attributes || [];
             setProduct(productData);
           } catch (error) {
             console.error('Error fetching product details:', error.message);
@@ -259,7 +261,7 @@ const ViewProduct = () => {
                   <button className="quantity-btn" onClick={() => handleQuantityChange('increase')}>+</button>
                 </div>
                 
-                <button className="buy-now-btn">Buy Now</button>
+                <Button variant='' className="buy-now-btn">Buy Now</Button>
                 <button className="wishlist-btn" onClick={handleWishlistToggle}>
                   <FavoriteIcon 
                     className="heart-icon" 
@@ -269,7 +271,7 @@ const ViewProduct = () => {
               </div>
               
               <div className="additional-actions">
-                <button className="add-to-cart-btn" onClick={handleAddToCart}>Add to Cart</button>
+                <Button variant="outlined" className="add-to-cart-btn" onClick={handleAddToCart}>Add to Cart</Button>
                 <button className="share-btn" onClick={openShareModal}><HiOutlineShare /></button>
               </div>
             </div>

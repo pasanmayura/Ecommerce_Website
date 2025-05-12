@@ -227,7 +227,7 @@ const WishlistPage = () => {
         <div className="wishlist-footer">
           <Button 
             variant="text" 
-            className="continue-shopping-btn" 
+            className="continue-btn" 
             onClick={handleExploreCatalog}
           >
             ← Continue Shopping
