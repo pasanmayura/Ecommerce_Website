@@ -8,9 +8,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { changePassword } from '@/Services/profileService';
 import AlertComponent from '@/components/AlertComponent';
-import "@/styles/Register.css"; 
-import "@/styles/MostSold.css";
-import "@/styles/Structure.css";
+import "@/styles/Profile.css";
 
 const ChangePassword = () => {
   const [passwords, setPasswords] = useState({
@@ -55,19 +53,19 @@ const ChangePassword = () => {
   };
 
   return (
-    <div className="common">
+    <div className="Profile-page">
       <Header />
-      <main className="main-content">
-        <div className="sidebar-section">
+      <main className="Profile-main-content">
+        <div className="Profile-sidebar-section">
           <Sidebar />
         </div>
 
-        <div className="content">
+        <div className="Profile-content">
           
           <div className="Profile-Section">          
             
             <div className="Profile-Details" style={{maxWidth: '500px', marginLeft: '8%', marginTop: '10%'}}>
-            <h1>Change Password</h1>
+            <h1 className="page-title">Change Password</h1>
               <TextField
                 label="Current Password"
                 name="currentPassword"

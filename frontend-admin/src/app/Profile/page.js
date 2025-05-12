@@ -3,13 +3,10 @@
 import { Header } from "@/components/Header"; 
 import { Sidebar } from "@/components/Sidebar";
 import Avatar from '@mui/material/Avatar';
-import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import { useState, useEffect } from 'react';
 import { getProfile } from '@/Services/profileService';
-import "@/styles/Register.css"; 
-import "@/styles/MostSold.css";
-import "@/styles/Structure.css";
+import "@/styles/Profile.css";
 
 const Profile = () => {
   const [user, setUser] = useState({
@@ -39,25 +36,22 @@ const Profile = () => {
   }, []);
 
   return (
-    <div className="common">
+    <div className="Profile-page">
       <Header />
-      <main className="main-content">
-        <div className="sidebar-section">
+      <main className="Profile-main-content">
+        <div className="Profile-sidebar-section">
           <Sidebar />
         </div>
 
-        <div className="content">
-          
+        <div className="Profile-content">
           <div className="Profile-Section">
-           
-            <div className="Profile-Details" style={{maxWidth: '500px', marginLeft: '8%', marginTop: '5%'}}>
-            <h1>Profile</h1>
-
-            <div className="Profile-icon-wrapper">
-              <Stack direction="row" spacing={2} marginLeft={25} marginBottom={5}>
-                <Avatar sx={{ bgcolor: '#0A2F6E', width: 70, height: 70 }}>{user.FirstName.charAt(0)}</Avatar>
-              </Stack>
-            </div>
+            <div className="Profile-Details">
+              <h1 className="page-title">Profile</h1>
+              <div className="Profile-icon-wrapper">
+                <Avatar sx={{ bgcolor: '#0A2F6E' }}>
+                  {user.FirstName ? user.FirstName.charAt(0) : ''}
+                </Avatar>
+              </div>
 
               <TextField
                 label="First Name"

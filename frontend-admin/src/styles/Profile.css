@@ -1,0 +1,137 @@
+.Profile-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f5f7fa;
+  }
+  
+  .Profile-main-content {
+    display: flex;
+    flex-grow: 1;
+    position: relative;
+  }
+  
+  .Profile-sidebar-section {
+    width: 280px;
+    flex-shrink: 0;
+    transition: width 0.3s ease;   
+    background: #f8f9fa;
+  }  
+  
+  .Profile-content {
+    flex: 1;
+    padding: 30px;
+    display: flex;
+    margin-top: 50px;
+  }
+  
+  .Profile-Section {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    width: 90%;
+    max-width: 900px;
+    min-height: 500px;
+    padding: 20px;
+    margin-top: 40px;
+  }
+  
+  .Profile-Details {
+    max-width: 500px;
+    margin-left: 200px;
+    margin-top: 5%;
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  .page-title {
+    margin-bottom: 40px !important;
+    color: #0a2f6e;
+    font-weight: 600 !important;
+    position: relative;
+  }
+  
+  .page-title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -10px;
+    width: 50px;
+    height: 4px;
+    background-color: #0a2f6e;
+    border-radius: 2px;
+  }
+  
+  .Profile-icon-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+  }
+  
+  /* Custom styles for Material UI components */
+  .Profile-Details .MuiTextField-root {
+    margin-bottom: 20px;
+  }
+  
+  .Profile-Details .MuiInputLabel-root {
+    color: #0A2F6E;
+    font-weight: 500;
+  }
+  
+  .Profile-Details .MuiOutlinedInput-root {
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+  
+  .Profile-Details .MuiOutlinedInput-notchedOutline {
+    border-color: #d0d0d0;
+  }
+  
+  .Profile-Details .MuiOutlinedInput-input {
+    padding: 15px;
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .Profile-Details .MuiAvatar-root {
+    background-color: #0A2F6E;
+    width: 100px;
+    height: 100px;
+    font-size: 40px;
+    font-weight: 500;
+    box-shadow: 0 4px 10px rgba(10, 47, 110, 0.3);
+    transition: all 0.3s ease;
+  }
+  
+  .Profile-Details .MuiAvatar-root:hover {
+    transform: scale(1.05);
+  }
+  
+  /* Responsive adjustments */
+  @media screen and (max-width: 1024px) {
+    .Profile-Section {
+      width: 95%;
+    }
+    
+    .Profile-Details {
+      margin-left: 5%;
+    }
+  }
+  
+  @media screen and (max-width: 768px) {
+    .Profile-main-content {
+      flex-direction: column;
+    }
+    
+    .Profile-sidebar-section {
+      width: 100%;
+      min-height: auto;
+      border-right: none;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .Profile-Details {
+      margin-left: 0;
+      margin-top: 20px;
+      max-width: 100%;
+    }
+  }
