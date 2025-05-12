@@ -84,25 +84,28 @@ exports.getProductDetails = async (req, res) => {
   try {
     const query = `
       SELECT 
-          p.ProductID AS id,
-          p.Product_Name AS name,
-          p.Description AS description,
-          CAST(MIN(b.Selling_Price) AS DECIMAL(10, 2)) AS price,
-          p.Product_Rating AS rating,
-          pi.ImageURL_1 AS image1,
-          pi.ImageURL_2 AS image2,
-          pi.ImageURL_3 AS image3,
-          JSON_ARRAYAGG(
-            JSON_OBJECT(
-              'attribute', a.Attribute_Name,
-              'value', pa.value
-            )
-          ) AS attributes
+        p.ProductID AS id,
+        p.Product_Name AS name,
+        p.Description AS description,
+        CAST(MIN(b.Selling_Price) AS DECIMAL(10, 2)) AS price,
+        p.Product_Rating AS rating,
+        pi.ImageURL_1 AS image1,
+        pi.ImageURL_2 AS image2,
+        pi.ImageURL_3 AS image3,
+        (
+          SELECT JSON_ARRAYAGG(
+                  JSON_OBJECT(
+                    'attribute', a.Attribute_Name,
+                    'value', pa.value
+                  )
+                )
+          FROM product_attributes pa
+          JOIN attributes a ON pa.attribute_id = a.id
+          WHERE pa.ProductID = p.ProductID
+        ) AS attributes
       FROM product p
       JOIN batch b ON p.ProductID = b.ProductID
       JOIN productsimages pi ON p.ProductID = pi.ProductID
-      LEFT JOIN product_attributes pa ON p.ProductID = pa.ProductID
-      LEFT JOIN attributes a ON pa.attribute_id = a.id
       WHERE p.ProductID = ?
       GROUP BY p.ProductID, p.Product_Name, p.Description, pi.ImageURL_1, pi.ImageURL_2, pi.ImageURL_3;
       `;
