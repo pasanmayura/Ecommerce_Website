@@ -95,12 +95,11 @@ const ProductCard = ({ product }) => {
       
       <div 
         className="wishlist-icon" 
-        onClick={handleWishlistToggle} 
-        style={{ color: isWishlisted ? '#ff6b6b' : '#ccc' }}
+        onClick={handleWishlistToggle}        
       >
-        <FavoriteIcon className="heart-icon" />
+        <FavoriteIcon className="heart-icon" style={{ color: isWishlisted ? '#ff6b6b' : '#ccc' }}/>
       </div>
-      
+
       <div className="product-image-container">
         <div className={`product-image ${isHovered ? 'zoomed' : ''}`}>
           <Image
