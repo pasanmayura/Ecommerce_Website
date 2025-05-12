@@ -1,0 +1,116 @@
+.add-employee {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+}
+
+/* Main content layout */
+.add-employee-main-content {
+    display: flex;
+    flex: 1;
+    position: relative;
+}
+
+.page-title {
+    margin-bottom: 40px !important;
+    color: #0a2f6e;
+    font-weight: 600 !important;
+    position: relative;
+  }
+  
+  .page-title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -10px;
+    width: 50px;
+    height: 4px;
+    background-color: #0a2f6e;
+    border-radius: 2px;
+  }
+
+/* Sidebar section */
+.add-employee-sidebar-section {
+    width: 280px;
+    flex-shrink: 0;
+    transition: width 0.3s ease;   
+    background: #f8f9fa;
+}
+
+/* Content section */
+.add-employee-content-section {
+    flex: 1;
+    padding: 30px;
+    overflow-y: auto;
+    margin-top: 80px;
+    margin-left: 50px;
+}
+
+/* Form container */
+.add-employee-form-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    padding: 20px;
+    max-width: 700px;
+}
+
+/* Form styling */
+.employee-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.add-employee-form-group {
+    margin-bottom: 1rem;
+}
+
+/* Form actions section */
+.add-employee-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+}
+
+/* Submit button styling */
+.submit-button {
+    background-color: #0a2f6e !important;
+    padding: 0.5rem 2rem !important;
+    transition: background-color 0.3s ease !important;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .add-employee-main-content {
+        flex-direction: column;
+    }
+    
+    .add-employee-sidebar-section {
+        width: 100%;
+        height: auto;
+    }
+    
+    .add-employee-content-section {
+        padding: 1.5rem;
+    }
+    
+    .add-employeeform-container {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .add-employee-content-section {
+        padding: 1rem;
+    }
+    
+    .add-employee-form-container {
+        padding: 1rem;
+    }
+    
+    .add-employee-form-actions {
+        justify-content: center;
+    }
+}

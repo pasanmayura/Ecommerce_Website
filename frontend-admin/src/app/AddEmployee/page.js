@@ -6,156 +6,175 @@ import { Header } from "@/components/Header";
 import { Sidebar } from "@/components/Sidebar";
 import { registerEmp } from "@/Services/employeeService";
 import AlertComponent from '@/components/AlertComponent';
+import "@/styles/AddEmployee.css";
 
 const AddEmployee = () => {
-    const [FirstName, setFirstName] = useState('');
-    const [LastName, setLastName] = useState('');
-    const [Email, setEmail] = useState('');
-    const [PhoneNumber, setPhoneNumber] = useState('');
-    const [Password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
+    const [formData, setFormData] = useState({
+        FirstName: '',
+        LastName: '',
+        Email: '',
+        PhoneNumber: '',
+        Password: '',
+        confirmPassword: ''
+    });
     const [alert, setAlert] = useState({ severity: '', title: '', message: '' });
 
-    const handleFirstNameChange = (e) => {
-        setFirstName(e.target.value);
-    }
-
-    const handleLastNameChange = (e) => {
-        setLastName(e.target.value);
-    }
-
-    const handleEmailChange = (e) => {
-        setEmail(e.target.value);
-    }
-
-    const handlePhoneNumberChange = (e) => {
-        setPhoneNumber(e.target.value);
-    }
-
-    const handlePasswordChange = (e) => {
-        setPassword(e.target.value);
-    }
-
-    const handleConfirmPasswordChange = (e) => {
-        setConfirmPassword(e.target.value);
-    }
+    const handleChange = (e) => {
+        const { id, value } = e.target;
+        setFormData(prevData => ({
+            ...prevData,
+            [id]: value
+        }));
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const { FirstName, LastName, Email, PhoneNumber, Password, confirmPassword } = formData;
+
         if (Password !== confirmPassword) {
             setAlert({ severity: 'error', title: 'Error', message: 'Passwords do not match' });
-        } else {
-            setAlert('');
+            return;
+        }
+
+        setAlert({ severity: '', title: '', message: '' });
+        
+        try {
             const result = await registerEmp(FirstName, LastName, Email, PhoneNumber, Password);
+            
             if (result.message === 'Employee registered successfully') {
                 setAlert({ severity: 'success', title: 'Success', message: 'Employee added successfully' });
-                // Clear the text fields
-                setFirstName('');
-                setLastName('');
-                setEmail('');
-                setPhoneNumber('');
-                setPassword('');
-                setConfirmPassword('');
+                // Clear the form
+                setFormData({
+                    FirstName: '',
+                    LastName: '',
+                    Email: '',
+                    PhoneNumber: '',
+                    Password: '',
+                    confirmPassword: ''
+                });
             } else {
                 setAlert({ severity: 'error', title: 'Error', message: result.message });
             }
+        } catch (error) {
+            setAlert({ 
+                severity: 'error', 
+                title: 'Error', 
+                message: error.message || 'Failed to register employee' 
+            });
         }
-    }
+    };
 
     const closeAlert = () => {
         setAlert({ severity: '', title: '', message: '' });
-    }
+    };
   
     return (
-        <div className="common">
+        <div className="add-employee">
             <Header />
-            <main className="main-content">
-                <div className="sidebar-section">
+            <main className="add-employee-main-content">
+                <div className="add-employee-sidebar-section">
                     <Sidebar />
                 </div>
     
-                <div className="content">
-                    <h1>Add Employee</h1>
-                    <div className="form-section">                        
-                        <form className="form" onSubmit={handleSubmit}>
-                            <div className="form-group">
+                <div className="add-employee-content-section">
+                    <div className="add-employee-page-header">
+                        <h1 className='page-title'>Add Employee</h1>
+                    </div>
+                    
+                    <div className="add-employee-form-container">                        
+                        <form className="employee-form" onSubmit={handleSubmit}>
+                            <div className="add-employee-form-group">
                                 <TextField 
                                   fullWidth 
                                   label="First Name" 
                                   id="FirstName" 
                                   required 
-                                  value={FirstName} 
-                                  onChange={handleFirstNameChange} 
+                                  value={formData.FirstName} 
+                                  onChange={handleChange} 
                                 />
                             </div>
-                            <div className="form-group">
+                            
+                            <div className="add-employee-form-group">
                                 <TextField 
                                   fullWidth 
                                   label="Last Name" 
                                   id="LastName" 
                                   required 
-                                  value={LastName} 
-                                  onChange={handleLastNameChange} 
+                                  value={formData.LastName} 
+                                  onChange={handleChange} 
                                 />
                             </div>
-                            <div className="form-group">              
+                            
+                            <div className="add-employee-form-group">              
                                 <TextField 
                                   fullWidth 
                                   label="Email" 
                                   id="Email" 
                                   type="email" 
                                   required 
-                                  value={Email} 
-                                  onChange={handleEmailChange} 
+                                  value={formData.Email} 
+                                  onChange={handleChange} 
                                 />
                             </div>
-                            <div className="form-group">
+                            
+                            <div className="add-employee-form-group">
                                 <TextField 
                                   fullWidth 
                                   label="Phone Number" 
                                   id="PhoneNumber" 
                                   required 
-                                  value={PhoneNumber} 
-                                  onChange={handlePhoneNumberChange} 
+                                  value={formData.PhoneNumber} 
+                                  onChange={handleChange} 
                                 />
                             </div>
-                            <div className="form-group">
+                            
+                            <div className="add-employee-form-group">
                                 <TextField 
                                   fullWidth 
                                   label="Password" 
                                   id="Password" 
                                   type="password" 
                                   required 
-                                  value={Password} 
-                                  onChange={handlePasswordChange} 
+                                  value={formData.Password} 
+                                  onChange={handleChange} 
                                 />
                             </div>
-                            <div className="form-group">
+                            
+                            <div className="add-employee-form-group">
                                 <TextField 
                                   fullWidth 
                                   label="Confirm Password" 
-                                  id="confirm_password" 
+                                  id="confirmPassword" 
                                   type="password" 
                                   required 
-                                  value={confirmPassword} 
-                                  onChange={handleConfirmPasswordChange} 
+                                  value={formData.confirmPassword} 
+                                  onChange={handleChange} 
                                 />
-                                {alert.message && (<AlertComponent severity={alert.severity} title={alert.title} message={alert.message} onClose={closeAlert} />)}
                             </div>
-                            <Button variant="contained" className="form-button" type="submit">Add Employee</Button>                            
+                            
+                            <div className="add-employee-form-actions">
+                                <Button 
+                                  variant="contained" 
+                                  className="submit-button" 
+                                  type="submit"
+                                >
+                                  Add Employee
+                                </Button>
+                            </div>                          
                         </form>
                     </div>
                 </div>
-            </main> 
+            </main>
+            
             {alert.message && (
             <AlertComponent
                 severity={alert.severity}
                 title={alert.title}
                 message={alert.message}
                 onClose={closeAlert}
-                sx={{ width: '25%', position: 'fixed', top: '10%', left: '75%', zIndex: 9999 }}
+                sx={{ width: '25%', position: 'fixed', top: '10%', right: '2%', zIndex: 9999 }}
             />
-            )} 
+            )}
         </div>
     );
 };
