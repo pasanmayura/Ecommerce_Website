@@ -9,6 +9,7 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import StarRating from '@/components/StarRating';
 import ConfirmationDialog from '@/components/ConfirmationDialog';
+import { useRouter } from 'next/navigation';
 import '@/styles/WishlistItem.css';
 
 // Helper function to convert Google Drive URL to direct image link
@@ -25,6 +26,7 @@ const WishlistItem = ({ item, onRemove }) => {
   const { id, image, name, price, rating, availability = 'In Stock' } = item;
   const { addToCart } = useCart();
   const [openDialog, setOpenDialog] = useState(false);
+  const router = useRouter();
 
   const handleRemove = async (e) => {
     e.stopPropagation();
@@ -52,12 +54,16 @@ const WishlistItem = ({ item, onRemove }) => {
     setOpenDialog(false);
   };
 
+  const handleCardClick = () => {
+    router.push(`/ViewProduct?id=${id}`);
+  };
+
   const formattedPrice = !isNaN(price) ? parseFloat(price).toFixed(2) : 'N/A';
   
   const isAvailable = availability === 'In Stock';
   
   return (
-    <div className="wishlist-item">
+    <div className="wishlist-item" onClick={handleCardClick}>
       <div className="wishlist-item-image">
         <Image
           src={getDirectImageUrl(image)}
@@ -82,7 +88,7 @@ const WishlistItem = ({ item, onRemove }) => {
         </div>
       </div>
       
-      <div className="wishlist-item-actions">
+      <div className="wishlist-item-actions" onClick={(e) => e.stopPropagation()}>
         <Button
           variant="contained"
           className="wishlist-add-cart-btn"
@@ -93,7 +99,7 @@ const WishlistItem = ({ item, onRemove }) => {
           Add to Cart
         </Button>
         
-        <div className="wishlist-secondary-actions">          
+        <div className="wishlist-secondary-actions" onClick={(e) => e.stopPropagation()}>         
           <IconButton 
             className="remove-wishlist-btn" 
             onClick={openConfirmationDialog}

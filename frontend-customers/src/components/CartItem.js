@@ -2,10 +2,11 @@
 
 import React, { useState } from 'react';
 import Image from "next/image";
-import { IconButton, Button } from '@mui/material';
+import { IconButton } from '@mui/material';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import { useRouter } from 'next/navigation';
 import '@/styles/CartItems.css';
 
 // Helper function to convert Google Drive URL to direct image link
@@ -21,7 +22,8 @@ const getDirectImageUrl = (url) => {
 const CartItem = ({ item, onRemove, onQuantityChange }) => {
   const { id, image, name, price, quantity = 1 } = item;
   const [itemQuantity, setItemQuantity] = useState(quantity);
-  
+  const router = useRouter();
+
   const handleQuantityChange = (newQuantity) => {
     if (newQuantity < 1) return;
     setItemQuantity(newQuantity);
@@ -32,11 +34,15 @@ const CartItem = ({ item, onRemove, onQuantityChange }) => {
     onRemove && onRemove(id);
   };
 
+  const handleCardClick = () => {
+    router.push(`/ViewProduct?id=${id}`);
+  };
+
   const formattedPrice = !isNaN(price) ? parseFloat(price).toFixed(2) : 'N/A';
   const subtotal = !isNaN(price) ? (parseFloat(price) * itemQuantity).toFixed(2) : 'N/A';
 
   return (
-    <div className="cart-item">
+    <div className="cart-item" onClick={handleCardClick}>
       <div className="cart-item-image">
         <Image
           src={getDirectImageUrl(image)}
@@ -53,7 +59,7 @@ const CartItem = ({ item, onRemove, onQuantityChange }) => {
       </div>
       
       <div className="cart-item-quantity">
-        <div className="quantity-control">
+        <div className="quantity-control" onClick={(e) => e.stopPropagation()}>
           <IconButton 
             className="quantity-btn" 
             onClick={() => handleQuantityChange(itemQuantity - 1)}
@@ -78,7 +84,7 @@ const CartItem = ({ item, onRemove, onQuantityChange }) => {
         <p className="subtotal-value">Rs.{subtotal}</p>
       </div>
       
-      <div className="cart-item-actions">
+      <div className="cart-item-actions" onClick={(e) => e.stopPropagation()}>
         <IconButton 
           className="remove-btn" 
           onClick={handleRemove}
