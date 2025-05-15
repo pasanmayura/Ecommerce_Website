@@ -43,7 +43,11 @@ const ViewCart = () => {
 
   // Handle checkout
   const handleCheckout = () => {
-    router.push('/checkout');
+    // Save cart items to local storage
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  
+    // Redirect to the Checkout page
+    router.push('/Checkout');
   };
 
   // Render empty cart
