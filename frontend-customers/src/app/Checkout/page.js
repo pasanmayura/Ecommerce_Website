@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { Header } from "@/components/Header";
 import { getUserDetails } from '@/services/userService'; 
 import { loadStripe } from '@stripe/stripe-js';
@@ -25,6 +26,7 @@ const Checkout = () => {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(true);
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   // State for order summary
   const [orderSummary, setOrderSummary] = useState({
@@ -86,6 +88,24 @@ const Checkout = () => {
     };
 
     fetchUserDetails();
+  }, []);
+
+  useEffect(() => {
+    // Retrieve cart items from local storage
+    const storedCartItems = localStorage.getItem('cartItems');
+    const cartItems = storedCartItems ? JSON.parse(storedCartItems) : [];
+
+    if (cartItems.length > 0) {
+      const subtotal = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+      const total = subtotal + orderSummary.shipping;
+
+      setOrderSummary({
+        items: cartItems,
+        subtotal,
+        shipping: orderSummary.shipping,
+        total,
+      });
+    }
   }, []);
 
   // Handle form field changes
@@ -326,13 +346,15 @@ const Checkout = () => {
             <div className="order-summary">
             <h2>Order Summary</h2>
             <div className="order-items">
-              {orderSummary.items.map(item => (
+              {orderSummary.items.map((item) => (
                 <div key={item.id} className="order-item">
                   <div className="item-details">
                     <span className="item-quantity">{item.quantity} x</span>
                     <span className="item-name">{item.name}</span>
                   </div>
-                  <span className="item-price">${(item.price * item.quantity).toFixed(2)}</span>
+                  <span className="item-price">
+                    Rs.{(item.price * item.quantity).toFixed(2)}
+                  </span>
                 </div>
               ))}
             </div>
@@ -340,7 +362,7 @@ const Checkout = () => {
             <div className="order-totals">
               <div className="total-row">
                 <span>Subtotal</span>
-                <span>${orderSummary.subtotal.toFixed(2)}</span>
+                <span>Rs.{orderSummary.subtotal.toFixed(2)}</span>
               </div>
               <div className="total-row">
                 <span>Shipping</span>
