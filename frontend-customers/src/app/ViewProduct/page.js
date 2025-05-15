@@ -177,6 +177,8 @@ const ViewProduct = () => {
         price,
         quantity,
       };
+
+      localStorage.removeItem('cartItems');
   
       // Redirect to the Checkout page with product data as query parameters
       const queryString = new URLSearchParams(productData).toString();
