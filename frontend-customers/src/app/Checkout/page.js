@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { Header } from "@/components/Header";
 import { getUserDetails } from '@/services/userService'; 
+import { updateUserAddress } from '@/services/orderService';
 import { loadStripe } from '@stripe/stripe-js';
 import '@/styles/Checkout.css';
 
@@ -35,6 +36,80 @@ const Checkout = () => {
     shipping: 300.00,
     total: 0,
   });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+
+    // Clear any errors for this field
+    if (errors[name]) {
+      setErrors({
+        ...errors,
+        [name]: null,
+      });
+    }
+  };
+
+  // Validate form fields
+  const validateForm = () => {
+    const newErrors = {};
+
+    // Validate address
+    if (!formData.Street_No.trim()) {
+      newErrors.Street_No = 'Street Number is required';
+    }
+
+    if (!formData.Village.trim()) {
+      newErrors.Village = 'Village is required';
+    }
+
+    if (!formData.City.trim()) {
+      newErrors.City = 'City is required';
+    }
+
+    if (!formData.Postal_Code.trim()) {
+      newErrors.Postal_Code = 'Postal Code is required';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (validateForm()) {
+      try {
+        // Prepare the address data to be updated
+        const addressData = {
+          Street_No: formData.Street_No,
+          Village: formData.Village,
+          City: formData.City,
+          Postal_Code: formData.Postal_Code,
+      };
+
+        await updateUserAddress(addressData);
+
+        alert('Address updated successfully!');
+
+        // if (formData.paymentMethod === 'stripe') {
+        //   handleStripePayment();
+        // } else {
+        //   console.log('COD order placed:', formData);
+        //   alert('Order placed with Cash on Delivery!');
+        // }
+      } catch (error) {
+        console.error('Error updating address:', error.message);
+        alert('Failed to update address. Please try again.');
+      }
+    } else {
+      console.log('Form has errors');
+    }
+  };
 
   useEffect(() => {
     // Extract product data from query parameters
@@ -109,89 +184,7 @@ const Checkout = () => {
   }, []);
 
   // Handle form field changes
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-
-    // Clear any errors for this field
-    if (errors[name]) {
-      setErrors({
-        ...errors,
-        [name]: null,
-      });
-    }
-  };
-
-  // Validate form fields
-  const validateForm = () => {
-    const newErrors = {};
-
-    // Validate address
-    if (!formData.Street_No.trim()) {
-      newErrors.Street_No = 'Street Number is required';
-    }
-
-    if (!formData.Village.trim()) {
-      newErrors.Village = 'Village is required';
-    }
-
-    if (!formData.City.trim()) {
-      newErrors.City = 'City is required';
-    }
-
-    if (!formData.Postal_Code.trim()) {
-      newErrors.Postal_Code = 'Postal Code is required';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  // Handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
   
-    if (validateForm()) {
-      if (formData.paymentMethod === 'stripe') {
-        handleStripePayment();
-      } else {
-        // Normal Cash on Delivery flow
-        console.log('COD order placed:', formData);
-        alert('Order placed with Cash on Delivery!');
-      }
-    } else {
-      console.log('Form has errors');
-    }
-  };
-  
-
-  const stripePromise = loadStripe('pk_test_51RP6ojPP2Z8alkuteclLPAP5r47EozQbOYgwKfcJQr5zmEBsTfuTviQxubrXOca7XKg0oBM0T8TwivQRq3ytmodV00KM3FyHeN'); // 👈 replace with your publishable key
-
-  const handleStripePayment = async () => {
-    const stripe = await stripePromise;
-
-    const response = await fetch('http://localhost:5000/api/payment/create-checkout-session', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ items: orderSummary.items }),
-    });
-
-    const session = await response.json();
-
-    // Redirect to Stripe Checkout
-    const result = await stripe.redirectToCheckout({
-      sessionId: session.id,
-    });
-
-    if (result.error) {
-      alert(result.error.message);
-    }
-  };
 
 
   if (loading) {
@@ -233,6 +226,7 @@ const Checkout = () => {
                       value={formData.FirstName}
                       onChange={handleChange}
                       className={errors.FirstName ? 'input-error' : ''}
+                      disabled
                     />
                     {errors.FirstName && <span className="error-message">{errors.FirstName}</span>}
                   </div>
@@ -246,6 +240,7 @@ const Checkout = () => {
                       value={formData.LastName}
                       onChange={handleChange}
                       className={errors.LastName ? 'input-error' : ''}
+                      disabled
                     />
                     {errors.LastName && <span className="error-message">{errors.LastName}</span>}
                   </div>
