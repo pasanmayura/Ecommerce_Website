@@ -6,6 +6,7 @@ const authRoutes = require('./routes/authRoutes');
 const contactRoutes = require('./routes/contactRoutes');
 const userRoutes = require('./routes/userRoutes'); 
 const wishlistRoutes = require('./routes/wishlistRoutes'); 
+const orderRoutes = require('./routes/orderRoutes');
 
 const app = express();
 
@@ -19,5 +20,6 @@ app.use('/api/auth', authRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/wishlist', wishlistRoutes);
+app.use('/api/orders', orderRoutes);
 
 module.exports = app;
