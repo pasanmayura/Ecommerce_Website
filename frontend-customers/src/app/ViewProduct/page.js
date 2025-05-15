@@ -170,6 +170,19 @@ const ViewProduct = () => {
       setIsShareModalOpen(false);
     };
 
+    const handleBuyNow = () => {
+      const productData = {
+        id: productId,
+        name,
+        price,
+        quantity,
+      };
+  
+      // Redirect to the Checkout page with product data as query parameters
+      const queryString = new URLSearchParams(productData).toString();
+      router.push(`/Checkout?${queryString}`);
+    };
+
     return (
         <div className="view-product">
           <Header isHomePage={false} />
@@ -261,7 +274,7 @@ const ViewProduct = () => {
                   <button className="quantity-btn" onClick={() => handleQuantityChange('increase')}>+</button>
                 </div>
                 
-                <Button variant='' className="buy-now-btn">Buy Now</Button>
+                <Button variant='' className="buy-now-btn" onClick={handleBuyNow}>Buy Now</Button>
                 <button className="wishlist-btn" onClick={handleWishlistToggle}>
                   <FavoriteIcon 
                     className="heart-icon" 
