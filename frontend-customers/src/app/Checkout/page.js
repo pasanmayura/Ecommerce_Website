@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Header } from "@/components/Header";
 import { getUserDetails } from '@/services/userService'; 
 import { updateUserAddress } from '@/services/orderService';
+import { handleStripePayment } from '@/services/paymentService';
 import { loadStripe } from '@stripe/stripe-js';
 import '@/styles/Checkout.css';
 
@@ -28,7 +29,6 @@ const Checkout = () => {
   const [loading, setLoading] = useState(true);
   const searchParams = useSearchParams();
   const router = useRouter();
-  const stripePromise = loadStripe('pk_test_51RP6ojPP2Z8alkuteclLPAP5r47EozQbOYgwKfcJQr5zmEBsTfuTviQxubrXOca7XKg0oBM0T8TwivQRq3ytmodV00KM3FyHeN');
 
   // State for order summary
   const [orderSummary, setOrderSummary] = useState({
@@ -82,7 +82,7 @@ const Checkout = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (validateForm()) {
       try {
         // Prepare the address data to be updated
@@ -91,14 +91,14 @@ const Checkout = () => {
           Village: formData.Village,
           City: formData.City,
           Postal_Code: formData.Postal_Code,
-      };
-
+        };
+  
         await updateUserAddress(addressData);
-
+  
         alert('Address updated successfully!');
-
+  
         if (formData.paymentMethod === 'stripe') {
-          handleStripePayment();
+          await handleStripePayment(orderSummary); // Use the payment service
         } else {
           console.log('COD order placed:', formData);
           alert('Order placed with Cash on Delivery!');
@@ -109,35 +109,6 @@ const Checkout = () => {
       }
     } else {
       console.log('Form has errors');
-    }
-  };
-
-  const handleStripePayment = async () => {
-    try {
-      const stripe = await stripePromise;
-  
-      // Send a request to your backend to create a checkout session
-      const response = await fetch('http://localhost:5000/api/payment/create-checkout-session', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ items: orderSummary.items }),
-      });
-  
-      const session = await response.json();
-  
-      // Redirect to Stripe Checkout
-      const result = await stripe.redirectToCheckout({
-        sessionId: session.id,
-      });
-  
-      if (result.error) {
-        alert(result.error.message);
-      }
-    } catch (error) {
-      console.error('Error during Stripe payment:', error.message);
-      alert('Failed to initiate payment. Please try again.');
     }
   };
 
