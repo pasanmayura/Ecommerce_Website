@@ -68,6 +68,7 @@ CREATE TABLE Orders (
     OrderID VARCHAR(255) PRIMARY KEY,
     Total_Amount DECIMAL(10, 2),
     PaymentStatus ENUM('Paid', 'Pending'),
+    PaymentMethod ENUM('COD', 'Stripe'),
     OrderDate DATE DEFAULT (CURRENT_DATE),
     OrderStatus ENUM('Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'),
     CustomerID VARCHAR(255),
