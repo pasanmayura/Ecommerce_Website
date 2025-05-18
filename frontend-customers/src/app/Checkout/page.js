@@ -7,7 +7,7 @@ import { Header } from "@/components/Header";
 import { getUserDetails } from '@/services/userService'; 
 import { updateUserAddress } from '@/services/orderService';
 import { handleStripePayment } from '@/services/paymentService';
-import { loadStripe } from '@stripe/stripe-js';
+import { placeOrder } from '@/services/orderService';
 import '@/styles/Checkout.css';
 
 const Checkout = () => {
@@ -85,7 +85,6 @@ const Checkout = () => {
   
     if (validateForm()) {
       try {
-        // Prepare the address data to be updated
         const addressData = {
           Street_No: formData.Street_No,
           Village: formData.Village,
@@ -93,9 +92,26 @@ const Checkout = () => {
           Postal_Code: formData.Postal_Code,
         };
   
-        await updateUserAddress(addressData);
+        console.log('Address Data:', addressData);
   
-        alert('Address updated successfully!');
+        await updateUserAddress(addressData);
+        // Prepare the order data
+        const orderData = {
+          items: orderSummary.items.map((item) => ({
+            productId: item.id,
+            price: item.price,            
+            quantity: item.quantity,
+          })),
+          totalAmount: orderSummary.total,
+          paymentMethod: formData.paymentMethod,
+        };
+  
+        // Place the order
+        const response = await placeOrder(orderData);
+
+        localStorage.setItem('orderId', response.orderId);
+  
+        alert('Order placed successfully!');
   
         if (formData.paymentMethod === 'stripe') {
           await handleStripePayment(orderSummary); // Use the payment service
@@ -104,8 +120,8 @@ const Checkout = () => {
           alert('Order placed with Cash on Delivery!');
         }
       } catch (error) {
-        console.error('Error updating address:', error.message);
-        alert('Failed to update address. Please try again.');
+        console.error('Error placing order:', error.message);
+        alert('Failed to place order. Please try again.');
       }
     } else {
       console.log('Form has errors');

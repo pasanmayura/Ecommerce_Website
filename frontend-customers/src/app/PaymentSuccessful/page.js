@@ -3,6 +3,7 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { CheckCircle, Home, ShoppingBag, Truck, Package } from 'lucide-react';
+import { updatePaymentStatus } from '@/services/orderService';
 import '@/styles/PaymentSuccessful.css';
 
 const PaymentSuccessful = () => {
@@ -16,6 +17,27 @@ const PaymentSuccessful = () => {
     }, 300);
     
     return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    const updateStatus = async () => {
+      try {
+        const orderId = localStorage.getItem('orderId'); // Retrieve the OrderID from localStorage
+        if (!orderId) {
+          console.error('Order ID not found');
+          return;
+        }
+  
+        await updatePaymentStatus(orderId);
+
+        console.log('Payment status updated to Paid');
+        localStorage.removeItem('orderId');
+      } catch (error) {
+        console.error('Error updating payment status:', error.message);
+      }
+    };
+  
+    updateStatus();
   }, []);
 
   const handleGoHome = () => {
