@@ -106,25 +106,6 @@ CREATE TABLE Return_Items (
     FOREIGN KEY (ProductID) REFERENCES Product(ProductID) ON DELETE CASCADE
 );
 
--- Create a view to get low stock products
-CREATE VIEW LowStockProducts AS
-    SELECT 
-        p.ProductID, 
-        p.Product_Name, 
-        p.Threshold,
-        c.Category_Name,
-        COALESCE(SUM(b.Stock_Quantity), 0) AS TotalStock
-    FROM Product p
-    LEFT JOIN Batch b ON p.ProductID = b.ProductID
-    JOIN category c ON p.CategoryID = c.CategoryID
-    GROUP BY p.ProductID, p.Product_Name, p.Threshold
-    HAVING TotalStock < p.Threshold;
-
-CREATE TABLE attributes (
-  id INT PRIMARY KEY AUTO_INCREMENT,
-  Attribute_Name VARCHAR(50) 
-);
-
 CREATE TABLE product_attributes (
   id INT PRIMARY KEY AUTO_INCREMENT,
   ProductID VARCHAR(255),
@@ -162,3 +143,47 @@ CREATE TABLE product_attributes_batch (
     FOREIGN KEY (BatchID) REFERENCES batch(BatchID),
     FOREIGN KEY (id_pa) REFERENCES product_attributes(id)
 );
+
+--Views
+
+-- Create a view to get low stock products
+CREATE VIEW LowStockProducts AS
+    SELECT 
+        p.ProductID, 
+        p.Product_Name, 
+        p.Threshold,
+        c.Category_Name,
+        COALESCE(SUM(b.Stock_Quantity), 0) AS TotalStock
+    FROM Product p
+    LEFT JOIN Batch b ON p.ProductID = b.ProductID
+    JOIN category c ON p.CategoryID = c.CategoryID
+    GROUP BY p.ProductID, p.Product_Name, p.Threshold
+    HAVING TotalStock < p.Threshold;
+
+CREATE TABLE attributes (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  Attribute_Name VARCHAR(50) 
+);
+
+-- Create a view to get product details for display in cards
+CREATE VIEW ProductDisplayView AS
+SELECT 
+    p.ProductID AS id,
+    p.Product_Name AS name, 
+    (
+        SELECT b1.Selling_Price
+        FROM Batch b1
+        WHERE b1.ProductID = p.ProductID
+        ORDER BY b1.Date ASC, b1.BatchID ASC
+        LIMIT 1
+    ) AS price,
+    pi.ImageURL_1 AS image,
+    p.Product_Rating AS rating,
+    (
+        SELECT COALESCE(SUM(po.Quantity), 0)
+        FROM ProductOrders po
+        WHERE po.ProductID = p.ProductID
+    ) AS sold_count
+FROM Product p
+JOIN ProductsImages pi ON p.ProductID = pi.ProductID
+GROUP BY p.ProductID, p.Product_Name, pi.ImageURL_1, p.Product_Rating;
