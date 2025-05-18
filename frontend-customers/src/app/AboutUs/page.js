@@ -25,7 +25,7 @@ const AboutUs = () => {
 
   return (
     <div className="AboutUs">
-      <Header isHomePage={true}/>
+      <Header/>
       <main className="main-about-content">
         <h1 className='story'>Our Story</h1>
         <div className='story-content'>

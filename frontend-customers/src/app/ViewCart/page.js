@@ -76,7 +76,7 @@ const ViewCart = () => {
 
   return (
     <div className="cart-main">
-        <Header isHomePage={false} />
+        <Header/>
     
         <div className="cart-container">        
         <Typography variant="h4" className="cart-title">

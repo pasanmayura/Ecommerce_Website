@@ -147,7 +147,7 @@ const WishlistPage = () => {
 
   return (
     <div className="wishlist-page">
-      <Header isHomePage={false} />
+      <Header/>
       <div className="wishlist-container">
         <div className="wishlist-header">
           <div className="wishlist-title-section">

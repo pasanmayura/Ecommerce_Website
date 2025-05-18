@@ -69,7 +69,7 @@ const MyAccount = () => {
 
   return (
     <div className="myaccount-all">
-      <Header isHomePage={true}/>
+      <Header/>
       <main className="main-myaccount-content">
 
         

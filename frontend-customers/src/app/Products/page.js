@@ -81,7 +81,7 @@ const Products = () => {
 
   return (
     <div className="Products">
-      <Header isHomePage={true}/>
+      <Header/>
       <main className="main-Products-content">
         <div className="Products-content">
           <FormControl variant="outlined" size="small" className="products-sort" style={{ marginTop: '20px', marginLeft: '50px' }} >

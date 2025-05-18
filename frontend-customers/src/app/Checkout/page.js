@@ -210,7 +210,7 @@ const Checkout = () => {
 
   return (
     <div className="checkout-page">
-      <Header isHomePage={true}/>
+      <Header/>
       <div className="checkout-container">
         <h1 className="checkout-title">Checkout</h1>
         <div className="checkout-content">

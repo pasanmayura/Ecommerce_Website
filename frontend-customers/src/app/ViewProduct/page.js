@@ -187,7 +187,7 @@ const ViewProduct = () => {
 
     return (
         <div className="view-product">
-          <Header isHomePage={false} />
+          <Header/>
           <main className="product-content-container">
             <div className="product-gallery">
               <div className="thumbnail-container">

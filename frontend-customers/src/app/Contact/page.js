@@ -45,7 +45,7 @@ const Contact = () => {
 
   return (
     <div className="contact-all">
-      <Header isHomePage={true}/>
+      <Header/>
       <main className="main-contact-content">
 
         <div className='contact'>
