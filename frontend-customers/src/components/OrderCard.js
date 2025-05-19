@@ -15,6 +15,8 @@ import Grid from '@mui/material/Grid';
 import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import WatchLaterIcon from '@mui/icons-material/WatchLater';
+import PendingIcon from '@mui/icons-material/Pending';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import RateReviewIcon from '@mui/icons-material/RateReview';
@@ -44,6 +46,10 @@ const OrderCard = ({ order }) => {
   const getStatusIcon = () => {
     switch (order.status) {
       case 'Pending':
+        return <WatchLaterIcon />;
+      case 'Processing':
+        return <PendingIcon />;
+      case 'Shipped':
         return <LocalShippingIcon />;
       case 'Completed':
         return <CheckCircleIcon />;
@@ -59,6 +65,10 @@ const OrderCard = ({ order }) => {
     switch (order.status) {
       case 'Pending':
         return 'warning';
+      case 'Processing':
+        return 'primary';
+      case 'Shipped':
+        return 'secondary';
       case 'Completed':
         return 'success';
       case 'Delivered':
@@ -196,7 +206,7 @@ const OrderCard = ({ order }) => {
         open={reviewModalOpen}
         onClose={() => setReviewModalOpen(false)}
         onSubmit={handleReviewSubmit}
-        product={selectedProduct}
+        product={{ ...selectedProduct, orderId: order.id }}
       />
     </Card>
   );
