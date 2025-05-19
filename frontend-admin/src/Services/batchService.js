@@ -1,66 +1,48 @@
+import axios from 'axios';
+
+const API_BASE_URL = 'http://localhost:5001/batch';
+
 export const addBatch = async (batchData) => {
   try {
-    const response = await fetch('http://localhost:5000/batch/addBatch', {
-      method: 'POST',
+    const response = await axios.post(`${API_BASE_URL}/addBatch`, batchData, {
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${sessionStorage.getItem('jwtToken')}`
+        'Authorization': `Bearer ${sessionStorage.getItem('jwtToken')}`,
       },
-      body: JSON.stringify(batchData)
     });
 
-    if (!response.ok) {
-      const responseText = await response.text();
-      console.log('Response text:', responseText);
-      throw new Error(responseText);
-    }
-
-    return await response.json();
+    return response.data;
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error:', error.response?.data || error.message);
     return { message: 'There was an error adding the batch. Please try again.' };
   }
 };
 
 export const getProductsID = async () => {
   try {
-    const response = await fetch('http://localhost:5000/batch/getProductsID', {
-      method: 'GET',
+    const response = await axios.get(`${API_BASE_URL}/getProductsID`, {
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${sessionStorage.getItem('jwtToken')}`
+        'Authorization': `Bearer ${sessionStorage.getItem('jwtToken')}`,
       },
     });
 
-    if (!response.ok) {
-      const responseText = await response.text();
-      console.log('Response text:', responseText);
-      throw new Error(responseText);
-    }
-
-    return await response.json();
+    return response.data;
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error:', error.response?.data || error.message);
     return [];
   }
 };
 
 export const getProductAttributes = async (productID) => {
   try {
-    const response = await fetch(`http://localhost:5000/batch/product-attributes/${productID}`, { // Corrected URL
-      method: 'GET',
+    const response = await axios.get(`${API_BASE_URL}/product-attributes/${productID}`, {
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${sessionStorage.getItem('jwtToken')}`
+        'Authorization': `Bearer ${sessionStorage.getItem('jwtToken')}`,
       },
     });
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const data = await response.json(); // Parse JSON response
-    return data;
+
+    return response.data;
   } catch (error) {
-    console.error('Error fetching product attributes:', error);
-    return []; // Return an empty array in case of an error
+    console.error('Error fetching product attributes:', error.response?.data || error.message);
+    return [];
   }
 };

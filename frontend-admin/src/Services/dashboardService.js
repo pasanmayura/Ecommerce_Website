@@ -1,62 +1,46 @@
+import axios from 'axios';
+
+const API_BASE_URL = 'http://localhost:5001/api/dashboard';
+
 export const getDashboardDetails = async () => {
   try {
-    const response = await fetch('http://localhost:5000/api/dashboard/getDashboardDetails', {
-      method: 'GET',
+    const response = await axios.get(`${API_BASE_URL}/getDashboardDetails`, {
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${sessionStorage.getItem('jwtToken')}`
+        'Authorization': `Bearer ${sessionStorage.getItem('jwtToken')}`,
       },
     });
-    if (!response.ok) {
-      const responseText = await response.text();
-      console.log('Response text:', responseText);
-      throw new Error(responseText);
-    }
-    return await response.json();
+    return response.data;
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error:', error.response?.data || error.message);
     return {};
   }
 };
 
 export const getLowStockProducts = async () => {
   try {
-    const response = await fetch('http://localhost:5000/api/dashboard/getLowStockProducts', {
-      method: 'GET',
+    const response = await axios.get(`${API_BASE_URL}/getLowStockProducts`, {
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${sessionStorage.getItem('jwtToken')}`
+        'Authorization': `Bearer ${sessionStorage.getItem('jwtToken')}`,
       },
     });
-    if (!response.ok) {
-      const responseText = await response.text();
-      console.log('Response text:', responseText);
-      throw new Error(responseText);
-    }
-    return await response.json();
+    return response.data;
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error:', error.response?.data || error.message);
     return [];
   }
 };
 
 export const getSalesChart = async (period) => {
   try {
-    const response = await fetch(`http://localhost:5000/api/dashboard/getSalesChart`, {
-      method: 'GET',
+    const response = await axios.get(`${API_BASE_URL}/getSalesChart`, {
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${sessionStorage.getItem('jwtToken')}`
+        'Authorization': `Bearer ${sessionStorage.getItem('jwtToken')}`,
       },
+      params: { period }, // Pass the period as a query parameter
     });
-    if (!response.ok) {
-      const responseText = await response.text();
-      console.log('Response text:', responseText);
-      throw new Error(responseText);
-    }
-    return await response.json();
+    return response.data;
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error:', error.response?.data || error.message);
     return [];
   }
 };

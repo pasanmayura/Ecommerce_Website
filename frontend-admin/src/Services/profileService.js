@@ -1,76 +1,59 @@
+import axios from 'axios';
+
+const API_BASE_URL = 'http://localhost:5001/api/profile';
+
 export const getProfile = async (token) => {
-    try {
-      console.log("Fetching profile with token:", token);
-      const response = await fetch('http://localhost:5000/api/profile/getProfile', {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-  
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(`Failed to fetch profile: ${errorData.message}`);
-      }
-  
-      const data = await response.json();
-      return data.user;
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
-  };
-
-  export const updateProfile = async (token, user) => {
-    const response = await fetch('http://localhost:5000/api/profile/updateProfile', {
-      method: 'PUT',
+  try {
+    const response = await axios.get(`${API_BASE_URL}/getProfile`, {
       headers: {
         'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
       },
-      body: JSON.stringify(user)
     });
-  
-    if (!response.ok) {
-      throw new Error('Failed to update profile');
-    }
-  
-    const data = await response.json();
-    return data.user;
-  };
-  
-  export const deleteAccount = async (token) => {
-    const response = await fetch('http://localhost:5000/api/profile/deleteAccount', {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
-    });
-  
-    if (!response.ok) {
-      throw new Error('Failed to delete account');
-    }
-  
-    const data = await response.json();
-    return data;
-  };
+    return response.data.user;
+  } catch (error) {
+    console.error('Error:', error.response?.data || error.message);
+    throw error;
+  }
+};
 
-  export const changePassword = async (token, passwords) => {
-    const response = await fetch('http://localhost:5000/api/profile/changePassword', {
-      method: 'PUT',
+export const updateProfile = async (token, user) => {
+  try {
+    const response = await axios.put(`${API_BASE_URL}/updateProfile`, user, {
       headers: {
         'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
       },
-      body: JSON.stringify(passwords)
     });
-  
-    if (!response.ok) {
-      throw new Error('Failed to change password');
-    }
-  
-    const data = await response.json();
-    return data;
-  };
+    return response.data.user;
+  } catch (error) {
+    console.error('Error:', error.response?.data || error.message);
+    throw new Error('Failed to update profile');
+  }
+};
+
+export const deleteAccount = async (token) => {
+  try {
+    const response = await axios.delete(`${API_BASE_URL}/deleteAccount`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error:', error.response?.data || error.message);
+    throw new Error('Failed to delete account');
+  }
+};
+
+export const changePassword = async (token, passwords) => {
+  try {
+    const response = await axios.put(`${API_BASE_URL}/changePassword`, passwords, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error:', error.response?.data || error.message);
+    throw new Error('Failed to change password');
+  }
+};

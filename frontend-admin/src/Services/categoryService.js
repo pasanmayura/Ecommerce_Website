@@ -1,92 +1,58 @@
+import axios from 'axios';
+
+const API_BASE_URL = 'http://localhost:5001/category';
+
 export const addCategory = async (Category_Name) => {
   try {
-    const response = await fetch(`http://localhost:5000/category/addCategory`, {
-      method: 'POST',
+    const response = await axios.post(`${API_BASE_URL}/addCategory`, { Category_Name }, {
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${sessionStorage.getItem('jwtToken')}`
+        'Authorization': `Bearer ${sessionStorage.getItem('jwtToken')}`,
       },
-      body: JSON.stringify({ Category_Name })
     });
 
-    if (!response.ok) {
-      const responseText = await response.text();
-      console.log('Response text:', responseText);
-      throw new Error(responseText);
-    }
-
-    return await response.json();
+    return response.data;
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error:', error.response?.data || error.message);
     return { message: 'There was an error adding the category. Please try again.' };
   }
 };
 
 export const getCategories = async () => {
   try {
-    const response = await fetch('http://localhost:5000/category/getCategories', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (!response.ok) {
-      const responseText = await response.text();
-      console.log('Response text:', responseText);
-      throw new Error(responseText);
-    }
-
-    return await response.json();
+    const response = await axios.get(`${API_BASE_URL}/getCategories`);
+    return response.data;
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error:', error.response?.data || error.message);
     return [];
   }
 };
 
 export const deleteCategory = async (CategoryID) => {
   try {
-    const response = await fetch(`http://localhost:5000/category/deleteCategory/${CategoryID}`, {
-      method: 'DELETE',
+    const response = await axios.delete(`${API_BASE_URL}/deleteCategory/${CategoryID}`, {
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${sessionStorage.getItem('jwtToken')}`
+        'Authorization': `Bearer ${sessionStorage.getItem('jwtToken')}`,
       },
     });
 
-    if (!response.ok) {
-      const responseText = await response.text();
-      console.log('Response text:', responseText);
-      throw new Error(responseText);
-    }
-
-    return await response.json();
+    return response.data;
   } catch (error) {
-    console.error('Error:', error);
-    return { message: 'Category Can not be deleted with Products. Delete products first.' };
+    console.error('Error:', error.response?.data || error.message);
+    return { message: 'Category cannot be deleted with products. Delete products first.' };
   }
 };
 
 export const updateCategory = async (CategoryID, Category_Name) => {
   try {
-    const response = await fetch(`http://localhost:5000/category/updateCategory/${CategoryID}`, {
-      method: 'PUT',
+    const response = await axios.put(`${API_BASE_URL}/updateCategory/${CategoryID}`, { Category_Name }, {
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${sessionStorage.getItem('jwtToken')}`
+        'Authorization': `Bearer ${sessionStorage.getItem('jwtToken')}`,
       },
-      body: JSON.stringify({ Category_Name })
     });
 
-    if (!response.ok) {
-      const responseText = await response.text();
-      console.log('Response text:', responseText);
-      throw new Error(responseText);
-    }
-
-    return await response.json();
+    return response.data;
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error:', error.response?.data || error.message);
     return { message: 'There was an error updating the category. Please try again.' };
   }
 };

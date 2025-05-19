@@ -1,114 +1,73 @@
+import axios from 'axios';
+
+const API_BASE_URL = 'http://localhost:5001/products';
+
 export const addProducts = async (formData) => {
   try {
-    const response = await fetch(`http://localhost:5000/products/addProducts`, {
-      method: 'POST',
+    const response = await axios.post(`${API_BASE_URL}/addProducts`, formData, {
       headers: {
-        'Authorization': `Bearer ${sessionStorage.getItem('jwtToken')}`
+        'Authorization': `Bearer ${sessionStorage.getItem('jwtToken')}`,
       },
-      body: formData
     });
-
-    if (!response.ok) {
-      const responseText = await response.text();
-      console.log('Response text:', responseText);
-      throw new Error(responseText);
-    }
-
-    return await response.json();
+    return response.data;
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error:', error.response?.data || error.message);
     return { message: 'There was an error adding the product. Please try again.' };
   }
 };
 
 export const getProducts = async () => {
   try {
-    const response = await fetch('http://localhost:5000/products/getProducts', {
-      method: 'GET',
+    const response = await axios.get(`${API_BASE_URL}/getProducts`, {
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${sessionStorage.getItem('jwtToken')}`
+        'Authorization': `Bearer ${sessionStorage.getItem('jwtToken')}`,
       },
     });
-
-    if (!response.ok) {
-      const responseText = await response.text();
-      console.log('Response text:', responseText);
-      throw new Error(responseText);
-    }
-
-    return await response.json();
+    return response.data;
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error:', error.response?.data || error.message);
     return [];
   }
 };
 
 export const deleteProduct = async (BatchID) => {
   try {
-    const response = await fetch(`http://localhost:5000/products/deleteProduct/${BatchID}`, {
-      method: 'DELETE',
+    const response = await axios.delete(`${API_BASE_URL}/deleteProduct/${BatchID}`, {
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${sessionStorage.getItem('jwtToken')}`
+        'Authorization': `Bearer ${sessionStorage.getItem('jwtToken')}`,
       },
     });
-
-    if (!response.ok) {
-      const responseText = await response.text();
-      console.log('Response text:', responseText);
-      throw new Error(responseText);
-    }
-    return await response.json();
+    return response.data;
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error:', error.response?.data || error.message);
     return { message: 'There was an error deleting the product. Please try again.' };
   }
 };
 
 export const updateProduct = async (productID, productData) => {
   try {
-    const response = await fetch(`http://localhost:5000/products/updateProduct/${productID}`, {
-      method: 'PUT',
+    const response = await axios.put(`${API_BASE_URL}/updateProduct/${productID}`, productData, {
       headers: {
-        'Content-Type': 'application/json',
         'Authorization': `Bearer ${sessionStorage.getItem('jwtToken')}`,
       },
-      body: JSON.stringify(productData), // Send the product data as JSON
     });
-
-    if (!response.ok) {
-      const responseText = await response.text();
-      console.log('Response text:', responseText);
-      throw new Error(responseText);
-    }
-
-    return await response.json(); // Parse and return the JSON response
+    return response.data;
   } catch (error) {
-    console.error('Error updating product:', error);
+    console.error('Error updating product:', error.response?.data || error.message);
     return { message: 'There was an error updating the product. Please try again.' };
   }
-};  
+};
 
 export const getAttributes = async () => {
   try {
-    const response = await fetch('http://localhost:5000/products/getAttributes', {
-      method: 'GET',
+    const response = await axios.get(`${API_BASE_URL}/getAttributes`, {
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${sessionStorage.getItem('jwtToken')}`
+        'Authorization': `Bearer ${sessionStorage.getItem('jwtToken')}`,
       },
     });
-
-    if (!response.ok) {
-      const responseText = await response.text();
-      console.log('Response text:', responseText);
-      throw new Error(responseText);
-    }
-
-    return await response.json();
+    return response.data;
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error:', error.response?.data || error.message);
     return [];
   }
 };
