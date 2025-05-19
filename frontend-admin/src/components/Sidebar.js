@@ -60,7 +60,7 @@ export const Sidebar = () => {
       icon: <FiClipboard />, 
       subItems: [
         { title: "Inventory Report", link: "/InventoryReport" },
-        { title: "Low Stock Report", link: "/LowStockReport" }
+        { title: "Sales Report", link: "/SalesReport" }
       ] 
     },
     { 
