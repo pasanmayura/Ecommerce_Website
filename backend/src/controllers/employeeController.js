@@ -1,5 +1,6 @@
 const pool = require('../config/db');
 const bcrypt = require('bcryptjs');
+const { registerUserSchema } = require('../validators/validation'); // Import the validation schema
 
 // Fetch categories
 exports.getEmployee = async (req, res) => {
@@ -32,6 +33,11 @@ exports.registerEmp = async (req, res) => {
   }
 
   try {
+    const { error } = registerUserSchema.validate({ FirstName, LastName, Email, PhoneNumber, Password });
+    if (error) {
+      return res.status(400).json({ message: error.details[0].message });
+    }
+    
     const hashedPassword = await bcrypt.hash(Password, 10);
 
     // Find the next adminID
