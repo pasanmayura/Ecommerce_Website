@@ -67,10 +67,10 @@ CREATE TABLE Customer (
 CREATE TABLE Orders (
     OrderID VARCHAR(255) PRIMARY KEY,
     Total_Amount DECIMAL(10, 2),
-    PaymentStatus ENUM('Paid', 'Pending'),
+    PaymentStatus ENUM('Paid', 'Pending', 'Cancelled'),
     PaymentMethod ENUM('COD', 'Stripe'),
     OrderDate DATE DEFAULT (CURRENT_DATE),
-    OrderStatus ENUM('Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'),
+    OrderStatus ENUM('Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled', 'Completed'),
     CustomerID VARCHAR(255),
     FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID)
 );
