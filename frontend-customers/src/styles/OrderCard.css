@@ -41,13 +41,13 @@
     font-weight: 500 ;
   }
   
-  .order-summary {
+  .ordercard-summary {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
   
-  .order-total {
+  .ordercard-total {
     font-weight: 600 !important;
   }
   

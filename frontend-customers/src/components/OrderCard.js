@@ -125,12 +125,12 @@ const OrderCard = ({ order }) => {
       />
       
       <CardContent>
-        <Typography variant="body2" color="text.secondary" className="order-summary">
+        <Typography variant="body2" color="text.secondary" className="ordercard-summary">
           {order.products.length === 1 
             ? '1 product' 
             : `${order.products.length} products`}
           
-          <Typography component="span" className="order-total">
+          <Typography component="span" className="ordercard-total">
             Total: Rs.{order.total}
           </Typography>
         </Typography>
