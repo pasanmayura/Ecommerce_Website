@@ -308,7 +308,7 @@ const InventoryReport = () => {
                   </thead>
                   <tbody>
                     {filteredInventory.map((item) => (
-                      <tr key={item.ProductID} className={getStockStatusClass(item)}>
+                      <tr key={`${item.ProductID}-${item.BatchID}`} className={getStockStatusClass(item)}>
                         <td>{item.ProductID}</td>
                         <td>{item.Product_Name}</td>
                         <td>{item.Category_Name}</td>
