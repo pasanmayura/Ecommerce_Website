@@ -16,6 +16,16 @@
     background-color: #fff3cd !important;
     color: #856404 !important;
   }
+
+  .status-avatar.Processing {
+    background-color: #bbdefb !important;
+    color: #1976d2 !important;
+  }
+
+  .status-avatar.Shipped {
+    background-color: #f3e5f5 !important;
+    color: #9c27b0 !important;
+  }
   
   .status-avatar.Completed {
     background-color: #d4edda !important;
