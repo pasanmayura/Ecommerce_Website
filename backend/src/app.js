@@ -10,6 +10,7 @@ const employeeRoutes = require('./routes/employeeRoutes');
 const profileRoutes = require('./routes/profileRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
+const reportRoutes = require('./routes/reportRoutes');
 
 const app = express();
 
@@ -26,5 +27,6 @@ app.use('/employee', employeeRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/order', orderRoutes);
 app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/reports', reportRoutes);
 
 module.exports = app;
