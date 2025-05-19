@@ -62,7 +62,7 @@ const MyOrders = () => {
         const orders = await getOrders();
 
         // Categorize orders based on their status
-        const pending = orders.filter(order => order.status === 'Pending');
+        const pending = orders.filter(order => order.status === 'Pending' || order.status === 'Processing' || order.status === 'Shipped');
         const completed = orders.filter(order => order.status === 'Completed');
         const toReview = orders.filter(order => order.status === 'Delivered');
 
