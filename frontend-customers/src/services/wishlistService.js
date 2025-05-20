@@ -54,7 +54,8 @@ export const removeFromWishlist = async (productId) => {
 export const getWishlist = async () => {
   const token = sessionStorage.getItem('jwtToken');
   if (!token) {
-    throw new Error('No token found. Please log in.');
+    console.warn('User is not logged in. Cannot fetch wishlist.');
+    return []; // Return an empty array if the user is not logged in
   }
 
   try {
