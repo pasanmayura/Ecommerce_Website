@@ -37,6 +37,5 @@ const loginUserSchema = Joi.object({
 
 module.exports = {
   registerUserSchema,
-  verifyEmailCodeSchema,
   loginUserSchema,
 };
