@@ -74,22 +74,22 @@ const PaymentSuccessful = () => {
           <div className="order-detail-row">
             <div className="order-detail-col">
               <span className="detail-label">Order Number</span>
-              <span className="detail-value">ORD-123456</span>
+              <span className="detail-value">ORD-76454123456</span>
             </div>
             <div className="order-detail-col">
               <span className="detail-label">Date</span>
-              <span className="detail-value">May 16, 2025</span>
+              <span className="detail-value">{new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
             </div>
           </div>
           
           <div className="order-detail-row">
             <div className="order-detail-col">
               <span className="detail-label">Total</span>
-              <span className="detail-value highlight">Rs.87.33</span>
+              <span className="detail-value highlight">Rs.2000.00</span>
             </div>
             <div className="order-detail-col">
               <span className="detail-label">Payment Method</span>
-              <span className="detail-value">Credit Card</span>
+              <span className="detail-value">Stripe</span>
             </div>
           </div>
         </div>
