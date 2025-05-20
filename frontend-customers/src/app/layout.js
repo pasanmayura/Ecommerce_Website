@@ -20,6 +20,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        <script src="//code.tidio.co/r1kai5la4svul8ilyo2oddzhwbcukqe7.js" async></script>
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <CartProvider>
          {children}
