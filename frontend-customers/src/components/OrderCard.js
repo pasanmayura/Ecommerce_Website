@@ -20,13 +20,17 @@ import PendingIcon from '@mui/icons-material/Pending';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import RateReviewIcon from '@mui/icons-material/RateReview';
+import ChangeCircleRoundedIcon from '@mui/icons-material/ChangeCircleRounded';
 import ReviewModal from '@/components/ReviewModal';
+import ReturnModal from '@/components/ReturnModal';
+import { submitReturnRequest } from '@/services/reviewService';
 import '@/styles/OrderCard.css';
 
 const OrderCard = ({ order }) => {
   const [expanded, setExpanded] = useState(false);
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [returnModalOpen, setReturnModalOpen] = useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -40,6 +44,33 @@ const OrderCard = ({ order }) => {
   const handleReviewSubmit = (review) => {
     console.log('Review submitted:', review);
     // Add logic to send the review to the backend
+  };
+
+  const handleReturnClick = (product) => {
+    setSelectedProduct(product); // Set the selected product
+    setReturnModalOpen(true); // Open the ReturnModal
+  };
+
+  const handleReturnSubmit = async (returnData) => {
+    try {
+      const requestPayload = {
+        orderId: order.id,
+        returnItems: [
+          {
+            productId: returnData.productId,
+            quantity: 1, // Assuming 1 item is being returned
+            reason: returnData.reason,
+          },
+        ],
+      };
+  
+      await submitReturnRequest(requestPayload);
+      alert('Return request submitted successfully');
+      setReturnModalOpen(false); // Close the modal after submission
+    } catch (error) {
+      console.error('Error submitting return request:', error.message);
+      alert('Failed to submit return request');
+    }
   };
 
   // Get appropriate status icon
@@ -149,6 +180,19 @@ const OrderCard = ({ order }) => {
             Write Review
           </Button>
         )}
+
+        {order.status === 'Delivered' && (
+          <Button 
+            variant="contained" 
+            color="primary" 
+            startIcon={<ChangeCircleRoundedIcon/>}
+            size="small"
+            className="review-button"
+            onClick={() => handleReturnClick(order.products[0])}
+          >
+            Return
+          </Button>
+        )}
         
         <IconButton
           onClick={handleExpandClick}
@@ -207,6 +251,13 @@ const OrderCard = ({ order }) => {
         onClose={() => setReviewModalOpen(false)}
         onSubmit={handleReviewSubmit}
         product={{ ...selectedProduct, orderId: order.id }}
+      />
+      <ReturnModal
+        open={returnModalOpen}
+        onClose={() => setReturnModalOpen(false)} // Close the modal
+        onSubmit={handleReturnSubmit} // Handle the return request submission
+        products={order.products} // Pass all products in the order
+        selectedProduct={selectedProduct} // Pass the selected product
       />
     </Card>
   );

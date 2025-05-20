@@ -16,3 +16,18 @@ export const submitReview = async (reviewData) => {
       throw error;
     }
   };
+
+  export const submitReturnRequest = async (returnData) => {
+    try {
+      const token = sessionStorage.getItem('jwtToken'); // Retrieve the token from sessionStorage
+      const response = await axios.post(`${API_BASE_URL}/submitReturn`, returnData, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error submitting return request:', error.response?.data || error.message);
+      throw error;
+    }
+  }
