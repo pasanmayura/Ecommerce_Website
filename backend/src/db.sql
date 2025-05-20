@@ -173,7 +173,7 @@ SELECT
     (
         SELECT b1.Selling_Price
         FROM Batch b1
-        WHERE b1.ProductID = p.ProductID
+        WHERE b1.ProductID = p.ProductID AND b1.Stock_Quantity > 0
         ORDER BY b1.Date ASC, b1.BatchID ASC
         LIMIT 1
     ) AS price,
@@ -187,3 +187,48 @@ SELECT
 FROM Product p
 JOIN ProductsImages pi ON p.ProductID = pi.ProductID
 GROUP BY p.ProductID, p.Product_Name, pi.ImageURL_1, p.Product_Rating;
+
+-- ViewProdut Details 
+CREATE VIEW ProductDetailsView AS
+SELECT 
+    p.ProductID AS id,
+    p.Product_Name AS name,
+    p.Description AS description,
+
+    (
+      SELECT b1.Selling_Price
+      FROM Batch b1
+      WHERE b1.ProductID = p.ProductID AND b1.Stock_Quantity > 0
+      ORDER BY b1.Date ASC, b1.BatchID ASC
+      LIMIT 1
+    ) AS price,
+
+    (
+      SELECT b1.Stock_Quantity
+      FROM Batch b1
+      WHERE b1.ProductID = p.ProductID AND b1.Stock_Quantity > 0
+      ORDER BY b1.Date ASC, b1.BatchID ASC
+      LIMIT 1
+    ) AS stock_quantity,
+
+    p.Product_Rating AS rating,
+    pi.ImageURL_1 AS image1,
+    pi.ImageURL_2 AS image2,
+    pi.ImageURL_3 AS image3,
+
+    (
+      SELECT JSON_ARRAYAGG(
+              JSON_OBJECT(
+                'attribute', a.Attribute_Name,
+                'value', pa.value
+              )
+            )
+      FROM product_attributes pa
+      JOIN attributes a ON pa.attribute_id = a.id
+      WHERE pa.ProductID = p.ProductID
+    ) AS attributes
+
+FROM product p
+JOIN batch b ON p.ProductID = b.ProductID
+JOIN productsimages pi ON p.ProductID = pi.ProductID
+GROUP BY p.ProductID, p.Product_Name, p.Description, pi.ImageURL_1, pi.ImageURL_2, pi.ImageURL_3, p.Product_Rating;
