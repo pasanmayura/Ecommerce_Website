@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 import { Header } from "@/components/Header";
-import { getProductDetails, getProductComments } from '@/services/productService';
+import { getProductDetails, getProductComments, getProductCards } from '@/services/productService';
 import { useCart } from '@/contexts/CartContext';
 import Image from 'next/image';
 import { Button } from '@mui/material';
@@ -76,7 +76,7 @@ const ViewProduct = () => {
         return <div className="loading-container">Loading...</div>;
       }
 
-    const { id, image1, image2, image3, name, description, price, rating, attributes } = product;
+    const { id, image1, image2, image3, name, description, price, stock_quantity, rating, attributes } = product;
 
     const handleAddToCart = () => {
       const cartItem = {
@@ -148,9 +148,14 @@ const ViewProduct = () => {
 
     const handleQuantityChange = (action) => {
       if (action === 'increase') {
-        setQuantity(prev => prev + 1);
+        if (quantity < stock_quantity){
+          setQuantity(prev => prev + 1);
+        } else{
+          alert('You cannot add more than ${stock_quantity} items to your cart')
+        }
+        
       } else if (action === 'decrease' && quantity > 1) {
-        setQuantity(prev => prev - 1);
+        setQuantity((prev) => prev - 1);
       }
     };
 
@@ -171,6 +176,9 @@ const ViewProduct = () => {
     };
 
     const handleBuyNow = () => {
+      if( quantity > stock_quantity){
+        alert('Only ${stock_quantityu} items are abailable in stck.')
+      }
       const productData = {
         id: productId,
         name,
