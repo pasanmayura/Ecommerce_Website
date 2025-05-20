@@ -110,8 +110,10 @@ const Checkout = () => {
         const response = await placeOrder(orderData);
 
         localStorage.setItem('orderId', response.orderId);
-  
-        router.push('/CodSuccessful'); // Redirect to order confirmation page
+
+        if (formData.paymentMethod === 'cod') {
+          router.push('/CodSuccessful'); // Redirect to order confirmation page
+        }        
   
         if (formData.paymentMethod === 'stripe') {
           await handleStripePayment(orderSummary); // Use the payment service
