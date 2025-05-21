@@ -27,7 +27,11 @@ export const registerEmp = async (FirstName, LastName, Email, PhoneNumber, Passw
     });
     return response.data;
   } catch (error) {
-    console.error('Error:', error.response?.data || error.message);
+    // Return the backend error response if available
+    if (error.response && error.response.data) {
+      return error.response.data;
+    }
+    // Return a generic error message if no backend response is available
     return { message: 'There was an error with the registration. Please try again.' };
   }
 };

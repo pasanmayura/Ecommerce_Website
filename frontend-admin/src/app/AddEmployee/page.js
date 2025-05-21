@@ -30,39 +30,42 @@ const AddEmployee = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const { FirstName, LastName, Email, PhoneNumber, Password, confirmPassword } = formData;
-
+      
         if (Password !== confirmPassword) {
-            setAlert({ severity: 'error', title: 'Error', message: 'Passwords do not match' });
-            return;
+          setAlert({ severity: 'error', title: 'Error', message: 'Passwords do not match' });
+          return;
         }
-
+      
         setAlert({ severity: '', title: '', message: '' });
-        
+      
         try {
-            const result = await registerEmp(FirstName, LastName, Email, PhoneNumber, Password);
-            
-            if (result.message === 'Employee registered successfully') {
-                setAlert({ severity: 'success', title: 'Success', message: 'Employee added successfully' });
-                // Clear the form
-                setFormData({
-                    FirstName: '',
-                    LastName: '',
-                    Email: '',
-                    PhoneNumber: '',
-                    Password: '',
-                    confirmPassword: ''
-                });
-            } else {
-                setAlert({ severity: 'error', title: 'Error', message: result.message });
-            }
-        } catch (error) {
-            setAlert({ 
-                severity: 'error', 
-                title: 'Error', 
-                message: error.message || 'Failed to register employee' 
+          const result = await registerEmp(FirstName, LastName, Email, PhoneNumber, Password);
+      
+          if (result.message === 'Employee registered successfully') {
+            setAlert({ severity: 'success', title: 'Success', message: 'Employee added successfully' });
+            // Clear the form
+            setFormData({
+              FirstName: '',
+              LastName: '',
+              Email: '',
+              PhoneNumber: '',
+              Password: '',
+              confirmPassword: ''
             });
+          } else if (result.message === 'Access denied. Only admins can register employees.') {
+            // Show an alert if the user is not an admin
+            setAlert({ severity: 'error', title: 'Access Denied', message: 'Only admins are allowed to add employees.' });
+          } else {
+            setAlert({ severity: 'error', title: 'Error', message: result.message });
+          }
+        } catch (error) {
+          setAlert({
+            severity: 'error',
+            title: 'Error',
+            message: error.message || 'Failed to register employee'
+          });
         }
-    };
+      };
 
     const closeAlert = () => {
         setAlert({ severity: '', title: '', message: '' });
