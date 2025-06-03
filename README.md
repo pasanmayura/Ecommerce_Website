@@ -146,6 +146,7 @@ We follow best practices to keep the code clean, simple, and scalable:
 ![Home Page](./Screenshots/Mobile%20View/mobileHome.PNG)
 ![View Product](./Screenshots/Mobile%20View/mobileViewProduct.PNG)
 ![Share Product Model](./Screenshots/Mobile%20View/mobileshareproduct.PNG)
+![Category](./Screenshots/Mobile%20View/mobileCategory.PNG)
 
 ---
 
