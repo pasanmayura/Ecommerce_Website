@@ -34,7 +34,6 @@ export const Sidebar = () => {
       icon: <FiBox />, 
       subItems: [
         { title: "Orders", link: "/MyOrders" },
-        { title: "Returns", link: "/ReturnOrders" }
       ] 
     },
   ];
