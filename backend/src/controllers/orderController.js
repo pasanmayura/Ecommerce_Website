@@ -133,6 +133,30 @@ exports.updateOrderReturnStatus = async (req, res) => {
                 console.error('Error querying database:', err);
                 return res.status(500).json({ message: 'Database query error' });
             }
+
+            if (ReturnStatus === 'Completed') {
+                
+                const getItemsSql = `SELECT ProductID, Quantity FROM Return_Items WHERE OrderReturnID = ?`;
+                pool.query(getItemsSql, [orderReturnId], (err, items) => {
+                    if (err) {
+                        console.error('Error fetching return items:', err);
+                        return res.status(500).json({ message: 'Database query error' });
+                    }
+                                        
+                    items.forEach(item => {
+                        
+                        const getBatchSql = `SELECT BatchID FROM ProductOrders WHERE OrderID = (SELECT OrderID FROM Order_Returns WHERE OrderReturnID = ?) AND ProductID = ? LIMIT 1`;
+                        pool.query(getBatchSql, [orderReturnId, item.ProductID], (err, batchRows) => {
+                            if (!err && batchRows.length > 0) {
+                                const batchId = batchRows[0].BatchID;
+                                
+                                const updateBatchSql = `UPDATE Batch SET Stock_Quantity = GREATEST(Stock_Quantity - 1, 0) WHERE BatchID = ?`;
+                                pool.query(updateBatchSql, [batchId]);
+                            }
+                        });
+                    });
+                });
+            }
             res.status(200).json(result);
         });
     } catch (error) {
