@@ -106,15 +106,6 @@ CREATE TABLE Return_Items (
     FOREIGN KEY (ProductID) REFERENCES Product(ProductID) ON DELETE CASCADE
 );
 
-CREATE TABLE product_attributes (
-  id INT PRIMARY KEY AUTO_INCREMENT,
-  ProductID VARCHAR(255),
-  attribute_id INT,
-  value VARCHAR(100),
-  FOREIGN KEY (ProductID) REFERENCES product(ProductID),
-  FOREIGN KEY (attribute_id) REFERENCES attributes(id)
-);
-
 CREATE TABLE product_review (
   ReviewID INT AUTO_INCREMENT PRIMARY KEY,
   ProductID VARCHAR(255),
@@ -135,15 +126,6 @@ CREATE TABLE Wishlist (
   FOREIGN KEY (ProductID) REFERENCES Product(ProductID)
 );
 
-CREATE TABLE product_attributes_batch (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    id_pa INT,
-    BatchID INT,
-    Quantity INT,
-    FOREIGN KEY (BatchID) REFERENCES batch(BatchID),
-    FOREIGN KEY (id_pa) REFERENCES product_attributes(id)
-);
-
 --Views
 
 -- Create a view to get low stock products
@@ -159,11 +141,6 @@ CREATE VIEW LowStockProducts AS
     JOIN category c ON p.CategoryID = c.CategoryID
     GROUP BY p.ProductID, p.Product_Name, p.Threshold
     HAVING TotalStock < p.Threshold;
-
-CREATE TABLE attributes (
-  id INT PRIMARY KEY AUTO_INCREMENT,
-  Attribute_Name VARCHAR(50) 
-);
 
 -- Create a view to get product details for display in cards
 CREATE VIEW ProductDisplayView AS
