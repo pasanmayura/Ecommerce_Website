@@ -3,11 +3,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Header } from "@/components/Header"; 
 import { Sidebar } from "@/components/Sidebar";
+import Image from 'next/image';
 import { 
   Button, 
   TextField, 
-  MenuItem, 
-  IconButton, 
+  MenuItem,  
   Paper, 
   Typography, 
   Box, 
@@ -15,23 +15,19 @@ import {
   Divider, 
   Chip
 } from "@mui/material";
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
 import ImageIcon from '@mui/icons-material/Image';
 import DescriptionIcon from '@mui/icons-material/Description';
 import CategoryIcon from '@mui/icons-material/Category';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { getCategories } from "@/Services/categoryService";
-import { addProducts, getAttributes } from "@/Services/productService";
+import { addProducts } from "@/Services/productService";
 import LoadingComponent from '@/components/LoadingComponent';
 import AlertComponent from '@/components/AlertComponent';
 import '@/styles/AddProducts.css';
 
 const AddProducts = () => {
   const [categories, setCategories] = useState([]);
-  const [attributes, setAttributes] = useState([]);
-  const [productAttributes, setProductAttributes] = useState([{ attribute: '', value: '' }]);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [productName, setProductName] = useState('');
   const [description, setDescription] = useState('');
@@ -48,35 +44,8 @@ const AddProducts = () => {
       setCategories(categories);
     };
 
-    const fetchAttributes = async () => {
-      try {
-        const attributes = await getAttributes();
-        console.log('Fetched attributes:', attributes);
-        setAttributes(attributes);
-      } catch (error) {
-        console.error('Error fetching attributes:', error);
-      }
-    };
-
     fetchCategories();
-    fetchAttributes();
   }, []);
-
-  const handleAddAttributeField = () => {
-    setProductAttributes([...productAttributes, { attribute: '', value: '' }]);
-  };
-
-  const handleRemoveAttributeField = (index) => {
-    const updatedAttributes = [...productAttributes];
-    updatedAttributes.splice(index, 1);
-    setProductAttributes(updatedAttributes);
-  };
-
-  const handleAttributeChange = (index, field, value) => {
-    const updatedAttributes = [...productAttributes];
-    updatedAttributes[index][field] = value;
-    setProductAttributes(updatedAttributes);
-  };
 
   const handleImageChange = (index, file) => {
     const updatedFiles = [...imageFiles];
@@ -107,13 +76,22 @@ const AddProducts = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    
+
+    if (Number(threshold) < 0) {
+      setAlert({
+        severity: 'error',
+        title: 'Invalid Threshold',
+        message: 'Threshold Quantity cannot be negative.',
+      });
+      setLoading(false);
+      return;
+    }
+        
     const formData = new FormData();
     formData.append('Product_Name', productName);
     formData.append('Description', description);
     formData.append('Threshold', threshold);
     formData.append('CategoryID', selectedCategory);
-    formData.append('Attributes', JSON.stringify(productAttributes));
 
     // Append image files
     for (const file of imageFiles) {
@@ -138,7 +116,6 @@ const AddProducts = () => {
         setSelectedCategory('');
         setImageFiles([null, null, null]);
         setImagePreviews([null, null, null]);
-        setProductAttributes([{ attribute: '', value: '' }]);
 
         // Reset file input fields
         fileInputRefs.forEach((ref) => {
@@ -275,69 +252,6 @@ const AddProducts = () => {
                 </Grid>
               </Box>
 
-              {/* Attributes Section */}
-              <Box className="addproduct-form-section addproduct-attributes-section">
-                <Typography variant="h6" className="addproduct-section-title">
-                  Product Attributes
-                </Typography>
-                <Divider className="section-divider" />
-                
-                <Box className="addproduct-attributes-container">
-                  {productAttributes.map((attr, index) => (
-                    <Paper elevation={1} key={index} className="attribute-row">
-                      <Grid container spacing={2} alignItems="center">
-                        <Grid item xs={12} sm={5}>
-                          <TextField
-                            select
-                            label="Attribute"
-                            fullWidth
-                            value={attr.attribute}
-                            onChange={(e) => handleAttributeChange(index, 'attribute', e.target.value)}
-                            className="attribute-field"
-                          >
-                            {attributes.map((attribute) => (
-                              <MenuItem key={attribute.id} value={attribute.id}>
-                                {attribute.Attribute_Name}
-                              </MenuItem>
-                            ))}
-                          </TextField>
-                        </Grid>
-                        
-                        <Grid item xs={12} sm={5}>
-                          <TextField
-                            label="Value"
-                            fullWidth
-                            value={attr.value}
-                            onChange={(e) => handleAttributeChange(index, 'value', e.target.value)}
-                            className="attribute-field"
-                          />
-                        </Grid>
-                        
-                        <Grid item xs={12} sm={2} className="addproduct-attribute-actions">
-                          <IconButton 
-                            onClick={() => handleRemoveAttributeField(index)} 
-                            disabled={productAttributes.length === 1}
-                            className="remove-attribute-btn"
-                            color="error"
-                          >
-                            <RemoveIcon />
-                          </IconButton>
-                        </Grid>
-                      </Grid>
-                    </Paper>
-                  ))}
-                </Box>
-                
-                <Button
-                  variant="outlined"
-                  startIcon={<AddIcon />}
-                  onClick={handleAddAttributeField}
-                  className="add-attribute-btn"
-                >
-                  Add Attribute
-                </Button>
-              </Box>
-
               {/* Images Section */}
               <Box className="addproduct-form-section images-section">
                 <Typography variant="h6" className="addproduct-section-title">
@@ -351,10 +265,13 @@ const AddProducts = () => {
                       <Paper elevation={1} className="image-upload-container">
                         {imagePreviews[index] ? (
                           <div className="image-preview-wrapper">
-                            <img 
+                            <Image 
                               src={imagePreviews[index]} 
                               alt={`Preview ${index + 1}`} 
                               className="image-preview" 
+                              width={200} 
+                              height={200} 
+                              priority 
                             />
                             <Button 
                               className="remove-image-button"
